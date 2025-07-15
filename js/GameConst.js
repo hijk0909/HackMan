@@ -1,0 +1,108 @@
+// GameConst.js
+
+export const GLOBALS = {
+
+    COLOR: {
+        BLACK : 0x000000,
+        WHITE : 0xffffff,
+        GRAY : 0x808080,
+        RED : 0xff0000,
+        WALL_NORMAL :  0xddffff,
+        WALL_READY :   0xff8000,
+        WALL_FLIP :    0xff0000,
+        PANEL_NORMAL : 0xffffff,
+        PANEL_ABOVE :  0xff0000,
+        PANEL_BELOW :  0x808080,
+        PANEL_READY :  0xff8000
+    },
+
+    DIR: {
+        UP : 0,
+        RIGHT: 1,     
+        DOWN : 2,
+        LEFT: 3,
+        NUM : 4
+    },
+
+    DIR_X: [0,1,0,-1],
+    DIR_Y: [-1,0,1,0],
+
+    FLOOR_MAX : 5,
+    TIME_MAX : 20000,
+
+    GAME :{
+        STATE:{
+            FLOOR_START : 0,
+            PLAYING : 1,
+            FAILED : 2,
+            FLOOR_CLEAR : 3
+        },
+        PERIDO:{
+            FLOOR_START : 100,
+            FAILED : 100,
+            FLOOR_CLEAR : 100
+        },
+    },
+
+    FIELD: {
+        COL : 5,
+        ROW : 6
+    },
+
+    WALL: {
+        TYPE: {
+            NORTH : 0,
+            SOUTH : 1,
+            EAST : 2,
+            WEST : 3,
+            CORNER : 4
+        },
+        SIZE: {
+            THICK : 50,
+            LENGTH : 100
+        },
+    },
+
+    PANEL : {
+        WIDTH : 100,
+        HEIGHT : 100,
+        FENCE : {
+            THICK : 20
+        },
+        STATE : {
+            NORMAL : 0,
+            READY : 1,
+            FLIP_ABOVE : 2,
+            FLIP_BELOW : 3
+        },
+    },
+
+    ITEM : {
+        SIZE : 48,
+        TYPE : {
+            NULL : 0,
+            LIVE : 1,
+            NONE : 2,
+            KEY : 3,
+            EXIT : 4,
+            BOX : 5
+        },
+    },
+
+    EFFECT : {
+        TYPE : {
+            EXPLOSION : 0
+        },
+    },
+
+    FLIP_STATE : {
+        NONE : 0,
+        READY : 1,
+        FLIP : 2
+    },
+
+    MOVABLE : {
+        SIZE : 64,
+    },
+
+};
