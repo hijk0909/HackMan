@@ -37,9 +37,9 @@ export class TitleScene extends Phaser.Scene {
         this.my_input.registerNextAction(() => this.start_game());
 
         this.add.text(this.cx, 50, 'HackMan', { fontSize: '64px', fill: '#ffee00' , stroke: COLOR.RED, strokeThickness: 2}).setOrigin(0.5,0.5);
-        this.add.text(this.cx, this.hy - 200, 'Copyright ©2025 Current Color Co. Ltd. All rights reserved.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
-        this.add.text(this.cx, this.hy - 170, 'Version 0.0 2025.7.15.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
-        this.add.text(this.cx, this.hy - 140, 'PUSH SPACE KEY',{ fontSize: '24px', fill: '#fff' }).setOrigin(0.5,0.5);
+        this.add.text(this.cx, this.hy - 150, 'Copyright ©2025 Current Color Co. Ltd. All rights reserved.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
+        this.add.text(this.cx, this.hy - 120, 'Version 0.0 2025.7.15.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
+        this.add.text(this.cx, this.hy - 90, 'PUSH SPACE KEY',{ fontSize: '24px', fill: '#fff' }).setOrigin(0.5,0.5);
 
         const btn_play = this.add.image(this.cx, 100, 'btn_tap')
         .setOrigin(0.5,0.5)
@@ -50,11 +50,11 @@ export class TitleScene extends Phaser.Scene {
 
         if (GameState.isPortrait){
             this.op1_x = 200;
-            this.op1_y = 200;
+            this.op1_y = 150;
             this.op2_x = 200;
-            this.op2_y = 400;
+            this.op2_y = 300;
             this.op3_x = 200;
-            this.op3_y = 600;
+            this.op3_y = 450;
         } else {
             this.op1_x = 75;
             this.op1_y = 300;
@@ -77,7 +77,7 @@ export class TitleScene extends Phaser.Scene {
     }
 
     show_pad(){
-        this.add.text(this.cx, this.hy - 110, ' or PRESS START BUTTON',{ fontSize: '24px', fill: '#fff' }).setOrigin(0.5, 0.5);
+        this.add.text(this.cx, this.hy - 60, ' or PRESS START BUTTON',{ fontSize: '24px', fill: '#fff' }).setOrigin(0.5, 0.5);
     }
 
     start_game(){
