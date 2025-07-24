@@ -14,7 +14,7 @@ const itemBoxCheckers = {
   // FLOOR 4 : 下辺の壁に接触する → フリップUP
   4: () => { const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(GameState.player.pos.x, GameState.player.pos.y);
              const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, GameState.player.size);
-             if (loc_y === GLOBALS.FIELD.ROW - 1 && m_bottom === GLOBALS.PANEL.HEIGHT){ open_item_box(GLOBALS.ITEM.TYPE.SPEED); }},
+             if (loc_y === GLOBALS.FIELD.ROW - 1 && m_bottom === GLOBALS.PANEL.HEIGHT){ open_item_box(GLOBALS.ITEM.TYPE.FLIP); }},
   // FLOOR 5 : 敵を全滅させる → スピードUP
   5: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
   // FLOOR 6 : 敵を全滅させる → フリップUP
