@@ -22,16 +22,27 @@ export class E4 extends Enemy {
     }
 
     init(type, pos){
-        super.init(type, pos);
 
-        this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_e4').setOrigin(0.5, 0.5);
-        if (!this.scene.anims.exists('e4_anims')) {
-            this.scene.anims.create({key:'e4_anims',
-                frames: this.scene.anims.generateFrameNumbers('ss_e4', { start: 0, end: 3 }),
+        const type_defs = [
+            {type:0, anims: 'e4_anims_0', anims_start:0, anims_end:3,  bullet:null},
+            {type:1, anims: 'e4_anims_1', anims_start:4, anims_end:7,  bullet:B1},
+            {type:2, anims: 'e4_anims_2', anims_start:8, anims_end:11, bullet:B2},
+        ];
+
+        super.init(type, pos);
+        const typeInfo = type_defs.find(s => s.type === type);
+        this.bullet = typeInfo.bullet;
+
+        this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_e4').setOrigin(0.5, 0.5)
+            .setFrame(typeInfo.anims_start);
+        if (!this.scene.anims.exists(typeInfo.anims)) {
+            this.scene.anims.create({key:typeInfo.anims,
+                frames: this.scene.anims.generateFrameNumbers('ss_e4',
+                    { start: typeInfo.anims_start, end: typeInfo.anims_end }),
                 frameRate: 8, repeat: -1
             });
         }
-        this.sprite.play('e4_anims');
+        this.sprite.play(typeInfo.anims);
     }
 
     update(){
@@ -56,13 +67,12 @@ export class E4 extends Enemy {
             }
         }
         // 弾の発射
-        this.cooldown -= 1;
-        if (this.cooldown <= 0){
-            this.cooldown = COOLDOWN_INTERVAL;
-            const b2 = new B2(this.scene);
-            b2.init(0,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
-            b2.set_dir(this.dir);
-            GameState.bullets.push(b2);
-        } 
+        if (this.bullet){
+            this.cooldown -= 1;
+            if (this.cooldown <= 0){
+                this.cooldown = COOLDOWN_INTERVAL;
+                super.shoot_bullet(this.dir);
+            }
+        }
     }
 }

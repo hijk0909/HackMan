@@ -48,7 +48,7 @@
                 return window.innerHeight > window.innerWidth;
             };
 
-            const GAME_WIDTH = isPortrait() ? 600 : 900;
+            const GAME_WIDTH = isPortrait() ? 600 : 850;
             const GAME_HEIGHT = isPortrait() ? 800 : 700;
             const config = {
                 type: Phaser.AUTO,
@@ -59,7 +59,7 @@
                     height: GAME_HEIGHT,
                     parent: 'game-container',
                 },
-                fps: {limit:120}, // [DEBUG]
+                fps: {limit:120},
                 fx: { glow: { distance: 32, quality: 0.1 } },
                 input: { gamepad: true , keyboard: true },
                 backgroundColor: '#0000ff',

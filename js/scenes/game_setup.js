@@ -9,6 +9,7 @@ import { E1 } from '../objects/e1.js';
 import { E2 } from '../objects/e2.js'; 
 import { E3 } from '../objects/e3.js'; 
 import { E4 } from '../objects/e4.js'; 
+import { E5 } from '../objects/e5.js'; 
 import { Player } from '../objects/player.js'; 
 import { Cursor } from '../objects/cursor.js';
 
@@ -16,7 +17,8 @@ const enemyClassMap = {
     1: E1,
     2: E2,
     3: E3,
-    4: E4
+    4: E4,
+    5: E5
 };
 
 export class Setup {
@@ -41,7 +43,7 @@ export class Setup {
             }
         }
 
-        // 外壁とアイテムの作成
+        // 外壁とアイテム枠の作成
         for (let i=0; i<GLOBALS.FIELD.COL; i++){
             const wn = new Wall(this.scene);
             wn.init(GLOBALS.WALL.TYPE.NORTH,new Phaser.Math.Vector2(i, 0));
@@ -93,13 +95,17 @@ export class Setup {
         // 必須アイテムをランダムな位置に配置
         this.place_item(GLOBALS.ITEM.TYPE.KEY);
         this.place_item(GLOBALS.ITEM.TYPE.EXIT);
-        this.place_item(GLOBALS.ITEM.TYPE.BOX);
-        
-    }
+        if (GameState.item_boxes[GameState.floor] ===false){
+            this.place_item(GLOBALS.ITEM.TYPE.BOX);
+        }
 
-    place_characters(){
-        // フロアデータの読み込み
-        const floorInfo = this.floorData.floors.find(s => s.floor === GameState.floor);
+        // 追加アイテムがあれば、ランダムな位置に配置
+        if (floorInfo.items){
+            for (const itemData of floorInfo.items) {
+                const { type } = itemData;
+                this.place_item(type);
+            }
+        }
 
         // 自機の配置
         GameState.player = new Player(this.scene);
@@ -114,8 +120,8 @@ export class Setup {
 
         // 敵の配置
         for (const enemyData of floorInfo.enemies) {
-            const { x, y, type } = enemyData;
-            const EnemyClass = enemyClassMap[type];
+            const { x, y, tribe,  type } = enemyData;
+            const EnemyClass = enemyClassMap[tribe];
             const e = new EnemyClass(this.scene);
             const pos = MyMath.get_pos_from_loc(x, y);
             e.init(type, new Phaser.Math.Vector2(pos.pos_x, pos.pos_y));
@@ -185,7 +191,7 @@ export class Setup {
         }
         GameState.panels = [];
 
-        // 効果
+        // 画面効果
         for (let i = GameState.effects.length - 1; i >= 0; i--){
             GameState.effects[i].destroy();
             GameState.effects.splice(i,1);

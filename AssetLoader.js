@@ -27,6 +27,8 @@ export class AssetLoader extends Phaser.Scene {
         });
 
         // 画像
+        // 背景
+        this.load.image('bg', 'assets/images/bg.png');
         // パネル
         this.load.spritesheet('ss_panel', 'assets/images/ss_panel.png', {
             frameWidth: 100,  frameHeight: 100, endFrame : 15 });
@@ -43,13 +45,15 @@ export class AssetLoader extends Phaser.Scene {
         this.load.spritesheet('ss_p', 'assets/images/ss_p.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 17 });
         this.load.spritesheet('ss_e1', 'assets/images/ss_e1.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 4 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 14 });
         this.load.spritesheet('ss_e2', 'assets/images/ss_e2.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 4 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 14 });
         this.load.spritesheet('ss_e3', 'assets/images/ss_e3.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 3 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 11 });
         this.load.spritesheet('ss_e4', 'assets/images/ss_e4.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 3 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 11 });
+        this.load.spritesheet('ss_e5', 'assets/images/ss_e5.png', {
+            frameWidth: 64,  frameHeight: 64, endFrame : 35 });
         this.load.spritesheet('ss_b1', 'assets/images/ss_b1.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 3 });
         this.load.spritesheet('ss_b2', 'assets/images/ss_b2.png', {
@@ -71,6 +75,8 @@ export class AssetLoader extends Phaser.Scene {
         this.load.audio('se_failed', './assets/audio/se/se_failed.mp3');
         this.load.audio('se_extend', './assets/audio/se/se_extend.mp3');
         this.load.audio('se_explosion', './assets/audio/se/se_explosion.mp3');
+        this.load.audio('se_bonus', './assets/audio/se/se_bonus.mp3');
+        this.load.audio('se_powerup', './assets/audio/se/se_powerup.mp3');
         // ジングル
         // this.load.audio('jingle_gameover', './assets/audio/se/jingle_gameover.mp3');
         // BGM
@@ -86,7 +92,9 @@ export class AssetLoader extends Phaser.Scene {
             se_exit         : this.sound.add('se_exit', { volume: 1.0 }),
             se_failed       : this.sound.add('se_failed', { volume: 1.0 }),
             se_extend       : this.sound.add('se_extend', { volume: 1.0 }),
-            se_explosion    : this.sound.add('se_explosion', { volume: 1.0 })
+            se_explosion    : this.sound.add('se_explosion', { volume: 1.0 }),
+            se_bonus        : this.sound.add('se_bonus', { volume: 1.0 }),
+            se_powerup      : this.sound.add('se_powerup', { volume: 1.0 })
         };
         this.scene.start('TitleScene');
     }

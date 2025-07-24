@@ -1,7 +1,8 @@
 // game_exec.js
-import { GameState } from '../GameState.js';
 import { GLOBALS } from '../GameConst.js';
-import { MyMath} from '../utils/MathUtils.js';
+import { GameState } from '../GameState.js';
+import { MyMath } from '../utils/MathUtils.js';
+import { unlock_item_box } from './game_item_box_checkers.js';
 
 export class Exec {
     constructor(scene) {
@@ -16,6 +17,9 @@ export class Exec {
             GameState.count = GLOBALS.GAME.PERIDO.FAILED;
             GameState.ui.show_timeover(true);
         }
+
+        // アイテムの出現条件のチェック
+        unlock_item_box();
 
         // カーソルの更新
         GameState.cursor.update();
@@ -37,6 +41,15 @@ export class Exec {
             if (!e.isAlive()) {
                 e.destroy();
                 GameState.enemies.splice(i, 1);
+                // 敵が全滅したら、鍵と出口を可視化
+                if (GameState.enemies.length === 0){
+                    for (let j = 0 ; j < GameState.items.length; j++){
+                        if (GameState.items[j].type === GLOBALS.ITEM.TYPE.KEY ||
+                            GameState.items[j].type === GLOBALS.ITEM.TYPE.EXIT ){
+                            GameState.items[j].set_visible(true);
+                        }
+                    }
+                }
                 continue;
             }
             if (MyMath.isHittingCharacter(e.pos,e.size,GameState.player.pos,GameState.player.size)){
@@ -78,9 +91,17 @@ export class Exec {
         // 外壁の色の変更
         let c;
         if (GameState.flip_state === GLOBALS.FLIP_STATE.NONE){
-            c = GLOBALS.COLOR.WALL_NORMAL;
+           if (GameState.energy >= GLOBALS.FLIP_ENRGY){
+                c = GLOBALS.COLOR.WALL_NORMAL;
+            } else {
+                c = GLOBALS.COLOR.PANEL_SHORT;
+            }
         } else if (GameState.flip_state === GLOBALS.FLIP_STATE.READY){
-            c = GLOBALS.COLOR.WALL_READY;
+           if (GameState.energy >= GLOBALS.FLIP_ENRGY){
+                c = GLOBALS.COLOR.WALL_READY;
+            } else {
+                c = GLOBALS.COLOR.PANEL_SHORT;
+            }
         } else if (GameState.flip_state === GLOBALS.FLIP_STATE.FLIP){
             c = GLOBALS.COLOR.WALL_FLIP;
         }

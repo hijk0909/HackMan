@@ -12,6 +12,8 @@ export class GameScene extends Phaser.Scene {
 
     create() {
         this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        this.field_width = GLOBALS.PANEL.WIDTH * GLOBALS.FIELD.COL + GLOBALS.WALL.SIZE.THICK * 2;
+        this.field_height = GLOBALS.PANEL.HEIGHT * GLOBALS.FIELD.ROW + GLOBALS.WALL.SIZE.THICK * 2;
 
         // 入力ユーティリティ
         this.my_input = new MyInput(this);
@@ -40,10 +42,12 @@ export class GameScene extends Phaser.Scene {
             if (GameState.count == GLOBALS.GAME.PERIDO.FLOOR_START - 1){
                 // 初期化
                 this.setup.clean_up();
-                // フィールドの作成
+                // フィールドの作成とキャラクターの配置
                 this.setup.make_field();
-                // キャラクターの配置
-                this.setup.place_characters();
+                this.draw_bg();
+                GameState.item_box = false;
+                // ワイプイン
+                this.wipe_in();
                 // タイマーのリセット
                 GameState.time = GLOBALS.TIME_MAX;
                 // UIの設定
@@ -51,7 +55,9 @@ export class GameScene extends Phaser.Scene {
                 GameState.ui.show_floor_start(true);
                 GameState.ui.show_floor_clear(false);
                 GameState.ui.show_timeover(false);
-                GameState.ui.remove_collection(GLOBALS.ITEM.TYPE.KEY);
+                GameState.ui.collection_remove(GLOBALS.ITEM.TYPE.KEY);
+                GameState.ui.collection_update_speed(false);
+                GameState.ui.collection_update_flip(false);
             }
             if (GameState.count < 0){
                 GameState.state = GLOBALS.GAME.STATE.PLAYING;
@@ -99,4 +105,45 @@ export class GameScene extends Phaser.Scene {
             this.scene.start('TitleScene');
         }
     } // End of update
+
+    // 背景の描画
+    draw_bg(){
+        this.bg = this.add.tileSprite(GameState.field_origin_x,GameState.field_origin_y, this.field_width, this.field_height, 'bg').setOrigin(0).setDepth(-1);
+        this.bg.setTint(0x808080);
+    }
+
+    // ワイプイン
+    wipe_in(){
+        // 黒のオーバーレイ
+        this.overlay = this.add.rectangle(GameState.field_origin_x, GameState.field_origin_y, this.field_width, this.field_height, 0x000000, 1)
+            .setOrigin(0)
+            .setDepth(100);
+
+        // マスク用グラフィクス
+        let revealMaskGraphics = this.make.graphics({ x: 0, y: 0, add: false });
+        let mask = revealMaskGraphics.createGeometryMask();
+        mask.invertAlpha = true;
+        this.overlay.setMask(mask);
+
+        // 半径を変えるオブジェクト
+        let maskData = { radius: 1 };
+
+        // Tweenで半径を増やす（例：500 → 画面全体に広がる）
+        this.tweens.add({
+            targets: maskData,
+            radius: 500,
+            duration: 2000,
+            ease: 'Sine.easeOut',
+            onUpdate: () => {
+                revealMaskGraphics.clear();
+                revealMaskGraphics.fillStyle(0xffffff);
+                revealMaskGraphics.beginPath();
+                revealMaskGraphics.arc(GameState.field_origin_x + this.field_width / 2, GameState.field_origin_y + this.field_height / 2, maskData.radius, 0, Math.PI * 2);
+                revealMaskGraphics.fillPath();
+            },
+            onComplete: () => {
+                this.overlay.destroy();  // 演出後はマスクと覆いを削除
+            }
+        });
+    }
 }

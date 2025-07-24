@@ -84,9 +84,17 @@ export class Panel extends Drawable {
         } else if (this.state == GLOBALS.PANEL.STATE.FLIP_BELOW){
             c = GLOBALS.COLOR.PANEL_BELOW;
         } else if (this.state == GLOBALS.PANEL.STATE.READY){
-            c = GLOBALS.COLOR.PANEL_READY;
+            if (GameState.energy >= GLOBALS.FLIP_ENRGY){
+                c = GLOBALS.COLOR.PANEL_READY;
+            } else {
+                c = GLOBALS.COLOR.PANEL_SHORT;
+            }
         } else {
-            c = GLOBALS.COLOR.PANEL_NORMAL;            
+            if (GameState.energy >= GLOBALS.FLIP_ENRGY){
+                c = GLOBALS.COLOR.PANEL_NORMAL;
+            } else {
+                c = GLOBALS.COLOR.PANEL_SHORT;
+            }
         }
         this.sprite.setTint(c);
         super.update();

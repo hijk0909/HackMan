@@ -2,6 +2,17 @@
 
 export const GLOBALS = {
 
+    FLOOR_MAX : 21,
+    TIME_MAX : 9999,
+    ENERGY_MAX : 9999,
+    FLIP_ENRGY : 100,
+    PLAYER_SPEED_MIN : 2,
+    PLAYER_SPEED_MAX : 5,
+    FLIP_SPEED_MIN : 1,
+    FLIP_SPEED_MAX : 6,
+    COLLECTION_MAX : 6,
+    MAX_BONUS : 1000,
+
     COLOR: {
         BLACK : 0x000000,
         WHITE : 0xffffff,
@@ -9,11 +20,13 @@ export const GLOBALS = {
         RED : 0xff0000,
         WALL_NORMAL :  0xddffff,
         WALL_READY :   0xff8000,
+        WALL_SHORT :   0x808000,
         WALL_FLIP :    0xff0000,
         PANEL_NORMAL : 0xffffff,
         PANEL_ABOVE :  0xff0000,
         PANEL_BELOW :  0x808080,
-        PANEL_READY :  0xff8000
+        PANEL_READY :  0xff8000,
+        PANEL_SHORT :  0x808000
     },
 
     DIR: {
@@ -26,9 +39,6 @@ export const GLOBALS = {
 
     DIR_X: [0,1,0,-1],
     DIR_Y: [-1,0,1,0],
-
-    FLOOR_MAX : 5,
-    TIME_MAX : 20000,
 
     GAME :{
         STATE:{
@@ -85,7 +95,14 @@ export const GLOBALS = {
             NONE : 2,
             KEY : 3,
             EXIT : 4,
-            BOX : 5
+            BOX : 5,
+            BOX_OPEN : 6,
+            SPEED : 8,
+            FLIP : 9,
+            ENERGY : 10,
+            BONUS : 11,
+            ST_SPEED : 16,
+            ST_FLIP : 24
         },
     },
 

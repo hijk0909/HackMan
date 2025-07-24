@@ -5,6 +5,8 @@ import { GameState } from '../GameState.js';
 import { MyMath } from '../utils/MathUtils.js';
 import { Effect } from './effect.js';
 
+const WRIGGLE_RANGE = 5;
+
 export class Enemy extends Movable {
 
     constructor(scene){
@@ -13,6 +15,7 @@ export class Enemy extends Movable {
         this.dir = GLOBALS.DIR.RIGHT;
         this.flip_state = GLOBALS.FLIP_STATE.NONE;
         this.parent_panel = null;
+        this.bullet = null;
     }
 
     update(){
@@ -33,9 +36,13 @@ export class Enemy extends Movable {
 
         if (this.flip_state === GLOBALS.FLIP_STATE.NONE){
             // 現在地点が既に衝突して動けない場合
-            // if (MyMath.isOnOuterFence(this.pos.x, this.pos.y, this.size)){
-            //     this.alive = false;
-            // }
+            if (MyMath.isOnOuterFence(this.pos.x, this.pos.y, this.size)){
+                this.offset.x = Math.random() * WRIGGLE_RANGE;
+                this.offset.y = Math.random() * WRIGGLE_RANGE;
+            } else {
+                this.offset.x = 0;
+                this.offset.y = 0;
+            }
             this._move();
         } else if (this.flip_state === GLOBALS.FLIP_STATE.FLIP){
             this.sprite.setTint(0x808080);
@@ -81,6 +88,13 @@ export class Enemy extends Movable {
         }
         // console.log("move_straight:",this.pos.x, this.pos.y);
         return result;
+    }
+
+    shoot_bullet(dir){
+        const b = new this.bullet(this.scene);
+        b.init(0,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
+        b.set_dir(dir);
+        GameState.bullets.push(b);
     }
 
     destroy(){

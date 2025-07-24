@@ -13,7 +13,6 @@ export class Player extends Movable {
     init(type, pos){
         super.init(type, pos);
         this.size = 24;
-        this.speed = GameState.player_speed;
 
         this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_p').setOrigin(0.5, 0.5);
         if (!this.scene.anims.exists('pd_anims')) {
@@ -111,47 +110,71 @@ export class Player extends Movable {
                 // 停止
                 this.sprite.stop();
                 this.sprite.setFrame(1);
+                if (GameState.energy < GLOBALS.ENERGY_MAX){
+                    GameState.energy += 1;
+                }
             }
         } else if (GameState.flip_state === GLOBALS.FLIP_STATE.READY){
             // パネルとの同化状態
             if (GameState.i_touch && GameState.cursor.visible){
-                // ◆判定：タッチ操作でのフリップ開始
-                const { loc_x: clx, loc_y : cly} = MyMath.get_loc_from_pos(GameState.cursor.pos.x, GameState.cursor.pos.y);
-                const { loc_x: plx, loc_y : ply} = MyMath.get_loc_from_pos(this.pos.x, this.pos.y);
-                const dx = ( plx < clx) ? 1 :
-                        (plx > clx) ? -1 : 0;
-                const dy = ( ply < cly) ? 1 :
-                       (ply > cly) ? -1 : 0;
-                // X軸・Y軸を比較し、距離の大きいほうを優先してフリップ
-                if (Math.abs(plx-clx)>Math.abs(ply-cly)){
-                    if (dx == -1 && plx > 0){
-                        this.flip_left(plx,ply);
-                    } else if (dx == 1 && plx < GLOBALS.FIELD.COL - 1){
-                        this.flip_right(plx,ply);
+                if (GameState.energy >= GLOBALS.FLIP_ENRGY){
+                    // ◆判定：タッチ操作でのフリップ開始
+                    const { loc_x: clx, loc_y : cly} = MyMath.get_loc_from_pos(GameState.cursor.pos.x, GameState.cursor.pos.y);
+                    const { loc_x: plx, loc_y : ply} = MyMath.get_loc_from_pos(this.pos.x, this.pos.y);
+                    const dx = ( plx < clx) ? 1 :
+                            (plx > clx) ? -1 : 0;
+                    const dy = ( ply < cly) ? 1 :
+                        (ply > cly) ? -1 : 0;
+                    // X軸・Y軸を比較し、距離の大きいほうを優先してフリップ
+                    if (Math.abs(plx-clx)>Math.abs(ply-cly)){
+                        if (dx == -1 && plx > 0){
+                            this.flip_left(plx,ply);
+                            GameState.energy -= GLOBALS.FLIP_ENRGY;
+                        } else if (dx == 1 && plx < GLOBALS.FIELD.COL - 1){
+                            this.flip_right(plx,ply);
+                            GameState.energy -= GLOBALS.FLIP_ENRGY;
+                        }
+                    } else {
+                        if (dy == -1 && ply > 0){
+                            this.flip_up(plx,ply);
+                            GameState.energy -= GLOBALS.FLIP_ENRGY;
+                        } else if (dy == 1 && ply < GLOBALS.FIELD.ROW - 1){
+                            this.flip_down(plx,ply);
+                            GameState.energy -= GLOBALS.FLIP_ENRGY;
+                        }
                     }
                 } else {
-                    if (dy == -1 && ply > 0){
-                        this.flip_up(plx,ply);
-                    } else if (dy == 1 && ply < GLOBALS.FIELD.ROW - 1){
-                        this.flip_down(plx,ply);
-                    }
+                    // ●エネルギー不足
                 }
             } else if (GameState.i_button){
-                // ◆判定：キー操作でのフリップ開始
-                const { loc_x: plx, loc_y : ply} = MyMath.get_loc_from_pos(this.pos.x, this.pos.y);
-                if (GameState.i_up && ply > 0){
-                    this.flip_up(plx, ply);
-                } else if (GameState.i_down && ply < GLOBALS.FIELD.ROW - 1){
-                    this.flip_down(plx, ply);
-                } else if (GameState.i_left && plx > 0){
-                    this.flip_left(plx, ply);
-                } else if (GameState.i_right && plx < GLOBALS.FIELD.COL - 1){
-                    this.flip_right(plx, ply);
+                if (GameState.energy >= GLOBALS.FLIP_ENRGY){
+                    // ◆判定：キー操作でのフリップ開始
+                    const { loc_x: plx, loc_y : ply} = MyMath.get_loc_from_pos(this.pos.x, this.pos.y);
+                    if (GameState.i_up && ply > 0){
+                        this.flip_up(plx, ply);
+                        GameState.cursor.hide();
+                        GameState.energy -= GLOBALS.FLIP_ENRGY;
+                    } else if (GameState.i_down && ply < GLOBALS.FIELD.ROW - 1){
+                        this.flip_down(plx, ply);
+                        GameState.cursor.hide();
+                        GameState.energy -= GLOBALS.FLIP_ENRGY;
+                    } else if (GameState.i_left && plx > 0){
+                        this.flip_left(plx, ply);
+                        GameState.cursor.hide();
+                        GameState.energy -= GLOBALS.FLIP_ENRGY;
+                    } else if (GameState.i_right && plx < GLOBALS.FIELD.COL - 1){
+                        this.flip_right(plx, ply);
+                        GameState.cursor.hide();
+                        GameState.energy -= GLOBALS.FLIP_ENRGY;
+                    }
+                } else {
+                    // ●エネルギー不足
                 }
             } else {
                 // ボタンが押されていないので同化状態を解除
                 GameState.flip_state = GLOBALS.FLIP_STATE.NONE;
                 this.setParentState(GLOBALS.PANEL.STATE.NORMAL);
+                GameState.cursor.hide();
             }
         } else if (GameState.flip_state === GLOBALS.FLIP_STATE.FLIP){
             // フリップ動作中
@@ -179,7 +202,7 @@ export class Player extends Movable {
 
     // 移動
     move(dx, dy){
-        for (let i = 0 ; i < this.speed ; i ++){
+        for (let i = 0 ; i < GameState.player_speed ; i ++){
             // ◆判定：移動
             if ( dx != 0 &&
                 MyMath.isOnPath(this.pos.x + dx, this.pos.y) &&
@@ -207,24 +230,35 @@ export class Player extends Movable {
                 break;
             }
 
-            // ◆判定：外壁タッチ
+            // ◆判定：外壁タッチ（アイテム取得判定）
             const num = MyMath.getWallNumber(this.pos.x + dx, this.pos.y + dy, this.size);
             if (num !== null){
                 const item = GameState.items[num];
                 item.set_visible(true);
-                if (item.type == GLOBALS.ITEM.TYPE.KEY){
+                if (item.type === GLOBALS.ITEM.TYPE.KEY){
                     // 鍵の取得
                     item.set_blink_out();
-                    GameState.ui.add_collection(GLOBALS.ITEM.TYPE.KEY);
+                    GameState.ui.collection_add(0, GLOBALS.ITEM.TYPE.KEY);
                     GameState.sound.se_key.play();
-                } else if (item.type == GLOBALS.ITEM.TYPE.EXIT){
-                    // 出口にタッチ
-                    if (GameState.ui.check_collection(GLOBALS.ITEM.TYPE.KEY)){
+                } else if (item.type === GLOBALS.ITEM.TYPE.EXIT){
+                    // 出口にタッチ。鍵の削除
+                    if (GameState.ui.collection_check(GLOBALS.ITEM.TYPE.KEY)){
                         GameState.state = GLOBALS.GAME.STATE.FLOOR_CLEAR;
                         GameState.count = GLOBALS.GAME.PERIDO.FLOOR_CLEAR;
-                        GameState.ui.remove_collection(GLOBALS.ITEM.TYPE.KEY);
+                        GameState.ui.collection_remove(GLOBALS.ITEM.TYPE.KEY);
                         GameState.sound.se_exit.play();
                     }
+                } else if (item.type === GLOBALS.ITEM.TYPE.BOX_OPEN){
+                    // 解錠済み宝箱の中のアイテムを取得
+                    item.set_type(item.inner_type);
+                    this.get_item(item);
+                    GameState.item_boxes[GameState.floor] = true;
+                } else if (item.type === GLOBALS.ITEM.TYPE.NONE ||
+                           item.type === GLOBALS.ITEM.TYPE.BOX){
+                    // アイテム無し、施錠中宝箱は、反応なし
+                } else if (item.type !== GLOBALS.ITEM.TYPE.NONE){
+                    // 一般アイテムの取得
+                    this.get_item(item);
                 }
                 break;
             }
@@ -319,5 +353,38 @@ export class Player extends Movable {
         const { loc_x: plx, loc_y : ply} = MyMath.get_loc_from_pos(this.pos.x, this.pos.y);
         this.parent_panel = GameState.panels[plx][ply];
         this.parent_panel.state = state;
+    }
+
+    get_item(item){
+        if (item.type === GLOBALS.ITEM.TYPE.SPEED){
+            // ◆プレイヤー速度アップ
+            if (GameState.player_speed < GLOBALS.PLAYER_SPEED_MAX){
+                GameState.player_speed += 1;
+                GameState.ui.collection_update_speed(true);
+                GameState.sound.se_powerup.play();
+            } else {
+                GameState.score += GLOBALS.MAX_BONUS;
+                GameState.sound.se_bonus.play();
+            }
+        } else if (item.type === GLOBALS.ITEM.TYPE.FLIP){
+            // ◆フリップ速度アップ
+            if (GameState.flip_speed < GLOBALS.FLIP_SPEED_MAX){
+                GameState.flip_speed += 1;
+                GameState.ui.collection_update_flip(true);
+                GameState.sound.se_powerup.play();
+            } else {
+                GameState.score += GLOBALS.MAX_BONUS;
+                GameState.sound.se_bonus.play();
+            }
+        } else if (item.type === GLOBALS.ITEM.TYPE.ENERGY){
+            // ◆エネルギーアップ
+                GameState.energy = Math.min(GameState.energy + 1000 , GLOBALS.ENERGY_MAX);
+                GameState.sound.se_exit.play();
+        } else if (item.type === GLOBALS.ITEM.TYPE.BONUS){
+            // ◆得点アップ
+                GameState.score += 1000;
+                GameState.sound.se_bonus.play();
+        }
+        item.set_blink_out();
     }
 }

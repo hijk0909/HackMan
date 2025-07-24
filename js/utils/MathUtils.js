@@ -43,6 +43,28 @@ export class MyMath {
         return {m_top, m_bottom, m_left, m_right}
     }
 
+    // 変換：方向を反転
+    static invert_direction(from_dir){
+        let to_dir = null;
+        if (from_dir === GLOBALS.DIR.UP){
+            to_dir = GLOBALS.DIR.DOWN;
+        } else if (from_dir === GLOBALS.DIR.DOWN){
+            to_dir = GLOBALS.DIR.UP;
+        } else if (from_dir === GLOBALS.DIR.LEFT){
+            to_dir = GLOBALS.DIR.RIGHT;
+        } else if (from_dir === GLOBALS.DIR.RIGHT){
+            to_dir = GLOBALS.DIR.LEFT;
+        }
+        return to_dir;
+    }
+
+    // 判定：パネルの中央にいるか
+    static isCenter(pos_x,pos_y){
+        const { rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
+        return ( rel_pos_x === GLOBALS.PANEL.WIDTH / 2 &&
+                 rel_pos_y === GLOBALS.PANEL.HEIGHT / 2 );
+    }
+
     // 判定：経路上にいるか
     static isOnPath(pos_x,pos_y){
         const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
@@ -84,7 +106,7 @@ export class MyMath {
         return false;
     }
 
-    // 判定：外側に当たっているか
+    // 判定：外壁に当たっているか
     static isOnWall(pos_x, pos_y, size){
         const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
         const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, size);
@@ -126,6 +148,37 @@ export class MyMath {
         return false;
     }
 
+    // 判定：隣接するパネルに移行可能か（パネル単位）
+    static isMovable(loc_x, loc_y, dir){
+        // console.log("isMovable:",loc_x, loc_y, dir);
+        if (dir === GLOBALS.DIR.UP){
+            return (loc_y > 0 &&
+                    !GameState.panels[loc_x][loc_y].fence.top &&
+                    !GameState.panels[loc_x][loc_y - 1].fence.bottom &&
+                    !this.isFlipping(loc_x, loc_y - 1)
+            );
+        } else if (dir === GLOBALS.DIR.DOWN){
+             return (loc_y < GLOBALS.FIELD.ROW - 1 &&
+                    !GameState.panels[loc_x][loc_y].fence.bottom &&
+                    !GameState.panels[loc_x][loc_y + 1].fence.top &&
+                    !this.isFlipping(loc_x, loc_y + 1)
+            );
+        } else if (dir === GLOBALS.DIR.LEFT){
+             return (loc_x > 0 &&
+                    !GameState.panels[loc_x][loc_y].fence.left &&
+                    !GameState.panels[loc_x - 1][loc_y].fence.right &&
+                    !this.isFlipping(loc_x - 1, loc_y)
+            );           
+        } else if (dir === GLOBALS.DIR.RIGHT){
+             return (loc_x < GLOBALS.FIELD.COL - 1 &&
+                    !GameState.panels[loc_x][loc_y].fence.right &&
+                    !GameState.panels[loc_x + 1][loc_y].fence.left &&
+                    !this.isFlipping(loc_x + 1, loc_y)
+            );
+        }
+        return false;
+    }
+
     // 判定：当該パネルがフリップ中か
     static isFlipping(loc_x, loc_y){
         const st = GameState.panels[loc_x][loc_y].state;
@@ -152,7 +205,7 @@ export class MyMath {
         return false;
     }
 
-    // 判定：どの外壁番号に当たっているか
+    // 判定：どの外壁番号に接しているか
     static getWallNumber(pos_x, pos_y, size){
         const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
         const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, size);

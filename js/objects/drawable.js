@@ -5,6 +5,8 @@ export class Drawable {
     constructor(scene){
         this.scene = scene;
         this.pos = new Phaser.Math.Vector2(0, 0);
+        this.type = null;
+        this.offset = new Phaser.Math.Vector2(0,0);
         this.sprite = null;
         this.alive = true;
     }
@@ -20,7 +22,7 @@ export class Drawable {
 
     update(){
         if ( this.sprite ){
-            this.sprite.setPosition(this.pos.x, this.pos.y);
+            this.sprite.setPosition(this.pos.x + this.offset.x, this.pos.y + this.offset.y);
         }
     }
 

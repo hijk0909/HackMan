@@ -16,6 +16,7 @@ export class E2 extends Enemy {
         this.size = 24;
         this.speed = 3;
         this.state = ST_NORM;
+        this.bullet = null;
     }
 
     init(type, pos){

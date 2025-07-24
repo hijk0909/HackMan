@@ -17,8 +17,8 @@ export const  GameState = {
     // ゲーム情報
     lives : 4,
     floor : 1,
-    player_speed : 3,
-    flip_speed : 2,
+    player_speed : GLOBALS.PLAYER_SPEED_MIN,
+    flip_speed : GLOBALS.FLIP_SPEED_MIN,
     time : GLOBALS.TIME_MAX,
     energy : 100,
     score : 0,
@@ -26,6 +26,7 @@ export const  GameState = {
     state : GLOBALS.GAME.STATE.FLOOR_START,
     count : GLOBALS.GAME.PERIDO.FLOOR_CLEAR,
     flip_state : GLOBALS.FLIP_STATE.NONE,
+    item_boxes : [],
 
     // フィールド
     field_origin_x : 0,
@@ -44,8 +45,8 @@ export const  GameState = {
     reset(){
         this.lives = 4;
         this.floor = 1;
-        this.plaeyr_speed = 4;
-        this.flip_speed = 3; 
+        this.player_speed = GLOBALS.PLAYER_SPEED_MIN;
+        this.flip_speed = GLOBALS.FLIP_SPEED_MIN;
         this.time = GLOBALS.TIME_MAX;
         this.energy = 100;
         this.state = GLOBALS.GAME.STATE.FLOOR_START;
@@ -53,5 +54,6 @@ export const  GameState = {
         this.flip_state = GLOBALS.FLIP_STATE.NONE;
         this.score = 0;
         this.high_score = 0;
+        this.item_boxes = new Array(GLOBALS.FLOOR_MAX + 1).fill(false);
     }
 };

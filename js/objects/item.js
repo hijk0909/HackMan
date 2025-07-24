@@ -35,11 +35,16 @@ export class Item extends Drawable {
         this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_icon').setOrigin(0.5, 0.5);
         this.sprite.setFrame(GLOBALS.ITEM.TYPE.NONE).setVisible(false);
         this.type = GLOBALS.ITEM.TYPE.NONE;
+        this.inner_type = GLOBALS.ITEM.TYPE.NONE;
     }
 
     set_type(type){
         this.type = type;
         this.sprite.setFrame(type);
+    }
+
+    set_inner_type(type){
+        this.inner_type = type;
     }
 
     set_blink_out(){

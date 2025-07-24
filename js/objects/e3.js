@@ -4,6 +4,7 @@ import { GameState } from '../GameState.js';
 import { MyMath } from '../utils/MathUtils.js';
 import { Enemy } from './enemy.js';
 import { B1 } from './b1.js';
+import { B2 } from './b2.js';
 
 const COOLDOWN_INTERVAL = 45;
 
@@ -21,16 +22,27 @@ export class E3 extends Enemy {
     }
 
     init(type, pos){
-        super.init(type, pos);
 
-        this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_e3').setOrigin(0.5, 0.5);
-        if (!this.scene.anims.exists('e3_anims')) {
-            this.scene.anims.create({key:'e3_anims',
-                frames: this.scene.anims.generateFrameNumbers('ss_e3', { start: 0, end: 3 }),
+        const type_defs = [
+            {type:0, anims: 'e3_anims_0', anims_start:0, anims_end:3,  bullet:null},
+            {type:1, anims: 'e3_anims_1', anims_start:4, anims_end:7,  bullet:B1},
+            {type:2, anims: 'e3_anims_2', anims_start:8, anims_end:11, bullet:B2},
+        ];
+
+        super.init(type, pos);
+        const typeInfo = type_defs.find(s => s.type === type);
+        this.bullet = typeInfo.bullet;
+
+        this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_e3').setOrigin(0.5, 0.5)
+            .setFrame(typeInfo.anims_start);
+        if (!this.scene.anims.exists(typeInfo.anims)) {
+            this.scene.anims.create({key:typeInfo.anims,
+                frames: this.scene.anims.generateFrameNumbers('ss_e3',
+                    { start: typeInfo.anims_start, end: typeInfo.anims_end }),
                 frameRate: 8, repeat: -1
             });
         }
-        this.sprite.play('e3_anims');
+        this.sprite.play(typeInfo.anims);
     }
 
     update(){
@@ -55,13 +67,12 @@ export class E3 extends Enemy {
             }
         }
         // 弾の発射
-        this.cooldown -= 1;
-        if (this.cooldown <= 0){
-            this.cooldown = COOLDOWN_INTERVAL;
-            const b1 = new B1(this.scene);
-            b1.init(0,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
-            b1.set_dir(this.dir);
-            GameState.bullets.push(b1);
+        if (this.bullet){
+            this.cooldown -= 1;
+            if (this.cooldown <= 0){
+                this.cooldown = COOLDOWN_INTERVAL;
+                super.shoot_bullet(this.dir);
+            }
         }
     }
 }
