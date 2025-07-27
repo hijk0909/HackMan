@@ -61,7 +61,7 @@ export class AssetLoader extends Phaser.Scene {
         this.load.spritesheet('ss_icon', 'assets/images/ss_icon.png', {
             frameWidth: 48,  frameHeight: 48, endFrame : 63 });
         this.load.spritesheet('ss_expl', 'assets/images/ss_expl.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 7 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 15 });
         // UIボタン
         this.load.image('btn_tap', 'assets/images/btn_tap.png');
         // 操作説明
@@ -78,23 +78,27 @@ export class AssetLoader extends Phaser.Scene {
         this.load.audio('se_bonus', './assets/audio/se/se_bonus.mp3');
         this.load.audio('se_powerup', './assets/audio/se/se_powerup.mp3');
         // ジングル
-        // this.load.audio('jingle_gameover', './assets/audio/se/jingle_gameover.mp3');
+        this.load.audio('jingle_round_start', './assets/audio/jingle/jingle_round_start.mp3');
+        this.load.audio('jingle_round_clear', './assets/audio/jingle/jingle_round_clear.mp3');
         // BGM
-        // this.load.audio('bgm_main', './assets/audio/bgm/BGM_MAIN.mp3');
+        this.load.audio('bgm_main', './assets/audio/bgm/bgm_main.mp3');
         // データ
-        this.load.json('floor_data', 'assets/data/floor.json');
+        this.load.json('floor_data', './assets/data/floor.json');
     }
 
     create() {
         GameState.sound = {
-            se_tap          : this.sound.add('se_tap', { volume: 1.0 }),
-            se_key          : this.sound.add('se_key', { volume: 1.0 }),
-            se_exit         : this.sound.add('se_exit', { volume: 1.0 }),
-            se_failed       : this.sound.add('se_failed', { volume: 1.0 }),
-            se_extend       : this.sound.add('se_extend', { volume: 1.0 }),
-            se_explosion    : this.sound.add('se_explosion', { volume: 1.0 }),
-            se_bonus        : this.sound.add('se_bonus', { volume: 1.0 }),
-            se_powerup      : this.sound.add('se_powerup', { volume: 1.0 })
+            se_tap             : this.sound.add('se_tap', { volume: 1.0 }),
+            se_key             : this.sound.add('se_key', { volume: 1.0 }),
+            se_exit            : this.sound.add('se_exit', { volume: 1.0 }),
+            se_failed          : this.sound.add('se_failed', { volume: 1.0 }),
+            se_extend          : this.sound.add('se_extend', { volume: 1.0 }),
+            se_explosion       : this.sound.add('se_explosion', { volume: 1.0 }),
+            se_bonus           : this.sound.add('se_bonus', { volume: 1.0 }),
+            se_powerup         : this.sound.add('se_powerup', { volume: 1.0 }),
+            jingle_round_start : this.sound.add('jingle_round_start', { volume: 0.8 }),
+            jingle_round_clear : this.sound.add('jingle_round_clear', { volume: 0.8 }),
+            bgm_main           : this.sound.add('bgm_main', { volume: 0.6, loop: true })
         };
         this.scene.start('TitleScene');
     }

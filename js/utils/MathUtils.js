@@ -34,6 +34,15 @@ export class MyMath {
         return {pos_x, pos_y};
     }
 
+    // 変換：パネル位置から左上座標
+    static get_top_left_from_loc(loc_x, loc_y){
+        const top = GameState.field_origin_x + GLOBALS.WALL.SIZE.THICK
+             + loc_x * GLOBALS.PANEL.WIDTH;
+        const left = GameState.field_origin_y + GLOBALS.WALL.SIZE.THICK
+             + loc_y * GLOBALS.PANEL.HEIGHT;
+        return {top, left};
+    }
+
     // 変換：パネル内相対座標からキャラクタの各辺の相対座標
     static get_movable_side(rel_pos_x, rel_pos_y, size){
         const m_top = rel_pos_y - size / 2;

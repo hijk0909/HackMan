@@ -27,6 +27,10 @@ export class GameScene extends Phaser.Scene {
         // ゲーム状態の初期化
         GameState.state = GLOBALS.GAME.STATE.FLOOR_START;
         GameState.count = GLOBALS.GAME.PERIDO.FLOOR_START;
+
+        // サウンド
+        this.bgm = null;
+        this.jingle = null;
     } // End of create
 
     update(time, delta){
@@ -45,11 +49,8 @@ export class GameScene extends Phaser.Scene {
                 // フィールドの作成とキャラクターの配置
                 this.setup.make_field();
                 this.draw_bg();
-                GameState.item_box = false;
                 // ワイプイン
                 this.wipe_in();
-                // タイマーのリセット
-                GameState.time = GLOBALS.TIME_MAX;
                 // UIの設定
                 GameState.ui.show_lives();
                 GameState.ui.show_floor_start(true);
@@ -58,11 +59,15 @@ export class GameScene extends Phaser.Scene {
                 GameState.ui.collection_remove(GLOBALS.ITEM.TYPE.KEY);
                 GameState.ui.collection_update_speed(false);
                 GameState.ui.collection_update_flip(false);
+                // [SOUND] ラウンドスタート
+                GameState.sound.jingle_round_start.play();
             }
-            if (GameState.count < 0){
+            if (GameState.count < 0 && !GameState.sound.jingle_round_start.isPlaying){
                 GameState.state = GLOBALS.GAME.STATE.PLAYING;
                 GameState.flip_state = GLOBALS.FLIP_STATE.NONE;
                 GameState.ui.show_floor_start(false);
+                // [SOUND] メインBGM
+                GameState.sound.bgm_main.play();
             }
         } else if (GameState.state == GLOBALS.GAME.STATE.PLAYING){
             // ◆ゲーム実行
@@ -87,7 +92,10 @@ export class GameScene extends Phaser.Scene {
             GameState.count -= 1;
             if (GameState.count == GLOBALS.GAME.PERIDO.FLOOR_CLEAR - 1){
                 GameState.ui.show_floor_clear(true);
-            } else if (GameState.count < 0){
+                // [SOUND] 
+                GameState.sound.bgm_main.stop();
+                GameState.sound.jingle_round_clear.play();
+            } else if (GameState.count < 0 && !GameState.sound.jingle_round_clear.isPlaying){
                 GameState.floor += 1;
                 if (GameState.floor > GLOBALS.FLOOR_MAX){
                     // GameState.sound.bgm_main.stop();
@@ -97,14 +105,38 @@ export class GameScene extends Phaser.Scene {
                     GameState.state = GLOBALS.GAME.STATE.FLOOR_START;
                     GameState.count = GLOBALS.GAME.PERIDO.FLOOR_START;
                 }
+            } else {
+                // 残り時間をスコアとエネルギーに加算
+                this.time_bonus();
             }
         }
 
         // 隠しキーボード操作
         if (Phaser.Input.Keyboard.JustDown(this.keyQ)){
+            GameState.sound.bgm_main.stop();
             this.scene.start('TitleScene');
         }
     } // End of update
+
+    // タイムボーナス
+    time_bonus(){
+        if (GameState.time >= 1000){
+            GameState.time -= 1000;
+            GameState.add_score(1000);
+            GameState.add_energy(100);
+        } else if (GameState.time >= 100){
+            GameState.time -= 100;
+            GameState.add_score(100);
+            GameState.add_energy(10);
+        } else if (GameState.time >= 10){
+            GameState.time -= 10;
+            GameState.add_score(10);
+            GameState.add_energy(1);
+        } else if (GameState.time >= 1){
+            GameState.time -= 1;
+            GameState.add_score(1);
+        }
+    }
 
     // 背景の描画
     draw_bg(){

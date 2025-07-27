@@ -102,13 +102,18 @@ export const GLOBALS = {
             ENERGY : 10,
             BONUS : 11,
             ST_SPEED : 16,
-            ST_FLIP : 24
+            ST_FLIP : 24,
+            PICT_MIN : 32,
+            PICT_MAX : 35,
+            RING : 40
         },
     },
 
     EFFECT : {
         TYPE : {
-            EXPLOSION : 0
+            EXPLOSION : 0,
+            EXTINCTION : 1,
+            TEXT : 2
         },
     },
 

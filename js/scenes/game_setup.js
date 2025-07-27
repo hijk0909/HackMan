@@ -107,6 +107,13 @@ export class Setup {
             }
         }
 
+        // タイマーのリセット
+        if (floorInfo.time){
+                GameState.time = floorInfo.time;
+        } else {
+                GameState.time = GLOBALS.TIME_MAX;
+        }
+
         // 自機の配置
         GameState.player = new Player(this.scene);
         const { x, y } = floorInfo.player;

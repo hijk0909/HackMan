@@ -35,7 +35,7 @@ export class Enemy extends Movable {
         }
 
         if (this.flip_state === GLOBALS.FLIP_STATE.NONE){
-            // 現在地点が既に衝突して動けない場合
+            // 現在地点が既に衝突して動けない場合（振動）
             if (MyMath.isOnOuterFence(this.pos.x, this.pos.y, this.size)){
                 this.offset.x = Math.random() * WRIGGLE_RANGE;
                 this.offset.y = Math.random() * WRIGGLE_RANGE;
@@ -54,7 +54,7 @@ export class Enemy extends Movable {
                 this.sprite.setTint(0xffffff);
             } else if (this.parent_panel.state === GLOBALS.PANEL.STATE.FLIP_BELOW){
                 if (MyMath.isHittingAboveFence(this.pos.x, this.pos.y, this.size, this.parent_panel.flip_pair)){
-                    // プレイヤーパネルに蹂躙される
+                    // プレイヤーパネルに蹂躙される（破壊）
                     this.alive = false;
                     const eff = new Effect(this.scene);
                     eff.init(GLOBALS.EFFECT.TYPE.EXPLOSION,new Phaser.Math.Vector2(this.pos.x, this.pos.y));

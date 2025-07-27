@@ -36,7 +36,7 @@ export class TitleScene extends Phaser.Scene {
         this.cy = this.game.canvas.height / 2;
         this.hy = this.game.canvas.height;
 
-        // 隠しキー
+        // 隠しキー操作
         this.keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
         this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -47,8 +47,8 @@ export class TitleScene extends Phaser.Scene {
         this.my_input.registerNextAction(() => this.start_game());
 
         this.add.text(this.cx, 50, 'HackMan', { fontSize: '64px', fill: '#ffee00' , stroke: COLOR.RED, strokeThickness: 2}).setOrigin(0.5,0.5);
-        this.add.text(this.cx, this.hy - 150, 'Copyright ©2025 Current Color Co. Ltd. All rights reserved.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
-        this.add.text(this.cx, this.hy - 120, 'Version 0.0 2025.7.15.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
+        this.add.text(this.cx, this.hy - 150, 'Copyright Current Color Co. Ltd. All rights reserved.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
+        this.add.text(this.cx, this.hy - 120, 'Version 0.1 2025.7.27.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
         this.add.text(this.cx, this.hy - 90, 'PUSH SPACE KEY',{ fontSize: '24px', fill: '#fff' }).setOrigin(0.5,0.5);
         this.start_floor_txt = this.add.text(this.cx, 150, 'Start Floor: ', { fontSize: '24px', fill: '#eee' }).setOrigin(0.5,0.5).setVisible(false);
 

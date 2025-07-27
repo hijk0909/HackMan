@@ -4,15 +4,19 @@ import { GameState } from '../GameState.js';
 import { MyMath } from '../utils/MathUtils.js';
 import { MyInput } from '../utils/InputUtils.js';
 import { Movable } from './movable.js';
+import { Effect } from './effect.js';
 
 export class Player extends Movable {
     constructor(scene){
         super(scene);
+        this.touch_wall = false;
+        this.flip_frame = null;
     }
 
     init(type, pos){
         super.init(type, pos);
         this.size = 24;
+        this.flip_frame = new flip_frame(this.scene);
 
         this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_p').setOrigin(0.5, 0.5);
         if (!this.scene.anims.exists('pd_anims')) {
@@ -111,7 +115,7 @@ export class Player extends Movable {
                 this.sprite.stop();
                 this.sprite.setFrame(1);
                 if (GameState.energy < GLOBALS.ENERGY_MAX){
-                    GameState.energy += 1;
+                    GameState.add_energy(1);
                 }
             }
         } else if (GameState.flip_state === GLOBALS.FLIP_STATE.READY){
@@ -129,18 +133,18 @@ export class Player extends Movable {
                     if (Math.abs(plx-clx)>Math.abs(ply-cly)){
                         if (dx == -1 && plx > 0){
                             this.flip_left(plx,ply);
-                            GameState.energy -= GLOBALS.FLIP_ENRGY;
+                            GameState.add_energy( -GLOBALS.FLIP_ENRGY);
                         } else if (dx == 1 && plx < GLOBALS.FIELD.COL - 1){
                             this.flip_right(plx,ply);
-                            GameState.energy -= GLOBALS.FLIP_ENRGY;
+                            GameState.add_energy( -GLOBALS.FLIP_ENRGY);
                         }
                     } else {
                         if (dy == -1 && ply > 0){
                             this.flip_up(plx,ply);
-                            GameState.energy -= GLOBALS.FLIP_ENRGY;
+                            GameState.add_energy( -GLOBALS.FLIP_ENRGY);
                         } else if (dy == 1 && ply < GLOBALS.FIELD.ROW - 1){
                             this.flip_down(plx,ply);
-                            GameState.energy -= GLOBALS.FLIP_ENRGY;
+                            GameState.add_energy( -GLOBALS.FLIP_ENRGY);
                         }
                     }
                 } else {
@@ -153,19 +157,19 @@ export class Player extends Movable {
                     if (GameState.i_up && ply > 0){
                         this.flip_up(plx, ply);
                         GameState.cursor.hide();
-                        GameState.energy -= GLOBALS.FLIP_ENRGY;
+                        GameState.add_energy(-GLOBALS.FLIP_ENRGY);
                     } else if (GameState.i_down && ply < GLOBALS.FIELD.ROW - 1){
                         this.flip_down(plx, ply);
                         GameState.cursor.hide();
-                        GameState.energy -= GLOBALS.FLIP_ENRGY;
+                        GameState.add_energy(-GLOBALS.FLIP_ENRGY);
                     } else if (GameState.i_left && plx > 0){
                         this.flip_left(plx, ply);
                         GameState.cursor.hide();
-                        GameState.energy -= GLOBALS.FLIP_ENRGY;
+                        GameState.add_energy(-GLOBALS.FLIP_ENRGY);
                     } else if (GameState.i_right && plx < GLOBALS.FIELD.COL - 1){
                         this.flip_right(plx, ply);
                         GameState.cursor.hide();
-                        GameState.energy -= GLOBALS.FLIP_ENRGY;
+                        GameState.add_energy(-GLOBALS.FLIP_ENRGY);
                     }
                 } else {
                     // ●エネルギー不足
@@ -183,8 +187,11 @@ export class Player extends Movable {
             if (this.parent_panel.state == GLOBALS.PANEL.STATE.NORMAL){
                 GameState.flip_state = GLOBALS.FLIP_STATE.READY;
                 this.setParentState(GLOBALS.PANEL.STATE.READY);
+                this.flip_frame.set_visible(false);
             }
         }
+
+        this.flip_frame.draw();
         super.update();
     } // End of update
 
@@ -232,34 +239,14 @@ export class Player extends Movable {
 
             // ◆判定：外壁タッチ（アイテム取得判定）
             const num = MyMath.getWallNumber(this.pos.x + dx, this.pos.y + dy, this.size);
-            if (num !== null){
+            if (num === null){
+                // 壁から離れている
+                this.touch_wall = false;
+            } else if ( this.touch_wall === false){
+                // 壁から離れた状態からのタッチ
                 const item = GameState.items[num];
-                item.set_visible(true);
-                if (item.type === GLOBALS.ITEM.TYPE.KEY){
-                    // 鍵の取得
-                    item.set_blink_out();
-                    GameState.ui.collection_add(0, GLOBALS.ITEM.TYPE.KEY);
-                    GameState.sound.se_key.play();
-                } else if (item.type === GLOBALS.ITEM.TYPE.EXIT){
-                    // 出口にタッチ。鍵の削除
-                    if (GameState.ui.collection_check(GLOBALS.ITEM.TYPE.KEY)){
-                        GameState.state = GLOBALS.GAME.STATE.FLOOR_CLEAR;
-                        GameState.count = GLOBALS.GAME.PERIDO.FLOOR_CLEAR;
-                        GameState.ui.collection_remove(GLOBALS.ITEM.TYPE.KEY);
-                        GameState.sound.se_exit.play();
-                    }
-                } else if (item.type === GLOBALS.ITEM.TYPE.BOX_OPEN){
-                    // 解錠済み宝箱の中のアイテムを取得
-                    item.set_type(item.inner_type);
-                    this.get_item(item);
-                    GameState.item_boxes[GameState.floor] = true;
-                } else if (item.type === GLOBALS.ITEM.TYPE.NONE ||
-                           item.type === GLOBALS.ITEM.TYPE.BOX){
-                    // アイテム無し、施錠中宝箱は、反応なし
-                } else if (item.type !== GLOBALS.ITEM.TYPE.NONE){
-                    // 一般アイテムの取得
-                    this.get_item(item);
-                }
+                this.touch_item(item);
+                this.touch_wall = true;
                 break;
             }
         }
@@ -299,6 +286,7 @@ export class Player extends Movable {
         p1.flip_pair = p2;
         p2.flip_pair = p1;
         GameState.flip_state = GLOBALS.FLIP_STATE.FLIP;
+        this.flip_frame.set_rect(plx,ply-1,1,2);
     }
 
     // 下とフリップ
@@ -313,6 +301,7 @@ export class Player extends Movable {
         p1.flip_pair = p2;
         p2.flip_pair = p1;
         GameState.flip_state = GLOBALS.FLIP_STATE.FLIP;
+        this.flip_frame.set_rect(plx,ply,1,2);
     }
 
     // 右とフリップ
@@ -327,6 +316,7 @@ export class Player extends Movable {
         p1.flip_pair = p2;
         p2.flip_pair = p1;
         GameState.flip_state = GLOBALS.FLIP_STATE.FLIP;
+        this.flip_frame.set_rect(plx,ply,2,1);
     }
 
     // 左とフリップ
@@ -341,22 +331,50 @@ export class Player extends Movable {
         p1.flip_pair = p2;
         p2.flip_pair = p1;
         GameState.flip_state = GLOBALS.FLIP_STATE.FLIP;
+        this.flip_frame.set_rect(plx-1,ply,2,1);
     }
 
     isOuterFence(dx,dy){
+        // 現在位置から(dx,dy)ずれた位置が隣接パネルや外壁に接しているか
         const r1 = MyMath.isOnOuterFence(this.pos.x + dx, this.pos.y, this.size);
         const r2 = MyMath.isOnOuterFence(this.pos.x, this.pos.y + dy, this.size);
         return (r1 || r2);
     }
 
     setParentState(state){
+        // 親パネルの状態設定
         const { loc_x: plx, loc_y : ply} = MyMath.get_loc_from_pos(this.pos.x, this.pos.y);
         this.parent_panel = GameState.panels[plx][ply];
         this.parent_panel.state = state;
     }
 
-    get_item(item){
-        if (item.type === GLOBALS.ITEM.TYPE.SPEED){
+    // アイテム処理
+    touch_item(item){
+        item.set_visible(true);
+        if (item.type === GLOBALS.ITEM.TYPE.KEY){
+            // ◆鍵の取得
+            GameState.ui.collection_add(0, item.type);
+            GameState.sound.se_key.play();
+            item.set_blink_out();
+        } else if (item.type === GLOBALS.ITEM.TYPE.EXIT){
+            // ◆出口にタッチ。鍵の削除
+            if (GameState.ui.collection_check(GLOBALS.ITEM.TYPE.KEY)){
+                GameState.state = GLOBALS.GAME.STATE.FLOOR_CLEAR;
+                GameState.count = GLOBALS.GAME.PERIDO.FLOOR_CLEAR;
+                GameState.ui.collection_remove(GLOBALS.ITEM.TYPE.KEY);
+                GameState.sound.se_exit.play();
+            }
+        } else if (item.type === GLOBALS.ITEM.TYPE.BOX_OPEN){
+            // ◆解錠済み宝箱（中身の確認）
+            item.set_type(item.inner_type);
+            GameState.item_boxes[GameState.floor] = true;
+            // 即時取得
+            this.touch_item(item); 
+        } else if (item.type === GLOBALS.ITEM.TYPE.NONE ||
+                    item.type === GLOBALS.ITEM.TYPE.BOX){
+            // ◆アイテム無し
+            // ◆施錠中の宝箱
+        } else if (item.type === GLOBALS.ITEM.TYPE.SPEED){
             // ◆プレイヤー速度アップ
             if (GameState.player_speed < GLOBALS.PLAYER_SPEED_MAX){
                 GameState.player_speed += 1;
@@ -364,8 +382,15 @@ export class Player extends Movable {
                 GameState.sound.se_powerup.play();
             } else {
                 GameState.score += GLOBALS.MAX_BONUS;
+                // サウンドエフェクト
                 GameState.sound.se_bonus.play();
+                // テキストエフェクト
+                const eff = new Effect(this.scene);
+                eff.init(GLOBALS.EFFECT.TYPE.TEXT,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
+                GameState.effects.push(eff);
+                eff.set_text(`+${GLOBALS.MAX_BONUS}`);
             }
+            item.set_blink_out();
         } else if (item.type === GLOBALS.ITEM.TYPE.FLIP){
             // ◆フリップ速度アップ
             if (GameState.flip_speed < GLOBALS.FLIP_SPEED_MAX){
@@ -374,17 +399,97 @@ export class Player extends Movable {
                 GameState.sound.se_powerup.play();
             } else {
                 GameState.score += GLOBALS.MAX_BONUS;
+                // サウンドエフェクト
                 GameState.sound.se_bonus.play();
+                // テキストエフェクト
+                const eff = new Effect(this.scene);
+                eff.init(GLOBALS.EFFECT.TYPE.TEXT,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
+                GameState.effects.push(eff);
+                eff.set_text(`+${GLOBALS.MAX_BONUS}`);
             }
+            item.set_blink_out();
         } else if (item.type === GLOBALS.ITEM.TYPE.ENERGY){
             // ◆エネルギーアップ
-                GameState.energy = Math.min(GameState.energy + 1000 , GLOBALS.ENERGY_MAX);
-                GameState.sound.se_exit.play();
+            GameState.add_energy(1000);
+            GameState.sound.se_exit.play();
+            item.set_blink_out();
         } else if (item.type === GLOBALS.ITEM.TYPE.BONUS){
             // ◆得点アップ
-                GameState.score += 1000;
-                GameState.sound.se_bonus.play();
+            GameState.score += 1000;
+            item.set_blink_out();
+            // サウンドエフェクト
+            GameState.sound.se_bonus.play();
+            // テキストエフェクト
+            const eff = new Effect(this.scene);
+            eff.init(GLOBALS.EFFECT.TYPE.TEXT,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
+            GameState.effects.push(eff);
+            eff.set_text("+1000");
+        } else if (item.type >= GLOBALS.ITEM.TYPE.PICT_MIN && item.type <= GLOBALS.ITEM.TYPE.PICT_MAX){
+            // ◆絵合わせ
+            const next_type = item.type === GLOBALS.ITEM.TYPE.PICT_MAX ? GLOBALS.ITEM.TYPE.PICT_MIN : item.type + 1;
+            item.set_type(next_type);
+        } else if (item.type === GLOBALS.ITEM.TYPE.RING){
+            // ◆指輪
+            const pos = 3;
+            GameState.ui.collection_add(pos, item.type);
+            GameState.sound.se_bonus.play();
+            item.set_blink_out();
+        } else {
+            // 想定外のアイテム
         }
-        item.set_blink_out();
+    }
+
+    stop_animation(){
+        this.sprite.stop();
+    }
+
+    destroy(){
+        if ( this.flip_frame ){
+            this.flip_frame.destroy();
+            this.flip_frame = null;
+        }
+        super.destroy();
+    }
+}
+
+const FRAME_BLINK_SPEED = 20;
+
+class flip_frame{
+    constructor(scene){
+        this.scene = scene;
+        this.graphics = this.scene.add.graphics().setDepth(3);
+        this.frame =  new Phaser.Geom.Rectangle(0, 0, 0, 0);
+        this.visible = false;
+        this.cycle = 0;
+    }
+
+    set_rect(loc_x, loc_y, num_width, num_height){
+        const {top, left} = MyMath.get_top_left_from_loc(loc_x, loc_y);
+        this.frame.x = top;
+        this.frame.y = left;
+        this.frame.width = num_width * GLOBALS.PANEL.WIDTH;
+        this.frame.height = num_height * GLOBALS.PANEL.HEIGHT;
+        this.set_visible(true);
+    }
+
+    set_visible(visible){
+        this.visible = visible;
+    }
+
+    draw(){
+        this.graphics.clear();
+        if (this.visible){
+            this.cycle = this.cycle + FRAME_BLINK_SPEED > 360 ? this.cycle + FRAME_BLINK_SPEED - 360 : this.cycle + FRAME_BLINK_SPEED;
+            const alpha = (Math.sin(MyMath.radians(this.cycle)) + 1) / 2;
+            this.graphics.lineStyle(2, 0xff0000);
+            this.graphics.strokeRect(this.frame.x, this.frame.y, this.frame.width, this.frame.height).setAlpha(alpha);
+        }
+    }
+
+    destroy(){
+        if ( this.graphics ){
+            this.graphics.destroy();
+            this.graphics = null;
+        }
     }
 }

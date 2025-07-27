@@ -1,6 +1,8 @@
 // bullet.js
 import { GLOBALS } from '../GameConst.js';
+import { GameState } from '../GameState.js';
 import { Movable } from './movable.js';
+import { Effect } from './effect.js';
 
 export class Bullet extends Movable {
 
@@ -25,6 +27,11 @@ export class Bullet extends Movable {
     }
 
     update(){
+        if (!this.alive){
+            const eff = new Effect(this.scene);
+            eff.init(GLOBALS.EFFECT.TYPE.EXTINCTION,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
+            GameState.effects.push(eff);
+        }
         super.update();
     }
 

@@ -59,7 +59,7 @@ export class UIScene extends Phaser.Scene {
             this.ui_time_y = 1;
             this.ui_lives_x = 644;
             this.ui_lives_y = 549;
-            this.ui_collections_x = 606;
+            this.ui_collections_x = 653;
             this.ui_collections_y = 418;
             this.ui_collections_offset_x = 0;
             this.ui_collections_offset_y = COLLECTION_SIZE;
@@ -83,12 +83,14 @@ export class UIScene extends Phaser.Scene {
         this.ui_floor_clear_txt = this.add.text(this.ui_floor_clear_x, this.ui_floor_clear_y, 'FLOOR : 1', style3).setVisible(false).setOrigin(0.5,0.5);
         this.ui_timeover_txt = this.add.text(this.ui_timeover_x, this.ui_timeover_y, 'TIME OVER', style4).setVisible(false).setOrigin(0.5,0.5);
 
+        // 残機表示
         this.lives = [];
         for (let i = 0; i < 4 ; i++){
             this.lives[i] = this.add.sprite(this.ui_lives_x + LIVE_SIZE * i, this.ui_lives_y, 'ss_icon')
                 .setOrigin(0,0) .setDisplaySize(LIVE_SIZE,LIVE_SIZE) .setFrame(GLOBALS.ITEM.TYPE.LIVE) .setVisible(true);
         }
 
+        // コレクション表示
         this.collections = [];
         for (let i = 0; i < 3 ; i++){
             this.collections[i] = this.add.sprite(this.ui_collections_x + COLLECTION_SIZE * i,
@@ -143,11 +145,13 @@ export class UIScene extends Phaser.Scene {
     }
 
     // コレクションの制御メソッド
+    // コレクションにアイテムを追加
     collection_add(pos, type){
         this.collections[pos].setFrame(type).setVisible(true);
         this.collection_blink(pos,type);
     }
 
+    // コレクションの点滅→通常状態
     collection_blink(pos, type){
         this.tweens.add({targets: this.collections[pos],
             alpha: { from: 0, to: 1 },
@@ -159,6 +163,7 @@ export class UIScene extends Phaser.Scene {
         });
     }
 
+    // コレクションに特定アイテムがあるかの判定
     collection_check(type){
         for (let i = 0; i < GLOBALS.COLLECTION_MAX; i++){
             // console.log("check_collection:",i, this.collections[i].frame.name);
@@ -169,6 +174,7 @@ export class UIScene extends Phaser.Scene {
         return false;
     }
 
+    // コレクションから特定アイテムを削除
     collection_remove(type){
         for (let i = 0; i < GLOBALS.COLLECTION_MAX; i++){
             if (this.collections[i].frame.name == type){
@@ -177,6 +183,7 @@ export class UIScene extends Phaser.Scene {
         }
     }
 
+    // コレクションのステータス（プレイヤー速度）の更新
     collection_update_speed(blink){
         const type = GLOBALS.ITEM.TYPE.ST_SPEED + GameState.player_speed - GLOBALS.PLAYER_SPEED_MIN;
         this.collections[COLLECTION_POS_SPEED].setFrame(type).setVisible(true);
@@ -185,6 +192,7 @@ export class UIScene extends Phaser.Scene {
         }
     }
 
+    // コレクションのステータス（フリップ速度）の更新
     collection_update_flip(blink){
         const type = GLOBALS.ITEM.TYPE.ST_FLIP + GameState.flip_speed - GLOBALS.FLIP_SPEED_MIN;
         this.collections[COLLECTION_POS_FLIP].setFrame(type).setVisible(true);

@@ -20,7 +20,7 @@ export const  GameState = {
     player_speed : GLOBALS.PLAYER_SPEED_MIN,
     flip_speed : GLOBALS.FLIP_SPEED_MIN,
     time : GLOBALS.TIME_MAX,
-    energy : 100,
+    energy : 1000,
     score : 0,
     high_score : 0,
     state : GLOBALS.GAME.STATE.FLOOR_START,
@@ -48,12 +48,22 @@ export const  GameState = {
         this.player_speed = GLOBALS.PLAYER_SPEED_MIN;
         this.flip_speed = GLOBALS.FLIP_SPEED_MIN;
         this.time = GLOBALS.TIME_MAX;
-        this.energy = 100;
+        this.energy = 1000;
         this.state = GLOBALS.GAME.STATE.FLOOR_START;
         this.count = GLOBALS.GAME.PERIDO.FLOOR_CLEAR;
         this.flip_state = GLOBALS.FLIP_STATE.NONE;
         this.score = 0;
-        this.high_score = 0;
         this.item_boxes = new Array(GLOBALS.FLOOR_MAX + 1).fill(false);
+    },
+
+    add_score(score){
+        this.score += score;
+        if (this.score > this.high_score){
+            this.high_score = this.score;
+        }
+    },
+
+    add_energy(energy){
+        this.energy = Math.max(Math.min(GLOBALS.ENERGY_MAX, this.energy + energy),0);
     }
 };

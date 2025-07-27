@@ -10,19 +10,14 @@ export class Exec {
     }
 
     update(){
-        // 時間
-        GameState.time -= 1;
-        if (GameState.time <= 0){
-            GameState.state = GLOBALS.GAME.STATE.FAILED;
-            GameState.count = GLOBALS.GAME.PERIDO.FAILED;
-            GameState.ui.show_timeover(true);
-        }
+        // カーソルの更新
+        GameState.cursor.update();
+
+        // プレイヤーの更新
+        GameState.player.update();
 
         // アイテムの出現条件のチェック
         unlock_item_box();
-
-        // カーソルの更新
-        GameState.cursor.update();
 
         // パネルの更新
         for (let i=0; i<GLOBALS.FIELD.COL; i++){
@@ -31,8 +26,15 @@ export class Exec {
             }
         }
 
-        // プレイヤーの更新
-        GameState.player.update();
+        // 時間の更新
+        GameState.time -= 1;
+        if (GameState.time <= 0){
+            GameState.state = GLOBALS.GAME.STATE.FAILED;
+            GameState.count = GLOBALS.GAME.PERIDO.FAILED;
+            GameState.ui.show_timeover(true);
+            GameState.sound.bgm_main.stop();
+            GameState.player.stop_animation();
+        }
 
         // 敵の管理 と プレイヤーとの当たり判定
         for (let i = GameState.enemies.length - 1; i >= 0; i--) {
@@ -55,7 +57,9 @@ export class Exec {
             if (MyMath.isHittingCharacter(e.pos,e.size,GameState.player.pos,GameState.player.size)){
                 GameState.state = GLOBALS.GAME.STATE.FAILED;
                 GameState.count = GLOBALS.GAME.PERIDO.FAILED;
+                GameState.sound.bgm_main.stop();
                 GameState.sound.se_failed.play();
+                GameState.player.stop_animation();
                 break;
             }
         }
@@ -72,7 +76,9 @@ export class Exec {
             if (MyMath.isHittingCharacter(b.pos,b.size,GameState.player.pos,GameState.player.size)){
                 GameState.state = GLOBALS.GAME.STATE.FAILED;
                 GameState.count = GLOBALS.GAME.PERIDO.FAILED;
+                GameState.sound.bgm_main.stop();
                 GameState.sound.se_failed.play();
+                GameState.player.stop_animation();
                 break;
             }
         }
