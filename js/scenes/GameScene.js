@@ -12,8 +12,6 @@ export class GameScene extends Phaser.Scene {
 
     create() {
         this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-        this.field_width = GLOBALS.PANEL.WIDTH * GLOBALS.FIELD.COL + GLOBALS.WALL.SIZE.THICK * 2;
-        this.field_height = GLOBALS.PANEL.HEIGHT * GLOBALS.FIELD.ROW + GLOBALS.WALL.SIZE.THICK * 2;
 
         // 入力ユーティリティ
         this.my_input = new MyInput(this);
@@ -48,7 +46,6 @@ export class GameScene extends Phaser.Scene {
                 this.setup.clean_up();
                 // フィールドの作成とキャラクターの配置
                 this.setup.make_field();
-                this.draw_bg();
                 // ワイプイン
                 this.wipe_in();
                 // UIの設定
@@ -83,6 +80,8 @@ export class GameScene extends Phaser.Scene {
                     this.scene.stop('UIScene');
                     this.scene.start('GameOverScene');
                 } else {
+                    GameState.player_speed = Math.max(GameState.player_speed - 1, GLOBALS.PLAYER_SPEED_MIN);
+                    GameState.flip_speed = Math.max(GameState.flip_speed - 1, GLOBALS.FLIP_SPEED_MIN);
                     GameState.state = GLOBALS.GAME.STATE.FLOOR_START;
                     GameState.count = GLOBALS.GAME.PERIDO.FLOOR_START;
                 }
@@ -138,16 +137,10 @@ export class GameScene extends Phaser.Scene {
         }
     }
 
-    // 背景の描画
-    draw_bg(){
-        this.bg = this.add.tileSprite(GameState.field_origin_x,GameState.field_origin_y, this.field_width, this.field_height, 'bg').setOrigin(0).setDepth(-1);
-        this.bg.setTint(0x808080);
-    }
-
     // ワイプイン
     wipe_in(){
         // 黒のオーバーレイ
-        this.overlay = this.add.rectangle(GameState.field_origin_x, GameState.field_origin_y, this.field_width, this.field_height, 0x000000, 1)
+        this.overlay = this.add.rectangle(GameState.field_origin_x, GameState.field_origin_y, GLOBALS.FIELD.WIDTH, GLOBALS.FIELD.HEIGHT, 0x000000, 1)
             .setOrigin(0)
             .setDepth(100);
 
@@ -170,7 +163,7 @@ export class GameScene extends Phaser.Scene {
                 revealMaskGraphics.clear();
                 revealMaskGraphics.fillStyle(0xffffff);
                 revealMaskGraphics.beginPath();
-                revealMaskGraphics.arc(GameState.field_origin_x + this.field_width / 2, GameState.field_origin_y + this.field_height / 2, maskData.radius, 0, Math.PI * 2);
+                revealMaskGraphics.arc(GameState.field_origin_x + GLOBALS.FIELD.WIDTH / 2, GameState.field_origin_y + GLOBALS.FIELD.HEIGHT / 2, maskData.radius, 0, Math.PI * 2);
                 revealMaskGraphics.fillPath();
             },
             onComplete: () => {

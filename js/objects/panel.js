@@ -24,8 +24,8 @@ export class Panel extends Drawable {
         this.fence.left = (type & 4) !== 0;
         this.fence.right = (type & 8) !== 0;
         // const panel_key = `p${String(type).padStart(2, '0')}`
-        this.pos.x = GameState.field_origin_x + GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH;
-        this.pos.y = GameState.field_origin_y + GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT;
+        this.pos.x = GameState.field_origin_x + GameState.field_offset_x + GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH;
+        this.pos.y = GameState.field_origin_y + GameState.field_offset_y + GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT;
         this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_panel').setOrigin(0,0).setFrame(type);
     }
 
@@ -41,6 +41,14 @@ export class Panel extends Drawable {
         } else if (dir == GLOBALS.DIR.RIGHT){
             this.target = this.pos.x + GLOBALS.PANEL.WIDTH;
         }
+    }
+
+    recalc_type(){
+        this.type = this.fence.top * 1 +
+                    this.fence.bottom * 2 +
+                    this.fence.left * 4 +
+                    this.fence.right * 8;
+        this.sprite.setFrame(this.type);
     }
 
     update(){

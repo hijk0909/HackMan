@@ -2,7 +2,7 @@
 
 export const GLOBALS = {
 
-    FLOOR_MAX : 21,
+    FLOOR_MAX : 33,
     TIME_MAX : 9999,
     ENERGY_MAX : 9999,
     FLIP_ENRGY : 100,
@@ -26,7 +26,8 @@ export const GLOBALS = {
         PANEL_ABOVE :  0xff0000,
         PANEL_BELOW :  0x808080,
         PANEL_READY :  0xff8000,
-        PANEL_SHORT :  0x808000
+        PANEL_SHORT :  0x808000,
+        FLIP_TINT : 0xe0e0e0
     },
 
     DIR: {
@@ -56,7 +57,9 @@ export const GLOBALS = {
 
     FIELD: {
         COL : 5,
-        ROW : 6
+        ROW : 6,
+        WIDTH : 600,
+        HEIGHT : 700
     },
 
     WALL: {
@@ -105,6 +108,10 @@ export const GLOBALS = {
             ST_FLIP : 24,
             PICT_MIN : 32,
             PICT_MAX : 35,
+            PICT_ALEF : 32,
+            PICT_SAMECH : 33,
+            PICT_AYIN : 34,
+            PICT_CHET : 35,
             RING : 40
         },
     },

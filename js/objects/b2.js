@@ -1,4 +1,4 @@
-// b1.js
+// b2.js
 import { GLOBALS } from '../GameConst.js';
 import { Bullet } from './bullet.js';
 import { MyMath } from '../utils/MathUtils.js';

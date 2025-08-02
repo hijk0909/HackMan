@@ -23,7 +23,7 @@ export class Enemy extends Movable {
             // 親パネルのフリップ状態を確認
             const { loc_x: plx, loc_y : ply} = MyMath.get_loc_from_pos(this.pos.x, this.pos.y);
             let p = null;
-            if (plx>=0 && plx<GLOBALS.FIELD.COL && ply>=0 && ply<GLOBALS.FIELD.ROW){
+            if (plx>=0 && plx<GameState.field_col && ply>=0 && ply<GameState.field_row){
                 p = GameState.panels[plx][ply];
             }
             if (p &&(
@@ -35,8 +35,9 @@ export class Enemy extends Movable {
         }
 
         if (this.flip_state === GLOBALS.FLIP_STATE.NONE){
-            // 現在地点が既に衝突して動けない場合（振動）
+            // 通常状態
             if (MyMath.isOnOuterFence(this.pos.x, this.pos.y, this.size)){
+                // 現在地点が既に衝突して動けない場合（振動）
                 this.offset.x = Math.random() * WRIGGLE_RANGE;
                 this.offset.y = Math.random() * WRIGGLE_RANGE;
             } else {
@@ -45,8 +46,8 @@ export class Enemy extends Movable {
             }
             this._move();
         } else if (this.flip_state === GLOBALS.FLIP_STATE.FLIP){
-            this.sprite.setTint(0x808080);
             // 親パネルに動きを同期
+            this.sprite.setTint(GLOBALS.COLOR.FLIP_TINE);
             this.pos.x += this.parent_panel.dx;
             this.pos.y += this.parent_panel.dy;
             if (this.parent_panel.state === GLOBALS.PANEL.STATE.NORMAL){
@@ -72,6 +73,10 @@ export class Enemy extends Movable {
         // サブクラスで実装
     }
 
+    _onCenter(){
+        // サブクラスで実装
+    }
+
     move_straight(){
         let result = true;
         for (let i=0;i<this.speed;i++){
@@ -84,6 +89,9 @@ export class Enemy extends Movable {
             } else {
                 result = false;
                 break;
+            }
+            if ( MyMath.isCenter(this.pos.x, this.pos.y)){
+                this._onCenter();
             }
         }
         // console.log("move_straight:",this.pos.x, this.pos.y);

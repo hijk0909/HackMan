@@ -5,6 +5,7 @@ import { MyMath } from '../utils/MathUtils.js';
 import { Enemy } from './enemy.js';
 import { B1 } from './b1.js';
 import { B2 } from './b2.js';
+import { B3 } from './b3.js';
 
 const COOLDOWN_INTERVAL = 45;
 
@@ -24,9 +25,10 @@ export class E4 extends Enemy {
     init(type, pos){
 
         const type_defs = [
-            {type:0, anims: 'e4_anims_0', anims_start:0, anims_end:3,  bullet:null},
-            {type:1, anims: 'e4_anims_1', anims_start:4, anims_end:7,  bullet:B1},
-            {type:2, anims: 'e4_anims_2', anims_start:8, anims_end:11, bullet:B2},
+            {type:0, anims: 'e4_anims_0', anims_start: 0, anims_end: 3,  bullet:null},
+            {type:1, anims: 'e4_anims_1', anims_start: 4, anims_end: 7,  bullet:B1},
+            {type:2, anims: 'e4_anims_2', anims_start: 8, anims_end:11,  bullet:B2},
+            {type:3, anims: 'e4_anims_3', anims_start:12, anims_end:15,  bullet:B3}
         ];
 
         super.init(type, pos);

@@ -134,7 +134,7 @@ export class Player extends Movable {
                         if (dx == -1 && plx > 0){
                             this.flip_left(plx,ply);
                             GameState.add_energy( -GLOBALS.FLIP_ENRGY);
-                        } else if (dx == 1 && plx < GLOBALS.FIELD.COL - 1){
+                        } else if (dx == 1 && plx < GameState.field_col - 1){
                             this.flip_right(plx,ply);
                             GameState.add_energy( -GLOBALS.FLIP_ENRGY);
                         }
@@ -142,7 +142,7 @@ export class Player extends Movable {
                         if (dy == -1 && ply > 0){
                             this.flip_up(plx,ply);
                             GameState.add_energy( -GLOBALS.FLIP_ENRGY);
-                        } else if (dy == 1 && ply < GLOBALS.FIELD.ROW - 1){
+                        } else if (dy == 1 && ply < GameState.field_row - 1){
                             this.flip_down(plx,ply);
                             GameState.add_energy( -GLOBALS.FLIP_ENRGY);
                         }
@@ -158,7 +158,7 @@ export class Player extends Movable {
                         this.flip_up(plx, ply);
                         GameState.cursor.hide();
                         GameState.add_energy(-GLOBALS.FLIP_ENRGY);
-                    } else if (GameState.i_down && ply < GLOBALS.FIELD.ROW - 1){
+                    } else if (GameState.i_down && ply < GameState.field_row - 1){
                         this.flip_down(plx, ply);
                         GameState.cursor.hide();
                         GameState.add_energy(-GLOBALS.FLIP_ENRGY);
@@ -166,7 +166,7 @@ export class Player extends Movable {
                         this.flip_left(plx, ply);
                         GameState.cursor.hide();
                         GameState.add_energy(-GLOBALS.FLIP_ENRGY);
-                    } else if (GameState.i_right && plx < GLOBALS.FIELD.COL - 1){
+                    } else if (GameState.i_right && plx < GameState.field_col - 1){
                         this.flip_right(plx, ply);
                         GameState.cursor.hide();
                         GameState.add_energy(-GLOBALS.FLIP_ENRGY);
@@ -481,7 +481,7 @@ class flip_frame{
         if (this.visible){
             this.cycle = this.cycle + FRAME_BLINK_SPEED > 360 ? this.cycle + FRAME_BLINK_SPEED - 360 : this.cycle + FRAME_BLINK_SPEED;
             const alpha = (Math.sin(MyMath.radians(this.cycle)) + 1) / 2;
-            this.graphics.lineStyle(2, 0xff0000);
+            this.graphics.lineStyle(5, 0xff0000);
             this.graphics.strokeRect(this.frame.x, this.frame.y, this.frame.width, this.frame.height).setAlpha(alpha);
         }
     }

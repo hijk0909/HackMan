@@ -45,18 +45,20 @@ export class AssetLoader extends Phaser.Scene {
         this.load.spritesheet('ss_p', 'assets/images/ss_p.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 17 });
         this.load.spritesheet('ss_e1', 'assets/images/ss_e1.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 14 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 19 });
         this.load.spritesheet('ss_e2', 'assets/images/ss_e2.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 14 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 19 });
         this.load.spritesheet('ss_e3', 'assets/images/ss_e3.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 11 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 15 });
         this.load.spritesheet('ss_e4', 'assets/images/ss_e4.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 11 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 15 });
         this.load.spritesheet('ss_e5', 'assets/images/ss_e5.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 35 });
         this.load.spritesheet('ss_b1', 'assets/images/ss_b1.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 3 });
         this.load.spritesheet('ss_b2', 'assets/images/ss_b2.png', {
+            frameWidth: 64,  frameHeight: 64, endFrame : 3 });
+        this.load.spritesheet('ss_b3', 'assets/images/ss_b3.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 3 });
         this.load.spritesheet('ss_icon', 'assets/images/ss_icon.png', {
             frameWidth: 48,  frameHeight: 48, endFrame : 63 });

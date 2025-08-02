@@ -2,8 +2,10 @@
 import { GLOBALS } from '../GameConst.js';
 import { GameState } from '../GameState.js';
 import { MyMath } from '../utils/MathUtils.js';
-import { Effect } from './effect.js';
 import { Enemy } from './enemy.js';
+import { B1 } from './b1.js';
+import { B2 } from './b2.js';
+import { B3 } from './b3.js';
 
 const ST_NORM = 0;
 const ST_TURN = 1;
@@ -20,11 +22,23 @@ export class E5 extends Enemy {
         this.size = 24;
         this.speed = 3;
         this.state = ST_NORM;
+        this.anims = null;
     }
 
     init(type, pos){
+
+        const type_defs = [
+            {type:0, anims: 'e5_anims_0_', base: 0, bullet:null},
+            {type:1, anims: 'e5_anims_1_', base:12, bullet:B1},
+            {type:2, anims: 'e5_anims_2_', base:24, bullet:B2},
+            {type:3, anims: 'e5_anims_3_', base:36, bullet:B3}
+        ];
+
         super.init(type, pos);
-        const base = type * 12;
+        const typeInfo = type_defs.find(s => s.type === type);
+        this.bullet = typeInfo.bullet;
+        const base = typeInfo.base;
+        this.anims = typeInfo.anims;
         this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_e5')
             .setOrigin(0.5, 0.5).setFrame(base);
         this.dir = GLOBALS.DIR.UP;
@@ -35,75 +49,80 @@ export class E5 extends Enemy {
                 from_dir: GLOBALS.DIR.LEFT, to_dir: GLOBALS.DIR.UP,
                 key: 'left_to_up',
                 frames: [ { frame: base + 9 }, { frame: base + 10 }, { frame: base + 11 }, { frame: base + 0 } ],
-                endFrame: 0,
+                endFrame: base + 0
             },
             {
                 from_dir: GLOBALS.DIR.LEFT, to_dir: GLOBALS.DIR.DOWN,
                 key: 'left_to_down',
                 frames: [ { frame: base + 9 }, { frame: base + 8 }, { frame: base + 7 }, { frame: base + 6 } ],
-                endFrame: 6
+                endFrame: base + 6
             },
             {
                 from_dir: GLOBALS.DIR.LEFT, to_dir: GLOBALS.DIR.RIGHT,
                 key: 'left_to_right',
                 frames: [ { frame: base + 9 }, { frame: base + 10 }, { frame: base + 11 }, { frame: base + 0 }, { frame: base + 1 }, { frame: base + 2 }, { frame: base + 3 } ],
-                endFrame: 3
+                endFrame: base + 3
             },
             {
                 from_dir: GLOBALS.DIR.UP, to_dir: GLOBALS.DIR.RIGHT,
                 key: 'up_to_right',
                 frames: [ { frame: base + 0 }, { frame: base + 1 }, { frame: base + 2 }, { frame: base + 3 } ],
-                endFrame: 3
+                endFrame: base + 3
             },
             {
                 from_dir: GLOBALS.DIR.UP, to_dir: GLOBALS.DIR.LEFT,
                 key: 'up_to_left',
                 frames: [ { frame: base + 0 }, { frame: base + 11 }, { frame: base + 10 }, { frame: base + 9 } ],
-                endFrame: 9
+                endFrame: base + 9
             },
             {
                 from_dir: GLOBALS.DIR.UP, to_dir: GLOBALS.DIR.DOWN,
                 key: 'up_to_down',
                 frames: [ { frame: base + 0 }, { frame: base + 1 }, { frame: base + 2 }, { frame: base + 3 }, { frame: base + 4 }, { frame: base + 5 }, { frame: base + 6 } ],
-                endFrame: 6
+                endFrame: base + 6
             },
             {
                 from_dir: GLOBALS.DIR.RIGHT, to_dir: GLOBALS.DIR.UP,
                 key: 'right_to_up',
                 frames: [ { frame: base + 3 }, { frame: base + 2 }, { frame: base + 1 }, { frame: base + 0 } ],
-                endFrame: 0
+                endFrame: base + 0
             },
             {
                 from_dir: GLOBALS.DIR.RIGHT, to_dir: GLOBALS.DIR.DOWN,
                 key: 'right_to_down',
                 frames: [ { frame: base + 3 }, { frame: base + 4 }, { frame: base + 5 }, { frame: base + 6 } ],
-                endFrame: 6
+                endFrame: base + 6
             },
             {
                 from_dir: GLOBALS.DIR.RIGHT, to_dir: GLOBALS.DIR.LEFT,
                 key: 'right_to_left',
                 frames: [ { frame: base +3 }, { frame: base + 4 }, { frame: base + 5 }, { frame: base + 6 }, { frame: base + 7 }, { frame: base + 8 }, { frame: base + 9 } ],
-                endFrame: 9
+                endFrame: base + 9
             },
             {
                 from_dir: GLOBALS.DIR.DOWN, to_dir: GLOBALS.DIR.LEFT,
                 key: 'down_to_left',
                 frames: [ { frame: base + 6 }, { frame: base + 7 }, { frame: base + 8 }, { frame: base + 9 } ],
-                endFrame: 9
+                endFrame: base + 9
             },
             {
                 from_dir: GLOBALS.DIR.DOWN, to_dir: GLOBALS.DIR.RIGHT,
                 key: 'down_to_right',
                 frames: [ { frame: base + 6 }, { frame: base + 5 }, { frame: base + 4 }, { frame: base + 3 } ],
-                endFrame: 3
+                endFrame: base + 3
             },
             {
                 from_dir: GLOBALS.DIR.DOWN, to_dir: GLOBALS.DIR.UP,
                 key: 'down_to_up',
                 frames: [ { frame: base + 6 }, { frame: base + 5 }, { frame: base + 4 }, { frame: base + 3 }, { frame: base + 2 }, { frame: base + 1 }, { frame: base + 0 } ],
-                endFrame: 0
+                endFrame: base + 0
             }
         ];
+    }
+
+    set_dir(dir){
+        this.sprite.setFrame(this.type * 12 + dir * 3);
+        super.set_dir(dir);
     }
 
     update(){
@@ -139,6 +158,16 @@ export class E5 extends Enemy {
                     this.rotate_sprite(this.sprite, this.dir, to_dir);
                     this.state = ST_TURN;
                 }
+                // 弾の射出
+                if (this.bullet){
+                    // プレイヤーがいる方向に弾を射出
+                    const dx = GameState.player.pos.x - this.pos.x;
+                    const dy = GameState.player.pos.y - this.pos.y;
+                    const dir = Math.abs(dx) > Math.abs(dy)
+                      ? dx > 0 ? GLOBALS.DIR.RIGHT : GLOBALS.DIR.LEFT
+                      : dy > 0 ? GLOBALS.DIR.DOWN : GLOBALS.DIR.UP;
+                    super.shoot_bullet(dir);
+                }
             } else if (result === RES_BLOCKED){
                 // 進行方向に進めなければ方向を反転
                 const to_dir = MyMath.invert_direction(this.dir);
@@ -154,8 +183,8 @@ export class E5 extends Enemy {
     }
 
     compute_distances(startCol, startRow) {
-        const distances = Array(GLOBALS.FIELD.COL).fill(null).map(() =>
-            Array(GLOBALS.FIELD.ROW).fill(null)
+        const distances = Array(GameState.field_col).fill(null).map(() =>
+            Array(GameState.field_row).fill(null)
         );
         const queue = [];
         distances[startCol][startRow] = 0;
@@ -176,7 +205,7 @@ export class E5 extends Enemy {
             for (const { dc, dr, fence, oppositeFence } of directions) {
                 const nc = col + dc;
                 const nr = row + dr;
-                if (nc < 0 || nc >= GLOBALS.FIELD.COL || nr < 0 || nr >= GLOBALS.FIELD.ROW) continue;
+                if (nc < 0 || nc >= GameState.field_col || nr < 0 || nr >= GameState.field_row) continue;
 
                 const p2 = GameState.panels[nc][nr];
                 if (!p1.fence[fence] && !p2.fence[oppositeFence]) {
@@ -206,13 +235,13 @@ export class E5 extends Enemy {
             else if(this.pos.y > GameState.player.pos.y){return GLOBALS.DIR.UP}
         }
         let to_dir = null;
-        if (loc_x < GLOBALS.FIELD.COL - 1){
+        if (loc_x < GameState.field_col - 1){
             const d1 = distances[loc_x + 1][loc_y];
             if (d1 == d - 1 && MyMath.isMovable(loc_x, loc_y, GLOBALS.DIR.RIGHT)){
                 to_dir = GLOBALS.DIR.RIGHT;
             }
         }
-        if (loc_y < GLOBALS.FIELD.ROW - 1){
+        if (loc_y < GameState.field_row - 1){
             const d1 = distances[loc_x][loc_y + 1];
             if (d1 == d - 1 && MyMath.isMovable(loc_x, loc_y, GLOBALS.DIR.DOWN)){
                 to_dir = GLOBALS.DIR.DOWN;
@@ -243,9 +272,11 @@ export class E5 extends Enemy {
             return;
         }
 
-        if (!sprite.scene.anims.exists(animInfo.key)) {
+        // console.log("e5.anims",this.anims + animInfo.key);
+
+        if (!sprite.scene.anims.exists(this.anims + animInfo.key)) {
             sprite.scene.anims.create({
-                key: animInfo.key,
+                key: this.anims + animInfo.key,
                 frames: animInfo.frames,
                 frameRate: 8,
                 repeat: 0,
@@ -254,13 +285,13 @@ export class E5 extends Enemy {
         }
 
         sprite.on('animationcomplete', (animation) => {
-            if (animation.key === animInfo.key) {
+            if (animation.key === this.anims + animInfo.key) {
                 sprite.setFrame(animInfo.endFrame); // 回転後に最終フレームを静止表示
                 sprite.off('animationcomplete'); // 多重登録防止
                 this.state = ST_NORM;
                 this.dir = animInfo.to_dir;
             }
         });
-        sprite.play(animInfo.key);
+        sprite.play(this.anims + animInfo.key);
     }
 }

@@ -22,15 +22,15 @@ export class Cursor extends Drawable {
     }
 
     adjust(pos_x, pos_y){
-        const fox = GameState.field_origin_x;
-        const foy = GameState.field_origin_y;
+        const fox = GameState.field_origin_x + GameState.field_offset_x;
+        const foy = GameState.field_origin_y + GameState.field_offset_y;
         const wt = GLOBALS.WALL.SIZE.THICK;
         const fx = pos_x - fox - wt;
         const fy = pos_y - foy - wt;
         const pw = GLOBALS.PANEL.WIDTH;
         const ph = GLOBALS.PANEL.HEIGHT;
-        const fc = GLOBALS.FIELD.COL;
-        const fr = GLOBALS.FIELD.ROW;
+        const fc = GameState.field_col;
+        const fr = GameState.field_row;
         if (pos_x > fox && pos_x < fox + wt && fy > 0 && fy < ph * fr){
             // 壁-西側
             if (this.visible){

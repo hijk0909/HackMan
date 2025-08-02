@@ -31,6 +31,12 @@ export const  GameState = {
     // フィールド
     field_origin_x : 0,
     field_origin_y : 100,
+    field_offset_x : 0,
+    field_offset_y : 0,
+    field_width : GLOBALS.FIELD.WIDTH,
+    field_height : GLOBALS.FIELD.HEIGHT,
+    field_col : 5,
+    field_row : 6,
     panels : [],
     walls : [],
     items : [],

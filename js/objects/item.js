@@ -11,10 +11,10 @@ export class Item extends Drawable {
 
     init(type, loc){
         super.init(type, loc);
-        let x = GameState.field_origin_x;
-        let y = GameState.field_origin_y;
+        let x = GameState.field_origin_x + GameState.field_offset_x;
+        let y = GameState.field_origin_y + GameState.field_offset_y;
         if (type === GLOBALS.WALL.TYPE.EAST){
-            x += GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH * GLOBALS.FIELD.COL
+            x += GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH * GameState.field_col
                  + GLOBALS.ITEM.SIZE / 2;
             y += GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT + GLOBALS.PANEL.HEIGHT / 2;
         } else if (type === GLOBALS.WALL.TYPE.WEST){
@@ -27,7 +27,7 @@ export class Item extends Drawable {
         } else if (type === GLOBALS.WALL.TYPE.SOUTH){
             x += GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH
                  + GLOBALS.PANEL.WIDTH / 2;
-            y += GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT * GLOBALS.FIELD.ROW
+            y += GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT * GameState.field_row
                  + GLOBALS.ITEM.SIZE / 2;
         }
         this.pos.x = x;

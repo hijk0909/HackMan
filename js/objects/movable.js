@@ -1,18 +1,21 @@
 // movable.js
 import { GLOBALS } from "../GameConst.js";
-import { GameState } from '../GameState.js';
 import { Drawable } from './drawable.js';
-import { MyMath} from '../utils/MathUtils.js';
 
 export class Movable extends Drawable {
 
     constructor(scene){
         super(scene);
         this.size = GLOBALS.MOVABLE.SIZE;
+        this.dir = GLOBALS.DIR.RIGHT;
     }
 
     init(type, pos){
         super.init(type,pos);
+    }
+
+    set_dir(dir){
+        this.dir = dir;
     }
 
     set_pos(pos){

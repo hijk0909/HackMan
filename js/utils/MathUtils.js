@@ -16,8 +16,8 @@ export class MyMath {
 
     // 変換：座標からパネル位置とパネル内相対座標
     static get_loc_from_pos(pos_x, pos_y){
-        const fx = pos_x - GameState.field_origin_x - GLOBALS.WALL.SIZE.THICK;
-        const fy = pos_y - GameState.field_origin_y - GLOBALS.WALL.SIZE.THICK;
+        const fx = pos_x - GameState.field_origin_x - GameState.field_offset_x - GLOBALS.WALL.SIZE.THICK;
+        const fy = pos_y - GameState.field_origin_y - GameState.field_offset_y - GLOBALS.WALL.SIZE.THICK;
         const loc_x = Math.floor(fx / GLOBALS.PANEL.WIDTH);
         const rel_pos_x = fx % GLOBALS.PANEL.WIDTH;
         const loc_y = Math.floor(fy / GLOBALS.PANEL.HEIGHT);
@@ -27,18 +27,18 @@ export class MyMath {
 
     // 変換：パネル位置から中心座標
     static get_pos_from_loc(loc_x, loc_y){
-        const pos_x = GameState.field_origin_x + GLOBALS.WALL.SIZE.THICK
+        const pos_x = GameState.field_origin_x + GameState.field_offset_x + GLOBALS.WALL.SIZE.THICK
              + loc_x * GLOBALS.PANEL.WIDTH + GLOBALS.PANEL.WIDTH / 2;
-        const pos_y = GameState.field_origin_y + GLOBALS.WALL.SIZE.THICK
+        const pos_y = GameState.field_origin_y + GameState.field_offset_y + GLOBALS.WALL.SIZE.THICK
              + loc_y * GLOBALS.PANEL.HEIGHT + GLOBALS.PANEL.HEIGHT / 2;
         return {pos_x, pos_y};
     }
 
     // 変換：パネル位置から左上座標
     static get_top_left_from_loc(loc_x, loc_y){
-        const top = GameState.field_origin_x + GLOBALS.WALL.SIZE.THICK
+        const top = GameState.field_origin_x + GameState.field_offset_x + GLOBALS.WALL.SIZE.THICK
              + loc_x * GLOBALS.PANEL.WIDTH;
-        const left = GameState.field_origin_y + GLOBALS.WALL.SIZE.THICK
+        const left = GameState.field_origin_y + GameState.field_offset_y + GLOBALS.WALL.SIZE.THICK
              + loc_y * GLOBALS.PANEL.HEIGHT;
         return {top, left};
     }
@@ -77,8 +77,8 @@ export class MyMath {
     // 判定：経路上にいるか
     static isOnPath(pos_x,pos_y){
         const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
-        if (loc_x < 0 || loc_x >= GLOBALS.FIELD.COL || 
-            loc_y < 0 || loc_y >= GLOBALS.FIELD.ROW ){
+        if (loc_x < 0 || loc_x >= GameState.field_col || 
+            loc_y < 0 || loc_y >= GameState.field_row ){
             return false;
         }
 
@@ -121,9 +121,9 @@ export class MyMath {
         const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, size);
         // 外壁に当たっているか
         if ( loc_x < 0 || (loc_x == 0 && m_left < 0 ) ||
-            loc_x >= GLOBALS.FIELD.COL || (loc_x == GLOBALS.FIELD.COL - 1 && m_right > GLOBALS.PANEL.WIDTH) ||
+            loc_x >= GameState.field_col || (loc_x == GameState.field_col - 1 && m_right > GLOBALS.PANEL.WIDTH) ||
             loc_y < 0 || (loc_y == 0 && m_top < 0 ) ||
-            loc_y >= GLOBALS.FIELD.ROW || (loc_y == GLOBALS.FIELD.ROW - 1 && m_bottom > GLOBALS.PANEL.HEIGHT)){
+            loc_y >= GameState.field_row || (loc_y == GameState.field_row - 1 && m_bottom > GLOBALS.PANEL.HEIGHT)){
             return true;
         }
         return false;
@@ -135,9 +135,9 @@ export class MyMath {
         const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, size);
         // 外壁に当たっているか
         if ( loc_x < 0 || (loc_x == 0 && m_left < 0 ) ||
-            loc_x >= GLOBALS.FIELD.COL || (loc_x == GLOBALS.FIELD.COL - 1 && m_right > GLOBALS.PANEL.WIDTH) ||
+            loc_x >= GameState.field_col || (loc_x == GameState.field_col - 1 && m_right > GLOBALS.PANEL.WIDTH) ||
             loc_y < 0 || (loc_y == 0 && m_top < 0 ) ||
-            loc_y >= GLOBALS.FIELD.ROW || (loc_y == GLOBALS.FIELD.ROW - 1 && m_bottom > GLOBALS.PANEL.HEIGHT)){
+            loc_y >= GameState.field_row || (loc_y == GameState.field_row - 1 && m_bottom > GLOBALS.PANEL.HEIGHT)){
             return true;
         }
         // 隣接するパネルの内壁に当たっているか
@@ -167,7 +167,7 @@ export class MyMath {
                     !this.isFlipping(loc_x, loc_y - 1)
             );
         } else if (dir === GLOBALS.DIR.DOWN){
-             return (loc_y < GLOBALS.FIELD.ROW - 1 &&
+             return (loc_y < GameState.field_row - 1 &&
                     !GameState.panels[loc_x][loc_y].fence.bottom &&
                     !GameState.panels[loc_x][loc_y + 1].fence.top &&
                     !this.isFlipping(loc_x, loc_y + 1)
@@ -179,7 +179,7 @@ export class MyMath {
                     !this.isFlipping(loc_x - 1, loc_y)
             );           
         } else if (dir === GLOBALS.DIR.RIGHT){
-             return (loc_x < GLOBALS.FIELD.COL - 1 &&
+             return (loc_x < GameState.field_col - 1 &&
                     !GameState.panels[loc_x][loc_y].fence.right &&
                     !GameState.panels[loc_x + 1][loc_y].fence.left &&
                     !this.isFlipping(loc_x + 1, loc_y)
@@ -194,13 +194,29 @@ export class MyMath {
         return (st === GLOBALS.PANEL.STATE.FLIP_ABOVE || st === GLOBALS.PANEL.STATE.FLIP_BELOW);
     }
 
+    // 判定：当該パネルはフリップ中か
+    static isInnerFlipping(pos_x, pos_y){
+        const { loc_x, loc_y } = MyMath.get_loc_from_pos(pos_x, pos_y);
+        return this.isFlipping(loc_x, loc_y);
+    }
+
+    // 判定：隣接パネルはフリップ中か
+    static isOuterFlipping(pos_x, pos_y, size){
+        const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
+        const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, size);
+        return ( (m_top < 0 && this.isFlipping(loc_x, loc_y - 1)) ||
+             (m_bottom > GLOBALS.PANEL.HEIGHT && this.isFlipping(loc_x, loc_y + 1)) ||
+             (m_left < 0 && this.isFlipping(loc_x - 1, loc_y)) ||
+             (m_right > GLOBALS.PANEL.WIDTH && this.isFlipping(loc_x + 1, loc_y)) );
+    }
+
     // 判定：パネル内壁に当たっているか
     static isOnInnerFence(pos_x, pos_y, size){
         const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
         const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, size); 
         // そもそもフィールド内のパネル上か
-        if (loc_x < 0 || loc_x >= GLOBALS.FIELD.COL ||
-            loc_y < 0 || loc_y >= GLOBALS.FIELD.ROW ){
+        if (loc_x < 0 || loc_x >= GameState.field_col ||
+            loc_y < 0 || loc_y >= GameState.field_row ){
             return true;
         }
         // パネル内の内壁に当たっているか
@@ -214,6 +230,73 @@ export class MyMath {
         return false;
     }
 
+    // 破壊：現在パネルの内壁（フェンス）を破壊する
+    static breakInnerFence(pos_x, pos_y, size){
+        const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
+        const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, size); 
+        // そもそもフィールド内のパネル上か
+        if (loc_x < 0 || loc_x >= GameState.field_col ||
+            loc_y < 0 || loc_y >= GameState.field_row ){
+            return false;
+        }
+        // 現在パネルはフリップ中か
+        if (this.isFlipping(loc_x, loc_y)){
+            return false;
+        }
+        // 現在パネル内の内壁に当たっているか
+        const p = GameState.panels[loc_x][loc_y];
+        if (p.fence.top && m_top < GLOBALS.PANEL.FENCE.THICK){
+            p.fence.top = false;
+            p.recalc_type();
+            return true;
+        } else if (p.fence.bottom && m_bottom > GLOBALS.PANEL.HEIGHT - GLOBALS.PANEL.FENCE.THICK){
+            p.fence.bottom = false;
+            p.recalc_type();
+            return true;
+        } else if (p.fence.left && m_left < GLOBALS.PANEL.FENCE.THICK){
+            p.fence.left = false;
+            p.recalc_type();
+            return true;
+        } else if (p.fence.right && m_right > GLOBALS.PANEL.WIDTH - GLOBALS.PANEL.FENCE.THICK){
+            p.fence.right = false;
+            p.recalc_type();
+            return true;
+        }
+        return false;
+    }
+
+    // 破壊：隣接パネルの内壁（フェンス）を破壊する
+    static breakNextFence(pos_x, pos_y, size){
+        const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
+        const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, size);
+        // 外壁に当たっているか
+        if ( loc_x < 0 || (loc_x == 0 && m_left < 0 ) ||
+            loc_x >= GameState.field_col || (loc_x == GameState.field_col - 1 && m_right > GLOBALS.PANEL.WIDTH) ||
+            loc_y < 0 || (loc_y == 0 && m_top < 0 ) ||
+            loc_y >= GameState.field_row || (loc_y == GameState.field_row - 1 && m_bottom > GLOBALS.PANEL.HEIGHT)){
+            return false;
+        }
+        // 隣接するパネルの内壁に当たっているか
+        if (m_top < 0 && GameState.panels[loc_x][loc_y - 1].fence.bottom && !this.isFlipping(loc_x, loc_y - 1)){
+            GameState.panels[loc_x][loc_y - 1].fence.bottom = false;
+            GameState.panels[loc_x][loc_y - 1].recalc_type();
+            return true;
+        } else if (m_bottom > GLOBALS.PANEL.HEIGHT && GameState.panels[loc_x][loc_y + 1].fence.top && !this.isFlipping(loc_x, loc_y + 1)){
+            GameState.panels[loc_x][loc_y + 1].fence.top = false;
+            GameState.panels[loc_x][loc_y + 1].recalc_type();
+            return true;
+        } else if (m_left < 0 && GameState.panels[loc_x - 1][loc_y].fence.right && !this.isFlipping(loc_x - 1, loc_y)){
+            GameState.panels[loc_x - 1][loc_y].fence.right = false;
+            GameState.panels[loc_x - 1][loc_y].recalc_type();
+            return true;
+        } else if (m_right > GLOBALS.PANEL.WIDTH && GameState.panels[loc_x + 1][loc_y].fence.left && !this.isFlipping(loc_x + 1, loc_y)){
+            GameState.panels[loc_x + 1][loc_y].fence.left = false;
+            GameState.panels[loc_x + 1][loc_y].recalc_type();
+            return true;
+        }
+        return false;
+    }
+
     // 判定：どの外壁番号に接しているか
     static getWallNumber(pos_x, pos_y, size){
         const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(pos_x, pos_y);
@@ -221,16 +304,16 @@ export class MyMath {
 
         if ( loc_x < 0 || (loc_x == 0 && m_left < 0 )){
             // EAST
-            return loc_y + GLOBALS.FIELD.COL * 2 + GLOBALS.FIELD.ROW;
-        } else if ( loc_x >= GLOBALS.FIELD.COL || (loc_x == GLOBALS.FIELD.COL - 1 && m_right > GLOBALS.PANEL.WIDTH)){
+            return loc_y + GameState.field_col * 2 + GameState.field_row;
+        } else if ( loc_x >= GameState.field_col || (loc_x == GameState.field_col - 1 && m_right > GLOBALS.PANEL.WIDTH)){
             // WEST
-            return loc_y + GLOBALS.FIELD.COL * 2;
+            return loc_y + GameState.field_col * 2;
         } else if ( loc_y < 0 || (loc_y == 0 && m_top < 0 )){
             // NORTH
             return loc_x;
-        } else if ( loc_y >= GLOBALS.FIELD.ROW || (loc_y == GLOBALS.FIELD.ROW - 1 && m_bottom > GLOBALS.PANEL.HEIGHT)){
+        } else if ( loc_y >= GameState.field_row || (loc_y == GameState.field_row - 1 && m_bottom > GLOBALS.PANEL.HEIGHT)){
             // SOUTH
-            return loc_x + GLOBALS.FIELD.COL;
+            return loc_x + GameState.field_col;
         }
         return null;
     }

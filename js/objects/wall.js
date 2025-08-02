@@ -11,28 +11,28 @@ export class Wall extends Drawable {
 
     init(type, loc){
         super.init(type, loc);
-        let x = GameState.field_origin_x;
-        let y = GameState.field_origin_y;
+        let x = GameState.field_origin_x + GameState.field_offset_x;
+        let y = GameState.field_origin_y + GameState.field_offset_y;
         let key = null;
         if (type === GLOBALS.WALL.TYPE.EAST){
-            x += GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH * GLOBALS.FIELD.COL;
+            x += GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH * GameState.field_col;
             y += GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT;
             key = "we";
         } else if (type === GLOBALS.WALL.TYPE.WEST){
-            // x += loc.x * GLOBALS.PANEL.WIDTH * GLOBALS.FIELD.COL;
+            // x += loc.x * GLOBALS.PANEL.WIDTH * GameState.field_col;
             y += GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT;
             key = "ww"
         } else if (type === GLOBALS.WALL.TYPE.NORTH){
             x += GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH;
-            // y += loc.y * GLOBALS.PANEL.HEIGHT * GLOBALS.FIELD.ROW;
+            // y += loc.y * GLOBALS.PANEL.HEIGHT * GameState.field_row;
             key = "wn";
         } else if (type === GLOBALS.WALL.TYPE.SOUTH){
             x += GLOBALS.WALL.SIZE.THICK + loc.x * GLOBALS.PANEL.WIDTH;
-            y += GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT * GLOBALS.FIELD.ROW;
+            y += GLOBALS.WALL.SIZE.THICK + loc.y * GLOBALS.PANEL.HEIGHT * GameState.field_row;
             key = "ws";
         } else if (type === GLOBALS.WALL.TYPE.CORNER){
-            x += loc.x * (GLOBALS.WALL.SIZE.THICK + GLOBALS.PANEL.WIDTH * GLOBALS.FIELD.COL);
-            y += loc.y * (GLOBALS.WALL.SIZE.THICK + GLOBALS.PANEL.HEIGHT * GLOBALS.FIELD.ROW);
+            x += loc.x * (GLOBALS.WALL.SIZE.THICK + GLOBALS.PANEL.WIDTH * GameState.field_col);
+            y += loc.y * (GLOBALS.WALL.SIZE.THICK + GLOBALS.PANEL.HEIGHT * GameState.field_row);
             key = "wc"
         }
         this.pos.x = x;

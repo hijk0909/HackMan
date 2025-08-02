@@ -1,11 +1,10 @@
 // e1.js
 import { GLOBALS } from '../GameConst.js';
 import { GameState } from '../GameState.js';
-import { MyMath } from '../utils/MathUtils.js';
-import { Effect } from './effect.js';
 import { Enemy } from './enemy.js';
 import { B1 } from './b1.js';
 import { B2 } from './b2.js';
+import { B3 } from './b3.js';
 
 const ST_NORM = 0;
 const ST_TURN = 1;
@@ -29,6 +28,7 @@ export class E2 extends Enemy {
             {type:0, anims: 'e2_anims_0', anims_start:0, anims_end:4,  bullet:null},
             {type:1, anims: 'e2_anims_1', anims_start:5, anims_end:9,  bullet:B1},
             {type:2, anims: 'e2_anims_2', anims_start:10, anims_end:14, bullet:B2},
+            {type:3, anims: 'e1_anims_3', anims_start:15, anims_end:19, bullet:B3},
         ];
 
         super.init(type, pos);
@@ -49,6 +49,7 @@ export class E2 extends Enemy {
 
     _move(){
         if (this.state == ST_NORM){
+            // 通常移動
             if (!super.move_straight()){
                 this.state = ST_TURN;
                 this.dir = (this.dir == GLOBALS.DIR.UP) ? GLOBALS.DIR.DOWN : GLOBALS.DIR.UP;
@@ -67,16 +68,19 @@ export class E2 extends Enemy {
                 this.sprite.play(this.anims);
             }
         } else if (this.state == ST_TURN){
-            // アニメーションの終了待ち（回転中）
-            if (this.bullet){
-                this.cooldown -= 1;
-                if (this.cooldown <= 0){
-                    this.cooldown = COOLDOWN_INTERVAL;
-                    const dir = Math.floor(Math.random()*GLOBALS.DIR.NUM);
-                    super.shoot_bullet(dir);
-                }
-            }
+            // 回転中（アニメーションの終了待ち）
         }
-        super._move();    
+        super._move();
+    }
+
+    _onCenter(){
+        if (this.bullet){
+            // 進行方向と直角で、プレイヤーがいる方向に弾を射出
+            let dir = GLOBALS.DIR.LEFT;
+            if (GameState.player.pos.x > this.pos.x){
+                dir = GLOBALS.DIR.RIGHT;
+            }
+            super.shoot_bullet(dir);
+        }
     }
 }

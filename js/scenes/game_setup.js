@@ -25,16 +25,31 @@ export class Setup {
     constructor(scene) {
         this.scene = scene;
         this.floorData = this.scene.cache.json.get('floor_data');
+        this.bg = null;
     }
 
     make_field(){
         // フロアデータの読み込み
         const floorInfo = this.floorData.floors.find(s => s.floor === GameState.floor);
+        GameState.field_col = floorInfo.col;
+        GameState.field_row = floorInfo.row;
+        GameState.field_width = GLOBALS.PANEL.WIDTH * GameState.field_col + GLOBALS.WALL.SIZE.THICK * 2;
+        GameState.field_height = GLOBALS.PANEL.HEIGHT * GameState.field_row + GLOBALS.WALL.SIZE.THICK * 2;
+        GameState.field_offset_x = (GLOBALS.FIELD.WIDTH - GameState.field_width) / 2;
+        GameState.field_offset_y = (GLOBALS.FIELD.HEIGHT - GameState.field_height) / 2;
+
+        // 背景の作成
+        this.bg = this.scene.add.tileSprite(GameState.field_origin_x + GameState.field_offset_x,
+                                      GameState.field_origin_y + GameState.field_offset_y,
+                                      GameState.field_width,
+                                      GameState.field_height,
+                                      'bg').setOrigin(0).setDepth(-1);
+        this.bg.setTint(0x808080);
 
         // パネルの作成
         GameState.panels = [];
-        for (let j = 0; j < GLOBALS.FIELD.ROW; j++) {
-            for (let i = 0; i < GLOBALS.FIELD.COL; i++) {
+        for (let j = 0; j < GameState.field_row; j++) {
+            for (let i = 0; i < GameState.field_col; i++) {
                 const panelType = floorInfo.field[j][i];
                 const p = new Panel(this.scene);
                 p.init(panelType, new Phaser.Math.Vector2(i, j));
@@ -44,7 +59,7 @@ export class Setup {
         }
 
         // 外壁とアイテム枠の作成
-        for (let i=0; i<GLOBALS.FIELD.COL; i++){
+        for (let i=0; i<GameState.field_col; i++){
             const wn = new Wall(this.scene);
             wn.init(GLOBALS.WALL.TYPE.NORTH,new Phaser.Math.Vector2(i, 0));
             GameState.walls[i] = wn;
@@ -55,42 +70,42 @@ export class Setup {
 
             const ws = new Wall(this.scene);
             ws.init(GLOBALS.WALL.TYPE.SOUTH,new Phaser.Math.Vector2(i, 1));
-            GameState.walls[i + GLOBALS.FIELD.COL] = ws;
+            GameState.walls[i + GameState.field_col] = ws;
 
             const its = new Item(this.scene);
             its.init(GLOBALS.WALL.TYPE.SOUTH,new Phaser.Math.Vector2(i, 1));
-            GameState.items[i + GLOBALS.FIELD.COL] = its;
+            GameState.items[i + GameState.field_col] = its;
         }
-        for (let i=0; i<GLOBALS.FIELD.ROW; i++){
+        for (let i=0; i<GameState.field_row; i++){
             const we = new Wall(this.scene);
             we.init(GLOBALS.WALL.TYPE.EAST,new Phaser.Math.Vector2(1, i));
-            GameState.walls[i + GLOBALS.FIELD.COL * 2] = we;
+            GameState.walls[i + GameState.field_col * 2] = we;
 
             const ite = new Item(this.scene);
             ite.init(GLOBALS.WALL.TYPE.EAST,new Phaser.Math.Vector2(1, i));
-            GameState.items[i + GLOBALS.FIELD.COL * 2] = ite;
+            GameState.items[i + GameState.field_col * 2] = ite;
 
             const ww = new Wall(this.scene);
             ww.init(GLOBALS.WALL.TYPE.WEST,new Phaser.Math.Vector2(0, i));
-            GameState.walls[i + GLOBALS.FIELD.COL * 2 + GLOBALS.FIELD.ROW] = ww;
+            GameState.walls[i + GameState.field_col * 2 + GameState.field_row] = ww;
 
             const itw = new Item(this.scene);
             itw.init(GLOBALS.WALL.TYPE.WEST,new Phaser.Math.Vector2(0, i));
-            GameState.items[i + GLOBALS.FIELD.COL * 2 + GLOBALS.FIELD.ROW] = itw;            
+            GameState.items[i + GameState.field_col * 2 + GameState.field_row] = itw;            
         }
         GameState.walls_corner = [];
         const wc0 = new Wall(this.scene);
         wc0.init(GLOBALS.WALL.TYPE.CORNER,new Phaser.Math.Vector2(0, 0));
-        GameState.walls[0 + GLOBALS.FIELD.COL * 2 + GLOBALS.FIELD.ROW * 2] = wc0;
+        GameState.walls[0 + GameState.field_col * 2 + GameState.field_row * 2] = wc0;
         const wc1 = new Wall(this.scene);
         wc1.init(GLOBALS.WALL.TYPE.CORNER,new Phaser.Math.Vector2(1, 0));
-        GameState.walls[1 + GLOBALS.FIELD.COL * 2 + GLOBALS.FIELD.ROW * 2] = wc1;
+        GameState.walls[1 + GameState.field_col * 2 + GameState.field_row * 2] = wc1;
         const wc2 = new Wall(this.scene);
         wc2.init(GLOBALS.WALL.TYPE.CORNER,new Phaser.Math.Vector2(0, 1));
-        GameState.walls[2 + GLOBALS.FIELD.COL * 2 + GLOBALS.FIELD.ROW * 2] = wc2;
+        GameState.walls[2 + GameState.field_col * 2 + GameState.field_row * 2] = wc2;
         const wc3 = new Wall(this.scene);
         wc3.init(GLOBALS.WALL.TYPE.CORNER,new Phaser.Math.Vector2(1, 1));
-        GameState.walls[3 + GLOBALS.FIELD.COL * 2 + GLOBALS.FIELD.ROW * 2] = wc3;    
+        GameState.walls[3 + GameState.field_col * 2 + GameState.field_row * 2] = wc3;    
 
         // 必須アイテムをランダムな位置に配置
         this.place_item(GLOBALS.ITEM.TYPE.KEY);
@@ -127,11 +142,13 @@ export class Setup {
 
         // 敵の配置
         for (const enemyData of floorInfo.enemies) {
-            const { x, y, tribe,  type } = enemyData;
+            const { x, y, tribe,  type, dir } = enemyData;
+            // console.log("setup enemy:",x,y,tribe,type,dir);
             const EnemyClass = enemyClassMap[tribe];
             const e = new EnemyClass(this.scene);
             const pos = MyMath.get_pos_from_loc(x, y);
             e.init(type, new Phaser.Math.Vector2(pos.pos_x, pos.pos_y));
+            if (dir != null) e.set_dir(dir);
             GameState.enemies.push(e);
         }
     }
@@ -204,5 +221,10 @@ export class Setup {
             GameState.effects.splice(i,1);
         }
         GameState.effects = [];
+
+        // 背景
+        if (this.bg){
+            this.bg.destroy();
+        }
     }
 }

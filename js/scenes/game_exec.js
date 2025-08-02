@@ -20,8 +20,8 @@ export class Exec {
         unlock_item_box();
 
         // パネルの更新
-        for (let i=0; i<GLOBALS.FIELD.COL; i++){
-            for (let j=0; j<GLOBALS.FIELD.ROW; j++){
+        for (let i=0; i<GameState.field_col; i++){
+            for (let j=0; j<GameState.field_row; j++){
                 GameState.panels[i][j].update();
             }
         }
@@ -111,7 +111,7 @@ export class Exec {
         } else if (GameState.flip_state === GLOBALS.FLIP_STATE.FLIP){
             c = GLOBALS.COLOR.WALL_FLIP;
         }
-        for (let i=0; i < GLOBALS.FIELD.ROW*2 + GLOBALS.FIELD.COL*2 + 4;i++){
+        for (let i=0; i < GameState.field_row*2 + GameState.field_col*2 + 4;i++){
             GameState.walls[i].sprite.setTint(c);
         }
 
