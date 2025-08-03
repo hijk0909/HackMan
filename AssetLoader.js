@@ -53,7 +53,7 @@ export class AssetLoader extends Phaser.Scene {
         this.load.spritesheet('ss_e4', 'assets/images/ss_e4.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 15 });
         this.load.spritesheet('ss_e5', 'assets/images/ss_e5.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 35 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 47 });
         this.load.spritesheet('ss_b1', 'assets/images/ss_b1.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 3 });
         this.load.spritesheet('ss_b2', 'assets/images/ss_b2.png', {

@@ -70,6 +70,16 @@ const itemBoxCheckers = {
   30: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
   // FLOOR 31 : 敵を全滅させる → フリップUP
   31: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+  // FLOOR 32 : 敵を残り１以下にする　→ スピードUP
+  32: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+  // FLOOR 33 : 敵を全滅させる → フリップUP
+  33: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+  // FLOOR 34 : 敵を残り１以下にする　→ スピードUP
+  34: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+  // FLOOR 35 : 敵を全滅させる → フリップUP
+  35: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+  // FLOOR 36 : 敵を残り１以下にする　→ スピードUP
+  36: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
 };
 
 // ◆常時チェッカー

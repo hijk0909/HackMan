@@ -43,6 +43,11 @@ export class E2 extends Enemy {
         this.dir = GLOBALS.DIR.DOWN;
     }
 
+    set_dir(dir){
+        this.sprite.setFrame(this.type * 5);
+        super.set_dir(dir);
+    }
+
     update(){
         super.update();
     }
