@@ -2,7 +2,7 @@
 
 export const GLOBALS = {
 
-    FLOOR_MAX : 33,
+    FLOOR_MAX : 35,
     TIME_MAX : 9999,
     ENERGY_MAX : 9999,
     FLIP_ENRGY : 100,

@@ -48,7 +48,7 @@ export class TitleScene extends Phaser.Scene {
 
         this.add.text(this.cx, 50, 'HackMan', { fontSize: '64px', fill: '#ffee00' , stroke: COLOR.RED, strokeThickness: 2}).setOrigin(0.5,0.5);
         this.add.text(this.cx, this.hy - 150, 'Copyright Current Color Co. Ltd. All rights reserved.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
-        this.add.text(this.cx, this.hy - 120, 'Version 0.1 2025.7.27.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
+        this.add.text(this.cx, this.hy - 120, 'Version 0.2 2025.8.3.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
         this.add.text(this.cx, this.hy - 90, 'PUSH SPACE KEY',{ fontSize: '24px', fill: '#fff' }).setOrigin(0.5,0.5);
         this.start_floor_txt = this.add.text(this.cx, 150, 'Start Floor: ', { fontSize: '24px', fill: '#eee' }).setOrigin(0.5,0.5).setVisible(false);
 
