@@ -34,6 +34,10 @@ export class Drawable {
         this.alive = false;
     }
 
+    setAlive(alive) {
+        this.alive = alive;
+    }
+
     isAlive() {
         return this.alive;
     }

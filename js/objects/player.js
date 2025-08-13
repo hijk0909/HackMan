@@ -11,6 +11,7 @@ export class Player extends Movable {
         super(scene);
         this.touch_wall = false;
         this.flip_frame = null;
+        this.sprite_barrier = null;
     }
 
     init(type, pos){
@@ -73,6 +74,22 @@ export class Player extends Movable {
         }
 
         this.sprite.play('pd_anims');
+
+        this.sprite_barrier = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_p').setOrigin(0.5, 0.5).setFrame(19).setDepth(1).setVisible(false);
+        if (!this.scene.anims.exists('pb_anims')) {
+            this.scene.anims.create({key:'pb_anims',
+                frames: [ 
+                    { key: 'ss_p', frame: 18},
+                    { key: 'ss_p', frame: 19},
+                    { key: 'ss_p', frame: 20}
+                ],
+                frameRate: 16, repeat: -1
+            });
+        }
+
+        if (GameState.barrier > 0){
+            this.set_barrier(true);
+        }
     } // End of init
 
     update(){
@@ -192,6 +209,7 @@ export class Player extends Movable {
         }
 
         this.flip_frame.draw();
+        this.sprite_barrier.setPosition(this.pos.x, this.pos.y);
         super.update();
     } // End of update
 
@@ -353,7 +371,7 @@ export class Player extends Movable {
         item.set_visible(true);
         if (item.type === GLOBALS.ITEM.TYPE.KEY){
             // ◆鍵の取得
-            GameState.ui.collection_add(0, item.type);
+            GameState.ui.collection_add_key();
             GameState.sound.se_key.play();
             item.set_blink_out();
         } else if (item.type === GLOBALS.ITEM.TYPE.EXIT){
@@ -381,14 +399,7 @@ export class Player extends Movable {
                 GameState.ui.collection_update_speed(true);
                 GameState.sound.se_powerup.play();
             } else {
-                GameState.score += GLOBALS.MAX_BONUS;
-                // サウンドエフェクト
-                GameState.sound.se_bonus.play();
-                // テキストエフェクト
-                const eff = new Effect(this.scene);
-                eff.init(GLOBALS.EFFECT.TYPE.TEXT,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
-                GameState.effects.push(eff);
-                eff.set_text(`+${GLOBALS.MAX_BONUS}`);
+                this.add_score(GLOBALS.MAX_BONUS);
             }
             item.set_blink_out();
         } else if (item.type === GLOBALS.ITEM.TYPE.FLIP){
@@ -398,41 +409,62 @@ export class Player extends Movable {
                 GameState.ui.collection_update_flip(true);
                 GameState.sound.se_powerup.play();
             } else {
-                GameState.score += GLOBALS.MAX_BONUS;
-                // サウンドエフェクト
-                GameState.sound.se_bonus.play();
-                // テキストエフェクト
-                const eff = new Effect(this.scene);
-                eff.init(GLOBALS.EFFECT.TYPE.TEXT,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
-                GameState.effects.push(eff);
-                eff.set_text(`+${GLOBALS.MAX_BONUS}`);
+                this.add_score(GLOBALS.MAX_BONUS);
+            }
+            item.set_blink_out();
+        } else if (item.type === GLOBALS.ITEM.TYPE.BARRIER){
+            // ◆バリア重ね取り
+            if (GameState.barrier < GLOBALS.BARRIER_MAX){
+                GameState.barrier += 1;
+                GameState.ui.collection_update_barrier(true);
+                GameState.sound.se_powerup.play();
+                this.set_barrier(true);
+            } else {
+                this.add_score(GLOBALS.MAX_BONUS);
             }
             item.set_blink_out();
         } else if (item.type === GLOBALS.ITEM.TYPE.ENERGY){
             // ◆エネルギーアップ
             GameState.add_energy(1000);
-            GameState.sound.se_exit.play();
+            GameState.sound.se_powerup.play();
             item.set_blink_out();
-        } else if (item.type === GLOBALS.ITEM.TYPE.BONUS){
+        } else if (item.type === GLOBALS.ITEM.TYPE.POINT){
             // ◆得点アップ
-            GameState.score += 1000;
+            this.add_score(1000);
             item.set_blink_out();
-            // サウンドエフェクト
-            GameState.sound.se_bonus.play();
-            // テキストエフェクト
-            const eff = new Effect(this.scene);
-            eff.init(GLOBALS.EFFECT.TYPE.TEXT,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
-            GameState.effects.push(eff);
-            eff.set_text("+1000");
         } else if (item.type >= GLOBALS.ITEM.TYPE.PICT_MIN && item.type <= GLOBALS.ITEM.TYPE.PICT_MAX){
             // ◆絵合わせ
             const next_type = item.type === GLOBALS.ITEM.TYPE.PICT_MAX ? GLOBALS.ITEM.TYPE.PICT_MIN : item.type + 1;
             item.set_type(next_type);
         } else if (item.type === GLOBALS.ITEM.TYPE.RING){
             // ◆指輪
-            const pos = 3;
-            GameState.ui.collection_add(pos, item.type);
-            GameState.sound.se_bonus.play();
+            if (GameState.ring < GLOBALS.RING_MAX){
+                GameState.ring += 1;
+                GameState.ui.collection_update_ring(true);
+                GameState.sound.se_powerup.play();
+            } else {
+                this.add_score(GLOBALS.MAX_BONUS);
+            }
+            item.set_blink_out();
+        } else if (item.type === GLOBALS.ITEM.TYPE.USB){
+            // ◆ＵＳＢ
+            if (GameState.usb < GLOBALS.USB_MAX){
+                GameState.usb += 1;
+                GameState.ui.collection_update_usb(true);
+                GameState.sound.se_powerup.play();
+            } else {
+                this.add_score(GLOBALS.MAX_BONUS);
+            }
+            item.set_blink_out();
+        } else if (item.type === GLOBALS.ITEM.TYPE.SCOPE){
+            // ◆スコープ
+            if (GameState.scope < GLOBALS.SCOPE_MAX){
+                GameState.scope += 1;
+                GameState.ui.collection_update_scope(true);
+                GameState.sound.se_powerup.play();
+            } else {
+                this.add_score(GLOBALS.MAX_BONUS);
+            }
             item.set_blink_out();
         } else {
             // 想定外のアイテム
@@ -443,24 +475,52 @@ export class Player extends Movable {
         this.sprite.stop();
     }
 
+    add_score(score){
+        GameState.add_score(score);
+        // サウンドエフェクト
+        GameState.sound.se_bonus.play();
+        // テキストエフェクト
+        const eff = new Effect(this.scene);
+        eff.init(GLOBALS.EFFECT.TYPE.TEXT,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
+        GameState.effects.push(eff);
+        eff.set_text("+1000");
+    }
+
+    set_barrier(visible){
+        if (visible === true){
+            this.sprite_barrier.setVisible(true);
+            this.sprite_barrier.play('pb_anims');
+        } else {
+            this.sprite_barrier.setVisible(false);
+            this.sprite_barrier.stop();
+        }
+    }
+
     destroy(){
         if ( this.flip_frame ){
             this.flip_frame.destroy();
             this.flip_frame = null;
+        }
+        if ( this.sprite_barrier ){
+            this.sprite_barrier.destroy();
+            this.sprite_barrier = null;
         }
         super.destroy();
     }
 }
 
 const FRAME_BLINK_SPEED = 20;
+const FRAME_EFFECT_PERIOD = 35;
 
 class flip_frame{
     constructor(scene){
         this.scene = scene;
-        this.graphics = this.scene.add.graphics().setDepth(3);
+        this.graphics1 = this.scene.add.graphics().setDepth(3);
+        this.graphics2 = this.scene.add.graphics().setDepth(3);
         this.frame =  new Phaser.Geom.Rectangle(0, 0, 0, 0);
         this.visible = false;
         this.cycle = 0;
+        this.count = 0;
     }
 
     set_rect(loc_x, loc_y, num_width, num_height){
@@ -470,6 +530,8 @@ class flip_frame{
         this.frame.width = num_width * GLOBALS.PANEL.WIDTH;
         this.frame.height = num_height * GLOBALS.PANEL.HEIGHT;
         this.set_visible(true);
+        this.cycle = 0;
+        this.count = 0;
     }
 
     set_visible(visible){
@@ -477,19 +539,27 @@ class flip_frame{
     }
 
     draw(){
-        this.graphics.clear();
+        this.graphics1.clear();
+        this.graphics2.clear();
         if (this.visible){
             this.cycle = this.cycle + FRAME_BLINK_SPEED > 360 ? this.cycle + FRAME_BLINK_SPEED - 360 : this.cycle + FRAME_BLINK_SPEED;
             const alpha = (Math.sin(MyMath.radians(this.cycle)) + 1) / 2;
-            this.graphics.lineStyle(5, 0xff0000);
-            this.graphics.strokeRect(this.frame.x, this.frame.y, this.frame.width, this.frame.height).setAlpha(alpha);
+            this.graphics1.lineStyle(5, 0xff0000);
+            this.graphics1.strokeRect(this.frame.x, this.frame.y, this.frame.width, this.frame.height).setAlpha(alpha);
+            this.count = this.count > FRAME_EFFECT_PERIOD ? this.count = 0 : this.count + 1;
+            this.graphics2.lineStyle(2, 0xff8000);
+            this.graphics2.strokeRect(this.frame.x - this.count, this.frame.y - this.count, this.frame.width + this.count * 2, this.frame.height + this.count * 2).setAlpha(1 - this.count / FRAME_EFFECT_PERIOD);
         }
     }
 
     destroy(){
-        if ( this.graphics ){
-            this.graphics.destroy();
-            this.graphics = null;
+        if ( this.graphics1 ){
+            this.graphics1.destroy();
+            this.graphics1 = null;
+        }
+        if ( this.graphics2 ){
+            this.graphics2.destroy();
+            this.graphics2 = null;
         }
     }
 }

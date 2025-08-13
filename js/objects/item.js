@@ -50,9 +50,9 @@ export class Item extends Drawable {
     set_blink_out(){
         this.type = GLOBALS.ITEM.TYPE.NONE;
         this.scene.tweens.add({targets: this.sprite,
-            alpha: { from: 1, to: 0 },
-            duration: 250,
-            repeat: 5,
+            alpha: { from: 1, to: 0.4 },
+            duration: 160,
+            repeat: 6,
             onComplete: () => {
                 this.sprite.setFrame(GLOBALS.ITEM.TYPE.NONE).setAlpha(1);
             }

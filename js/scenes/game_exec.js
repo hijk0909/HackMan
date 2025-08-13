@@ -43,18 +43,12 @@ export class Exec {
             if (!e.isAlive()) {
                 e.destroy();
                 GameState.enemies.splice(i, 1);
-                // 敵が全滅したら、鍵と出口を可視化
-                if (GameState.enemies.length === 0){
-                    for (let j = 0 ; j < GameState.items.length; j++){
-                        if (GameState.items[j].type === GLOBALS.ITEM.TYPE.KEY ||
-                            GameState.items[j].type === GLOBALS.ITEM.TYPE.EXIT ){
-                            GameState.items[j].set_visible(true);
-                        }
-                    }
-                }
+                // スコープの効果：敵の数に応じてアイテムを表示
+                this.activate_scope();
                 continue;
             }
             if (MyMath.isHittingCharacter(e.pos,e.size,GameState.player.pos,GameState.player.size)){
+                // 敵とプレイヤーの衝突
                 GameState.state = GLOBALS.GAME.STATE.FAILED;
                 GameState.count = GLOBALS.GAME.PERIDO.FAILED;
                 GameState.sound.bgm_main.stop();
@@ -64,7 +58,7 @@ export class Exec {
             }
         }
 
-        // 弾の管理 と プレイヤーとの当たり判定
+        // 敵弾の管理 と プレイヤーとの当たり判定
         for (let i = GameState.bullets.length - 1; i >= 0; i--) {
             const b = GameState.bullets[i];
             b.update();
@@ -74,11 +68,22 @@ export class Exec {
                 continue;
             }
             if (MyMath.isHittingCharacter(b.pos,b.size,GameState.player.pos,GameState.player.size)){
-                GameState.state = GLOBALS.GAME.STATE.FAILED;
-                GameState.count = GLOBALS.GAME.PERIDO.FAILED;
-                GameState.sound.bgm_main.stop();
-                GameState.sound.se_failed.play();
-                GameState.player.stop_animation();
+                b.setAlive(false);
+                if (GameState.barrier > 0){
+                    GameState.barrier -= 1;
+                    GameState.sound.se_failed.play();
+                    if (GameState.barrier == 0){
+                        GameState.player.set_barrier(false);
+                    }
+                    GameState.ui.collection_update_barrier(true);
+                } else {
+                    GameState.state = GLOBALS.GAME.STATE.FAILED;
+                    GameState.count = GLOBALS.GAME.PERIDO.FAILED;
+                    GameState.sound.bgm_main.stop();
+                    GameState.sound.se_failed.play();
+                    GameState.player.stop_animation();
+                    GameState.ui.collection_update_barrier(false);
+                }
                 break;
             }
         }
@@ -116,4 +121,31 @@ export class Exec {
         }
 
     } // End of update
+
+    activate_scope(){
+        if (GameState.scope >= 1 && GameState.enemies.length <= 1){
+            this.set_item_visible(GLOBALS.ITEM.TYPE.KEY);
+        }
+        if (GameState.scope >= 2 && GameState.enemies.length === 0){
+            this.set_item_visible(GLOBALS.ITEM.TYPE.EXIT);
+        }
+        if (GameState.scope >= 3 && GameState.enemies.length <= 3){
+            this.set_item_visible(GLOBALS.ITEM.TYPE.NONE);
+        }
+        if (GameState.scope >= 4 && GameState.enemies.length <= 2){
+            this.set_item_visible(GLOBALS.ITEM.TYPE.BOX);
+            this.set_item_visible(GLOBALS.ITEM.TYPE.ENERGY);
+            this.set_item_visible(GLOBALS.ITEM.TYPE.POINT);
+        }
+
+    } // End of activate_scope
+
+    set_item_visible(type){
+        for (let j = 0 ; j < GameState.items.length; j++){
+            if (GameState.items[j].type === type){
+                GameState.items[j].set_visible(true);
+            }
+        }
+    } // End of set_item_visible
+
 }

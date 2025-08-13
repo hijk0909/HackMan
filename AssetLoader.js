@@ -43,7 +43,7 @@ export class AssetLoader extends Phaser.Scene {
         this.load.image('cursor2', 'assets/images/cursor2.png');
         // キャラクター・効果
         this.load.spritesheet('ss_p', 'assets/images/ss_p.png', {
-            frameWidth: 64,  frameHeight: 64, endFrame : 17 });
+            frameWidth: 64,  frameHeight: 64, endFrame : 20 });
         this.load.spritesheet('ss_e1', 'assets/images/ss_e1.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 19 });
         this.load.spritesheet('ss_e2', 'assets/images/ss_e2.png', {
@@ -61,7 +61,7 @@ export class AssetLoader extends Phaser.Scene {
         this.load.spritesheet('ss_b3', 'assets/images/ss_b3.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 3 });
         this.load.spritesheet('ss_icon', 'assets/images/ss_icon.png', {
-            frameWidth: 48,  frameHeight: 48, endFrame : 63 });
+            frameWidth: 48,  frameHeight: 48, endFrame : 71 });
         this.load.spritesheet('ss_expl', 'assets/images/ss_expl.png', {
             frameWidth: 64,  frameHeight: 64, endFrame : 15 });
         // UIボタン
@@ -70,6 +70,10 @@ export class AssetLoader extends Phaser.Scene {
         this.load.image('op_1', 'assets/images/op_1.png');
         this.load.image('op_2', 'assets/images/op_2.png');
         this.load.image('op_3', 'assets/images/op_3.png');
+        // クリア画面
+        this.load.image('ed_1', 'assets/images/heroine.png');
+        this.load.spritesheet('ss_ed_1', 'assets/images/heroine_ss.png' , {
+            frameWidth: 180, frameHeight: 60, endFrame : 2});
         // 効果音
         this.load.audio('se_tap', './assets/audio/se/se_tap.mp3');
         this.load.audio('se_key', './assets/audio/se/se_key.mp3');

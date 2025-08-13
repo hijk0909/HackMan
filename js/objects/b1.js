@@ -19,7 +19,7 @@ export class B1 extends Bullet {
         if (!this.scene.anims.exists('b1_anims')) {
             this.scene.anims.create({key:'b1_anims',
                 frames: this.scene.anims.generateFrameNumbers('ss_b1', { start: 0, end: 3 }),
-                frameRate: 4, repeat: -1
+                frameRate:12, repeat: -1
             });
         }
         this.sprite.play('b1_anims');

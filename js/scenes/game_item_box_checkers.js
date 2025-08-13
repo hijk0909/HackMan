@@ -6,80 +6,308 @@ import { MyMath } from '../utils/MathUtils.js';
 // ◆宝箱チェッカー
 const itemBoxCheckers = {
   // FLOOR 1 : 敵を残り１以下にする　→ スピードUP
-  1: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 2 : 敵を残り１以下にする → フリップUP
-  2: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 3 : 敵を残り１以下にする→ スピードUP
-  3: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 4 : 敵を残り１以下にする → フリップUP
-  4: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+  1: { check: () => { if (GameState.enemies.length <= 1) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);}},
+       hint: "ENEMIES TO 1",
+       item: "SPEED UP"
+  },
+  // FLOOR 2 : 敵を残り１以下にする → バリア
+  2: { check: () => { if (GameState.enemies.length <= 1) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 1",
+        item: "BARRIER"
+  },
+  // FLOOR 3 : 敵を残り１以下にする→ フリップUP
+  3: { check: () => { if (GameState.enemies.length <= 1) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 1",
+        item: "QUICK FLIP"
+  },
+  // FLOOR 4 : 敵を残り１以下にする →　スコープ
+  4: { check: () => { if (GameState.enemies.length <= 1) {
+          open_item_box(GLOBALS.ITEM.TYPE.SCOPE);} },
+        hint: "ENEMIES TO 1",
+        item: "SCOPE"
+  },
   // FLOOR 5 : 敵を残り１以下にする → スピードUP
-  5: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+  5: { check: () => { if (GameState.enemies.length <= 1) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 1",
+        item: "SPEED UP"
+  },
   // FLOOR 6 : 敵を残り１以下にする  → フリップUP
-  6: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 7 : 敵を残り１以下にする  → スピードUP
-  7: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 8 : 敵を全滅させる → フリップUP
-  8: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 9 : 敵を全滅させる → スピードUP
-  9: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 10 : 敵を全滅させる → フリップUP
-  10: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+  6: { check: () => { if (GameState.enemies.length <= 1) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 1",
+        item: "QUICK FLIP"
+  },
+  // FLOOR 7 : 敵を残り１以下にする  → スコープ
+  7: { check: () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SCOPE);} },
+        hint: "ENEMIES TO 1",
+        item: "SCOPE"
+  },
+  // FLOOR 8 : 敵を全滅させる → スピードUP
+  8: { check: () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+  },
+  // FLOOR 9 : 敵を全滅させる → フリップUP
+  9: { check: () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+  },
+  // FLOOR 10 : 敵を全滅させる → リング
+  10: { check: () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.RING);} },
+        hint: "ENEMIES TO 0",
+        item: "RING"
+  },
   // FLOOR 11 : 敵を残り１以下にする　→ スピードUP
-  11: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+  11: { check : () => { if (GameState.enemies.length <= 1) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 1",
+        item: "SPEED UP"
+      },
   // FLOOW 12 : 敵を全滅させる → フリップUP
-  12: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 13 : 上辺のパネルに移動する → スピードUP
-  13: () => { const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(GameState.player.pos.x, GameState.player.pos.y);
-             if (loc_y === 0){ open_item_box(GLOBALS.ITEM.TYPE.SPEED); }},
-  // FLOOR 14 : 下辺の壁に接触する → フリップUP
-  14: () => { const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(GameState.player.pos.x, GameState.player.pos.y);
+  12: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 13 : 上辺のパネルに移動する → USB
+  13: { check : () => { const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(GameState.player.pos.x, GameState.player.pos.y);
+             if (loc_y === 0){
+                open_item_box(GLOBALS.ITEM.TYPE.USB); }},
+        hint: "MOVE TO THE TOP PANEL",
+        item: "USB"
+      },
+  // FLOOR 14 : 下辺の壁に接触する → スコープ
+  14: { check : () => { const { loc_x, loc_y, rel_pos_x, rel_pos_y} = MyMath.get_loc_from_pos(GameState.player.pos.x, GameState.player.pos.y);
              const { m_top, m_bottom, m_left, m_right} = MyMath.get_movable_side(rel_pos_x, rel_pos_y, GameState.player.size);
-             if (loc_y === GameState.field_row - 1 && m_bottom === GLOBALS.PANEL.HEIGHT){ open_item_box(GLOBALS.ITEM.TYPE.FLIP); }},
-  // FLOOR 15 : 敵を全滅させる → スピードUP
-  15: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 16 : 敵を全滅させる → フリップUP
-  16: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 17 : 敵を全滅させる → スピードUP
-  17: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 18 : 敵を全滅させる → フリップUP
-  18: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 19 : 敵を全滅させる → スピードUP
-  19: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 20 : 敵を全滅させる → フリップUP
-  20: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 21 : 敵を全滅させる → フリップUP
-  21: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+             if (loc_y === GameState.field_row - 1 && m_bottom === GLOBALS.PANEL.HEIGHT){
+              open_item_box(GLOBALS.ITEM.TYPE.SCOPE); }},
+        hint: "TOUCH THE BOTTOM WALL",
+        item: "SCOPE"
+      },
+  // FLOOR 15 : 敵を全滅させる → フリップUP
+  15: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 16 : 敵を全滅させる → リングUP
+  16: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.RING);} },
+        hint: "ENEMIES TO 0",
+        item: "RING"
+      },
+  // FLOOR 17 : 敵を全滅させる → バリア
+  17: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 18 : 敵を全滅させる → USB
+  18: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.USB);} },
+        hint: "ENEMIES TO 0",
+        item: "USB"
+      },
+  // FLOOR 19 : 敵を全滅させる → フリップUP
+  19: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 20 : 敵を全滅させる → スコープ
+  20: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SCOPE);} },
+        hint: "ENEMIES TO 0",
+        item: "SCOPE"
+      },
+  // FLOOR 21 : 敵を全滅させる → スピードUP
+  21: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
   // FLOOR 22 : 敵を全滅させる → フリップUP
-  22: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 23 : 敵を全滅させる → フリップUP
-  23: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 24 : 敵を全滅させる → フリップUP
-  24: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+  22: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 23 : 敵を全滅させる → バリア
+  23: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 24 : 敵を全滅させる → スピードUP
+  24: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
   // FLOOR 25 : 敵を全滅させる → フリップUP
-  25: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 26 : 敵を全滅させる → フリップUP
-  26: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 27 : 敵を全滅させる → フリップUP
-  27: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+  25: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 26 : 敵を全滅させる → バリア
+  26: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 27 : 敵を全滅させる → スピードUP
+  27: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
   // FLOOR 28 : 敵を全滅させる → フリップUP
-  28: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 29 : 敵を全滅させる → フリップUP
-  29: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 30 : 敵を全滅させる → フリップUP
-  30: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+  28: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 29 : 敵を全滅させる → バリア
+  29: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 30 : 敵を全滅させる → スピードUP
+  30: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
   // FLOOR 31 : 敵を全滅させる → フリップUP
-  31: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 32 : 敵を残り１以下にする　→ スピードUP
-  32: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 33 : 敵を全滅させる → フリップUP
-  33: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 34 : 敵を残り１以下にする　→ スピードUP
-  34: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
-  // FLOOR 35 : 敵を全滅させる → フリップUP
-  35: () => { if (GameState.enemies.length === 0) { open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
-  // FLOOR 36 : 敵を残り１以下にする　→ スピードUP
-  36: () => { if (GameState.enemies.length <= 1) { open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+  31: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 32 : 敵を全滅させる → バリア
+  32: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 33 : 敵を全滅させる → スピードUP
+  33: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 34 : 敵を全滅させる → フリップUP
+  34: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 35 : 敵を全滅させる → バリア
+  35: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 36 : 敵を全滅させる → スピードUP
+  36: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 37 : 敵を全滅させる → フリップUP
+  37: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 38 : 敵を全滅させる → バリア
+  38: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 39 : 敵を全滅させる → スピードUP
+  39: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 40 : 敵を全滅させる → フリップUP
+  40: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 41 : 敵を全滅させる → バリア
+  41: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 42 : 敵を全滅させる → スピードUP
+  42: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 43 : 敵を全滅させる → フリップUP
+  43: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 44 : 敵を全滅させる → バリア
+  44: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 45 : 敵を全滅させる → スピードUP
+  45: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 46 : 敵を全滅させる → フリップUP
+  46: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 47 : 敵を全滅させる → バリア
+  47: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 48 : 敵を全滅させる → スピードUP
+  48: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 49 : 敵を全滅させる → フリップUP
+  49: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 50 : 敵を全滅させる → バリア
+  50: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      }
 };
 
 // ◆常時チェッカー
@@ -105,7 +333,7 @@ export function unlock_item_box(){
   // 宝箱を取得済で無いときに呼ばれるチェック処理
   if (GameState.item_boxes[GameState.floor] === false){
       const checker_item_box = itemBoxCheckers[GameState.floor];
-      if (checker_item_box) checker_item_box();
+      if (checker_item_box && checker_item_box.check) checker_item_box.check();
   }
   // フロア中ずっと呼ばれるチェック処理
   const checker_always = alwaysCheckers[GameState.floor];
@@ -143,4 +371,18 @@ function item_all_blink_out(type){
         GameState.items[j].set_blink_out();
       }
   } 
+}
+
+export function get_box_hint(){
+  const checker = itemBoxCheckers[GameState.floor];
+  if (checker && checker.hint) {
+    return checker.hint;
+  }
+}
+
+export function get_box_item(){
+  const checker = itemBoxCheckers[GameState.floor];
+  if (checker && checker.item) {
+    return checker.item;
+  }
 }

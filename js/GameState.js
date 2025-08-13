@@ -17,12 +17,16 @@ export const  GameState = {
     // ゲーム情報
     lives : 4,
     floor : 1,
-    player_speed : GLOBALS.PLAYER_SPEED_MIN,
-    flip_speed : GLOBALS.FLIP_SPEED_MIN,
-    time : GLOBALS.TIME_MAX,
-    energy : 1000,
     score : 0,
     high_score : 0,
+    time : GLOBALS.TIME_MAX,
+    energy : 1000,
+    player_speed : GLOBALS.PLAYER_SPEED_MIN,
+    flip_speed : GLOBALS.FLIP_SPEED_MIN,
+    barrier : 0,
+    ring: 0,
+    usb: 0,
+    scope: 0,
     state : GLOBALS.GAME.STATE.FLOOR_START,
     count : GLOBALS.GAME.PERIDO.FLOOR_CLEAR,
     flip_state : GLOBALS.FLIP_STATE.NONE,
@@ -51,14 +55,18 @@ export const  GameState = {
     reset(){
         this.lives = 4;
         this.floor = 1;
+        this.score = 0;
         this.player_speed = GLOBALS.PLAYER_SPEED_MIN;
         this.flip_speed = GLOBALS.FLIP_SPEED_MIN;
+        this.barrier = 0;
         this.time = GLOBALS.TIME_MAX;
         this.energy = 1000;
+        this.ring = 0;
+        this.usb = 0;
+        this.scope = 0;
         this.state = GLOBALS.GAME.STATE.FLOOR_START;
         this.count = GLOBALS.GAME.PERIDO.FLOOR_CLEAR;
         this.flip_state = GLOBALS.FLIP_STATE.NONE;
-        this.score = 0;
         this.item_boxes = new Array(GLOBALS.FLOOR_MAX + 1).fill(false);
     },
 
@@ -71,5 +79,9 @@ export const  GameState = {
 
     add_energy(energy){
         this.energy = Math.max(Math.min(GLOBALS.ENERGY_MAX, this.energy + energy),0);
+    },
+
+    add_barrier(barrier){
+        this.barrier = Math.max(Math.mix(GLOBALS.BARRIER_MAX, this.barrier + barrier),0);
     }
 };

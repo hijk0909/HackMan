@@ -2,7 +2,7 @@
 
 export const GLOBALS = {
 
-    FLOOR_MAX : 36,
+    FLOOR_MAX : 42,
     TIME_MAX : 9999,
     ENERGY_MAX : 9999,
     FLIP_ENRGY : 100,
@@ -10,7 +10,11 @@ export const GLOBALS = {
     PLAYER_SPEED_MAX : 5,
     FLIP_SPEED_MIN : 1,
     FLIP_SPEED_MAX : 6,
-    COLLECTION_MAX : 6,
+    BARRIER_MAX : 3,
+    RING_MAX : 4,
+    USB_MAX : 4,
+    SCOPE_MAX : 4,
+    COLLECTION_MAX : 8,
     MAX_BONUS : 1000,
 
     COLOR: {
@@ -103,16 +107,23 @@ export const GLOBALS = {
             SPEED : 8,
             FLIP : 9,
             ENERGY : 10,
-            BONUS : 11,
+            BARRIER : 11,
+            POINT : 12,
             ST_SPEED : 16,
             ST_FLIP : 24,
-            PICT_MIN : 32,
-            PICT_MAX : 35,
-            PICT_ALEF : 32,
-            PICT_SAMECH : 33,
-            PICT_AYIN : 34,
-            PICT_CHET : 35,
-            RING : 40
+            ST_BARRIER : 32,
+            PICT_MIN : 40,
+            PICT_MAX : 43,
+            PICT_ALEF : 40,
+            PICT_SAMECH : 41,
+            PICT_AYIN : 42,
+            PICT_CHET : 43,
+            RING : 48,
+            ST_RING : 49,
+            USB : 56,
+            ST_USB : 57,
+            SCOPE : 64, 
+            ST_SCOPE : 65
         },
     },
 

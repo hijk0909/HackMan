@@ -82,6 +82,8 @@ export class GameScene extends Phaser.Scene {
                 } else {
                     GameState.player_speed = Math.max(GameState.player_speed - 1, GLOBALS.PLAYER_SPEED_MIN);
                     GameState.flip_speed = Math.max(GameState.flip_speed - 1, GLOBALS.FLIP_SPEED_MIN);
+                    GameState.barrier = 0;
+                    GameState.ui.collection_update_barrier(false);
                     GameState.state = GLOBALS.GAME.STATE.FLOOR_START;
                     GameState.count = GLOBALS.GAME.PERIDO.FLOOR_START;
                 }
