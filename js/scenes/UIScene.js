@@ -60,6 +60,10 @@ export class UIScene extends Phaser.Scene {
             this.ui_collections_offset_y = 0;
             this.ui_floor_start_x = 300;
             this.ui_floor_start_y = 300;
+            this.ui_floor_hint_x = 300;
+            this.ui_floor_hint_y = 605;
+            this.ui_floor_item_x = 300;
+            this.ui_floor_item_y = 675;
             this.ui_floor_clear_x = 300;
             this.ui_floor_clear_y = 300;
             this.ui_timeover_x = 300;
@@ -81,6 +85,10 @@ export class UIScene extends Phaser.Scene {
             this.ui_collections_offset_y = COLLECTION_SIZE;
             this.ui_floor_start_x = 300;
             this.ui_floor_start_y = 300;
+            this.ui_floor_hint_x = 300;
+            this.ui_floor_hint_y = 605;
+            this.ui_floor_item_x = 300;
+            this.ui_floor_item_y = 675;
             this.ui_floor_clear_x = 300;
             this.ui_floor_clear_y = 300;
             this.ui_timeover_x = 300;
@@ -96,8 +104,8 @@ export class UIScene extends Phaser.Scene {
         this.ui_time_val = this.add.text(this.ui_time_x, this.ui_time_y + ROW, '0', style2);
 
         this.ui_floor_start_txt = this.add.text(this.ui_floor_start_x, this.ui_floor_start_y, 'FLOOR : 1', style3).setVisible(false).setOrigin(0.5,0.5);
-        this.ui_floor_start_hint = this.add.text(this.ui_floor_start_x, this.ui_floor_start_y +  110, 'HINT', style5).setVisible(false).setOrigin(0.5,0.5);
-        this.ui_floor_start_item = this.add.text(this.ui_floor_start_x, this.ui_floor_start_y + 200, 'ITEM', style5).setVisible(false).setOrigin(0.5,0.5);
+        this.ui_floor_hint = this.add.text(this.ui_floor_hint_x, this.ui_floor_hint_y, 'HINT', style5).setVisible(false).setOrigin(0.5,0);
+        this.ui_floor_item = this.add.text(this.ui_floor_item_x, this.ui_floor_item_y, 'ITEM', style5).setVisible(false).setOrigin(0.5,0);
         this.ui_floor_clear_txt = this.add.text(this.ui_floor_clear_x, this.ui_floor_clear_y, 'FLOOR : 1', style3).setVisible(false).setOrigin(0.5,0.5);
         this.ui_timeover_txt = this.add.text(this.ui_timeover_x, this.ui_timeover_y, 'TIME OVER', style4).setVisible(false).setOrigin(0.5,0.5);
 
@@ -146,8 +154,8 @@ export class UIScene extends Phaser.Scene {
     // スタート文字表示（ヒント表示、アイテム表示）
     show_floor_start(visible){
         this.ui_floor_start_txt.setText(`FLOOR: ${GameState.floor}`).setVisible(visible);
-        this.ui_floor_start_hint.setText(`HINT:\n${get_box_hint()}`).setVisible(visible);
-        this.ui_floor_start_item.setText(`ITEM:\n${get_box_item()}`).setVisible(visible);
+        this.ui_floor_hint.setText(`HINT:\n${get_box_hint()}`).setVisible(visible);
+        this.ui_floor_item.setText(`ITEM:\n${get_box_item()}`).setVisible(visible);
     }
 
     // クリア文字表示

@@ -28,7 +28,7 @@ export class Player extends Movable {
                     { key: 'ss_p', frame: 2},
                     { key: 'ss_p', frame: 1},
                 ],
-                frameRate: 4, repeat: -1
+                frameRate: 6, repeat: -1
             });
         }
         if (!this.scene.anims.exists('pr_anims')) {
@@ -39,7 +39,7 @@ export class Player extends Movable {
                     { key: 'ss_p', frame: 8},
                     { key: 'ss_p', frame: 7},
                 ],
-                frameRate: 4, repeat: -1
+                frameRate: 6, repeat: -1
             });
         }
         if (!this.scene.anims.exists('pl_anims')) {
@@ -50,7 +50,7 @@ export class Player extends Movable {
                     { key: 'ss_p', frame: 5},
                     { key: 'ss_p', frame: 4},
                 ],
-                frameRate: 4, repeat: -1
+                frameRate: 6, repeat: -1
             });
         }
         if (!this.scene.anims.exists('pu_anims')) {
@@ -61,7 +61,7 @@ export class Player extends Movable {
                     { key: 'ss_p', frame: 11},
                     { key: 'ss_p', frame: 10},
                 ],
-                frameRate: 4, repeat: -1
+                frameRate: 6, repeat: -1
             });
         }
         if (!this.scene.anims.exists('pa_anims')) {
