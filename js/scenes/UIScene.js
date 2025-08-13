@@ -84,11 +84,11 @@ export class UIScene extends Phaser.Scene {
             this.ui_collections_offset_x = 0;
             this.ui_collections_offset_y = COLLECTION_SIZE;
             this.ui_floor_start_x = 300;
-            this.ui_floor_start_y = 300;
+            this.ui_floor_start_y = 250;
             this.ui_floor_hint_x = 300;
-            this.ui_floor_hint_y = 605;
+            this.ui_floor_hint_y = 555;
             this.ui_floor_item_x = 300;
-            this.ui_floor_item_y = 675;
+            this.ui_floor_item_y = 620;
             this.ui_floor_clear_x = 300;
             this.ui_floor_clear_y = 300;
             this.ui_timeover_x = 300;
