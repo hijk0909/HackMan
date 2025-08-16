@@ -2,7 +2,9 @@
 
 export const GLOBALS = {
 
-    FLOOR_MAX : 42,
+    VERSION : "0.4",
+    DATE : "2025.8.16",
+    FLOOR_MAX : 60,
     TIME_MAX : 9999,
     ENERGY_MAX : 9999,
     FLIP_ENRGY : 100,
@@ -16,6 +18,9 @@ export const GLOBALS = {
     SCOPE_MAX : 4,
     COLLECTION_MAX : 8,
     MAX_BONUS : 1000,
+    INIT_LIVES : 2,
+    EXTEND_FIRST : 20000,
+    EXTEND_EVERY : 50000,
 
     COLOR: {
         BLACK : 0x000000,
@@ -118,6 +123,12 @@ export const GLOBALS = {
             PICT_SAMECH : 41,
             PICT_AYIN : 42,
             PICT_CHET : 43,
+            LAUNCHER_MIN : 44,
+            LAUNCHER_MAX : 47,
+            LAUNCHER_1 : 45,
+            LAUNCHER_2 : 46,
+            LAUNCHER_3 : 47,
+            LAUNCHER_F : 44,
             RING : 48,
             ST_RING : 49,
             USB : 56,

@@ -14,7 +14,6 @@ export class E2 extends Enemy {
 
     constructor(scene){
         super(scene);
-        this.score = 0;
         this.size = 24;
         this.speed = 3;
         this.state = ST_NORM;
@@ -25,14 +24,15 @@ export class E2 extends Enemy {
     init(type, pos){
 
         const type_defs = [
-            {type:0, anims: 'e2_anims_0', anims_start:0, anims_end:4,  bullet:null},
-            {type:1, anims: 'e2_anims_1', anims_start:5, anims_end:9,  bullet:B1},
-            {type:2, anims: 'e2_anims_2', anims_start:10, anims_end:14, bullet:B2},
-            {type:3, anims: 'e1_anims_3', anims_start:15, anims_end:19, bullet:B3},
+            {type:0, anims: 'e2_anims_0', anims_start:0, anims_end:4,  bullet:null, score:100},
+            {type:1, anims: 'e2_anims_1', anims_start:5, anims_end:9,  bullet:B1, score:150},
+            {type:2, anims: 'e2_anims_2', anims_start:10, anims_end:14, bullet:B2, score:300},
+            {type:3, anims: 'e1_anims_3', anims_start:15, anims_end:19, bullet:B3, score:200}
         ];
 
         super.init(type, pos);
         const typeInfo = type_defs.find(s => s.type === type);
+        this.score = typeInfo.score;
         this.bullet = typeInfo.bullet;
         this.anims = typeInfo.anims;
         this.anims_start = typeInfo.anims_start;

@@ -15,7 +15,7 @@ export const  GameState = {
     ui : null,
 
     // ゲーム情報
-    lives : 4,
+    lives : GLOBALS.INIT_LIVES,
     floor : 1,
     score : 0,
     high_score : 0,
@@ -53,7 +53,7 @@ export const  GameState = {
     effects : [],
 
     reset(){
-        this.lives = 4;
+        this.lives = GLOBALS.INIT_LIVES;
         this.floor = 1;
         this.score = 0;
         this.player_speed = GLOBALS.PLAYER_SPEED_MIN;
@@ -68,6 +68,7 @@ export const  GameState = {
         this.count = GLOBALS.GAME.PERIDO.FLOOR_CLEAR;
         this.flip_state = GLOBALS.FLIP_STATE.NONE;
         this.item_boxes = new Array(GLOBALS.FLOOR_MAX + 1).fill(false);
+        this.extend = GLOBALS.EXTEND_FIRST;
     },
 
     add_score(score){
@@ -75,6 +76,19 @@ export const  GameState = {
         if (this.score > this.high_score){
             this.high_score = this.score;
         }
+        if (this.score >= this.extend){
+            this.lives += 1;
+            this.ui.show_lives();
+            this.sound.se_extend.play();
+            this.extend += GLOBALS.EXTEND_EVERY;
+        }
+    },
+
+    add_score_without_extend(score){
+        this.score += score;
+        if (this.score > this.high_score){
+            this.high_score = this.score;
+        }        
     },
 
     add_energy(energy){

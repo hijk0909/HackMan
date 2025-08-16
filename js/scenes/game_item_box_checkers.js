@@ -41,10 +41,10 @@ const itemBoxCheckers = {
         hint: "ENEMIES TO 1",
         item: "QUICK FLIP"
   },
-  // FLOOR 7 : 敵を残り１以下にする  → スコープ
+  // FLOOR 7 : 敵を全滅させる  → スコープ
   7: { check: () => { if (GameState.enemies.length === 0) {
           open_item_box(GLOBALS.ITEM.TYPE.SCOPE);} },
-        hint: "ENEMIES TO 1",
+        hint: "ENEMIES TO 0",
         item: "SCOPE"
   },
   // FLOOR 8 : 敵を全滅させる → スピードUP
@@ -307,8 +307,68 @@ const itemBoxCheckers = {
           open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
         hint: "ENEMIES TO 0",
         item: "BARRIER"
-      }
-};
+      },
+  // FLOOR 51 : 敵を全滅させる → スピードUP
+  51: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 52 : 敵を全滅させる → フリップUP
+  52: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 53 : 敵を全滅させる → バリア
+  53: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 54 : 敵を全滅させる → スピードUP
+  54: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 55 : 敵を全滅させる → フリップUP
+  55: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 56 : 敵を全滅させる → バリア
+  56: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 57 : 敵を全滅させる → スピードUP
+  57: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.SPEED);} },
+        hint: "ENEMIES TO 0",
+        item: "SPEED UP"
+      },
+  // FLOOR 58 : 敵を全滅させる → フリップUP
+  58: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.FLIP);} },
+        hint: "ENEMIES TO 0",
+        item: "QUICK FLIP"
+      },
+  // FLOOR 59 : 敵を全滅させる → バリア
+  59: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  // FLOOR 60 : 敵を全滅させる → バリア
+  60: { check : () => { if (GameState.enemies.length === 0) {
+          open_item_box(GLOBALS.ITEM.TYPE.BARRIER);} },
+        hint: "ENEMIES TO 0",
+        item: "BARRIER"
+      },
+  };
 
 // ◆常時チェッカー
 const alwaysCheckers = {

@@ -188,13 +188,13 @@ export class MyMath {
         return false;
     }
 
-    // 判定：当該パネルがフリップ中か
+    // 判定：当該パネルがフリップ中か（ブロック座標で判別）
     static isFlipping(loc_x, loc_y){
         const st = GameState.panels[loc_x][loc_y].state;
         return (st === GLOBALS.PANEL.STATE.FLIP_ABOVE || st === GLOBALS.PANEL.STATE.FLIP_BELOW);
     }
 
-    // 判定：当該パネルはフリップ中か
+    // 判定：当該パネルはフリップ中か（キャラクタ座標で判別）
     static isInnerFlipping(pos_x, pos_y){
         const { loc_x, loc_y } = MyMath.get_loc_from_pos(pos_x, pos_y);
         return this.isFlipping(loc_x, loc_y);
@@ -217,6 +217,10 @@ export class MyMath {
         // そもそもフィールド内のパネル上か
         if (loc_x < 0 || loc_x >= GameState.field_col ||
             loc_y < 0 || loc_y >= GameState.field_row ){
+            return true;
+        }
+        // そもそも当該パネルがフリップ中か
+        if ( this.isFlipping(loc_x, loc_y)){
             return true;
         }
         // パネル内の内壁に当たっているか

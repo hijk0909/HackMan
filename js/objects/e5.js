@@ -13,12 +13,12 @@ const ST_TURN = 1;
 const RES_NORM = 0;
 const RES_BLOCKED = 1;
 const RES_CENTER = 2;
+const BASE_SCORE = 500;
 
 export class E5 extends Enemy {
 
     constructor(scene){
         super(scene);
-        this.score = 0;
         this.size = 24;
         this.speed = 3;
         this.state = ST_NORM;
@@ -28,14 +28,15 @@ export class E5 extends Enemy {
     init(type, pos){
 
         const type_defs = [
-            {type:0, anims: 'e5_anims_0_', base: 0, bullet:null},
-            {type:1, anims: 'e5_anims_1_', base:12, bullet:B1},
-            {type:2, anims: 'e5_anims_2_', base:24, bullet:B2},
-            {type:3, anims: 'e5_anims_3_', base:36, bullet:B3}
+            {type:0, anims: 'e5_anims_0_', base: 0, bullet:null, score:500},
+            {type:1, anims: 'e5_anims_1_', base:12, bullet:B1, score:650},
+            {type:2, anims: 'e5_anims_2_', base:24, bullet:B2, score:1000},
+            {type:3, anims: 'e5_anims_3_', base:36, bullet:B3, score:800}
         ];
 
         super.init(type, pos);
         const typeInfo = type_defs.find(s => s.type === type);
+        this.score = typeInfo.score;
         this.bullet = typeInfo.bullet;
         const base = typeInfo.base;
         this.anims = typeInfo.anims;

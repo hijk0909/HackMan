@@ -107,8 +107,13 @@ export class GameScene extends Phaser.Scene {
                     GameState.count = GLOBALS.GAME.PERIDO.FLOOR_START;
                 }
             } else {
-                // 残り時間をスコアとエネルギーに加算
-                this.time_bonus();
+                if (GameState.floor >= GLOBALS.FLOOR_MAX){
+                // 最終ステージの場合、残機をスコアに加算
+                    this.life_bonus();
+                } else {
+                // 最終ステージ以外の場合、残り時間をスコアとエネルギーに加算
+                    this.time_bonus();
+                }
             }
         }
 
@@ -137,6 +142,15 @@ export class GameScene extends Phaser.Scene {
             GameState.time -= 1;
             GameState.add_score(1);
         }
+    }
+
+    // 残機ボーナス
+    life_bonus(){
+        if (GameState.lives > 0 ){
+            GameState.lives -= 1;
+            GameState.add_score_without_extend(10000);
+        }
+        GameState.ui.show_lives();
     }
 
     // ワイプイン

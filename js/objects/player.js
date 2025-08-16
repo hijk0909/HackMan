@@ -366,7 +366,7 @@ export class Player extends Movable {
         this.parent_panel.state = state;
     }
 
-    // アイテム処理
+    // ◆アイテム処理
     touch_item(item){
         item.set_visible(true);
         if (item.type === GLOBALS.ITEM.TYPE.KEY){
@@ -393,7 +393,7 @@ export class Player extends Movable {
             // ◆アイテム無し
             // ◆施錠中の宝箱
         } else if (item.type === GLOBALS.ITEM.TYPE.SPEED){
-            // ◆プレイヤー速度アップ
+            // ◆[アイテム] プレイヤー速度アップ
             if (GameState.player_speed < GLOBALS.PLAYER_SPEED_MAX){
                 GameState.player_speed += 1;
                 GameState.ui.collection_update_speed(true);
@@ -403,7 +403,7 @@ export class Player extends Movable {
             }
             item.set_blink_out();
         } else if (item.type === GLOBALS.ITEM.TYPE.FLIP){
-            // ◆フリップ速度アップ
+            // ◆[アイテム] フリップ速度アップ
             if (GameState.flip_speed < GLOBALS.FLIP_SPEED_MAX){
                 GameState.flip_speed += 1;
                 GameState.ui.collection_update_flip(true);
@@ -413,7 +413,7 @@ export class Player extends Movable {
             }
             item.set_blink_out();
         } else if (item.type === GLOBALS.ITEM.TYPE.BARRIER){
-            // ◆バリア重ね取り
+            // ◆[アイテム] バリア
             if (GameState.barrier < GLOBALS.BARRIER_MAX){
                 GameState.barrier += 1;
                 GameState.ui.collection_update_barrier(true);
@@ -436,6 +436,7 @@ export class Player extends Movable {
             // ◆絵合わせ
             const next_type = item.type === GLOBALS.ITEM.TYPE.PICT_MAX ? GLOBALS.ITEM.TYPE.PICT_MIN : item.type + 1;
             item.set_type(next_type);
+            GameState.sound.se_pict_change.play();
         } else if (item.type === GLOBALS.ITEM.TYPE.RING){
             // ◆指輪
             if (GameState.ring < GLOBALS.RING_MAX){
@@ -466,12 +467,21 @@ export class Player extends Movable {
                 this.add_score(GLOBALS.MAX_BONUS);
             }
             item.set_blink_out();
+        } else if (item.type >= GLOBALS.ITEM.TYPE.LAUNCHER_MIN && item.type <= GLOBALS.ITEM.TYPE.LAUNCHER_MAX){
+            // ◆発射台（Launcher）
+            GameState.add_score(300);
+            const eff = new Effect(this.scene);
+            eff.init(GLOBALS.EFFECT.TYPE.EXPLOSION,new Phaser.Math.Vector2(item.pos.x, item.pos.y));
+            GameState.effects.push(eff);
+            GameState.sound.se_explosion.play();            
+            item.set_blink_out();
         } else {
             // 想定外のアイテム
         }
     }
 
     stop_animation(){
+        // 自機のアニメーションを止める
         this.sprite.stop();
     }
 
@@ -509,8 +519,13 @@ export class Player extends Movable {
     }
 }
 
+
+// フリップ時のフレーム描画
 const FRAME_BLINK_SPEED = 20;
 const FRAME_EFFECT_PERIOD = 35;
+const FRAME_COLOR = 0xff0000;
+const FRAME_EFFECT_COLOR = 0xffe000;
+
 
 class flip_frame{
     constructor(scene){
@@ -544,10 +559,10 @@ class flip_frame{
         if (this.visible){
             this.cycle = this.cycle + FRAME_BLINK_SPEED > 360 ? this.cycle + FRAME_BLINK_SPEED - 360 : this.cycle + FRAME_BLINK_SPEED;
             const alpha = (Math.sin(MyMath.radians(this.cycle)) + 1) / 2;
-            this.graphics1.lineStyle(5, 0xff0000);
+            this.graphics1.lineStyle(5, FRAME_COLOR);
             this.graphics1.strokeRect(this.frame.x, this.frame.y, this.frame.width, this.frame.height).setAlpha(alpha);
             this.count = this.count > FRAME_EFFECT_PERIOD ? this.count = 0 : this.count + 1;
-            this.graphics2.lineStyle(2, 0xff8000);
+            this.graphics2.lineStyle(2, FRAME_EFFECT_COLOR);
             this.graphics2.strokeRect(this.frame.x - this.count, this.frame.y - this.count, this.frame.width + this.count * 2, this.frame.height + this.count * 2).setAlpha(1 - this.count / FRAME_EFFECT_PERIOD);
         }
     }

@@ -48,11 +48,11 @@ export class TitleScene extends Phaser.Scene {
 
         this.add.text(this.cx, 50, 'HackMan', { fontSize: '64px', fill: '#ffee00' , stroke: COLOR.RED, strokeThickness: 2}).setOrigin(0.5,0.5);
         this.add.text(this.cx, this.hy - 150, 'Copyright Current Color Co. Ltd. All rights reserved.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
-        this.add.text(this.cx, this.hy - 120, 'Version 0.3 2025.8.13.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
+        this.add.text(this.cx, this.hy - 120, `Version ${GLOBALS.VERSION} ${GLOBALS.DATE}`, { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
         this.add.text(this.cx, this.hy - 90, 'PUSH SPACE KEY',{ fontSize: '24px', fill: '#fff' }).setOrigin(0.5,0.5);
-        this.start_floor_txt = this.add.text(this.cx, 150, 'Start Floor: ', { fontSize: '24px', fill: '#eee' }).setOrigin(0.5,0.5).setVisible(false);
+        this.start_floor_txt = this.add.text(this.cx, 170, 'Start Floor: ', { fontSize: '24px', fill: '#eee' }).setOrigin(0.5,0.5).setVisible(false);
 
-        const btn_play = this.add.image(this.cx, 100, 'btn_tap')
+        const btn_play = this.add.image(this.cx, 110, 'btn_tap')
         .setOrigin(0.5,0.5)
         .setInteractive()
         .on('pointerdown', () => {this.start_game();})

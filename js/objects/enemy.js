@@ -55,8 +55,9 @@ export class Enemy extends Movable {
                 this.sprite.setTint(0xffffff);
             } else if (this.parent_panel.state === GLOBALS.PANEL.STATE.FLIP_BELOW){
                 if (MyMath.isHittingAboveFence(this.pos.x, this.pos.y, this.size, this.parent_panel.flip_pair)){
-                    // プレイヤーパネルに蹂躙される（破壊）
+                    // ◆プレイヤー（上側）パネルのフェンスに蹂躙される（破壊）
                     this.alive = false;
+                    GameState.add_score(this.score);
                     const eff = new Effect(this.scene);
                     eff.init(GLOBALS.EFFECT.TYPE.EXPLOSION,new Phaser.Math.Vector2(this.pos.x, this.pos.y));
                     GameState.sound.se_explosion.play();

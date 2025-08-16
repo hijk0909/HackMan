@@ -48,16 +48,16 @@
       "time": 5000,
       "field": [
         [ 0, 3, 0, 9],
-        [ 8, 1, 6, 8],
-        [ 4, 9, 2, 4],
+        [ 8, 5, 6, 8],
+        [ 4, 9,10, 4],
         [ 6, 0, 3, 0]
       ],
       "player": { "x": 2, "y": 2 },
       "enemies": [
-        { "tribe":3, "type": 0, "x": 0, "y": 0, "dir": 3 },
+        { "tribe":3, "type": 0, "x": 0, "y": 0, "dir": 1 },
         { "tribe":3, "type": 0, "x": 2, "y": 0, "dir": 1 },
         { "tribe":3, "type": 0, "x": 1, "y": 3, "dir": 3 },
-        { "tribe":3, "type": 0, "x": 3, "y": 3, "dir": 1 }
+        { "tribe":3, "type": 0, "x": 3, "y": 3, "dir": 3 }
       ],
       "items":[
         { "type":10},
@@ -127,8 +127,10 @@
       ],
       "items":[
         { "type":10},
-        { "type":12},
-        { "type":41}
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":41, "wall":0, "loc":2}
       ]
     },
     {
@@ -145,14 +147,16 @@
       ],
       "player": { "x": 2, "y": 2 },
       "enemies": [
-        { "tribe":3, "type": 1, "x": 0, "y": 0 },
-        { "tribe":3, "type": 1, "x": 4, "y": 4 }
+        { "tribe":3, "type": 1, "x": 0, "y": 0, "dir": 1 },
+        { "tribe":3, "type": 1, "x": 4, "y": 4, "dir": 3 }
       ],
       "items":[
         { "type":10},
-        { "type":12},
-        { "type":41},
-        { "type":42}
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":42, "wall":2, "loc":2},
+        { "type":43, "wall":3, "loc":2}
       ]
     },
     {
@@ -169,8 +173,8 @@
       ],
       "player": { "x": 2, "y": 2 },
       "enemies": [
-        { "tribe":4, "type": 1, "x": 0, "y": 0 },
-        { "tribe":4, "type": 3, "x": 4, "y": 4 }
+        { "tribe":4, "type": 1, "x": 0, "y": 0, "dir": 1 },
+        { "tribe":4, "type": 3, "x": 4, "y": 4, "dir": 3 }
       ],
       "items":[
         { "type":10},
@@ -303,8 +307,8 @@
       ],
       "player": { "x": 2, "y": 3 },
       "enemies": [
-        { "tribe":3, "type": 1, "x": 1, "y": 1 },
-        { "tribe":3, "type": 1, "x": 3, "y": 4 },
+        { "tribe":3, "type": 1, "x": 1, "y": 1, "dir": 0 },
+        { "tribe":3, "type": 1, "x": 3, "y": 4, "dir": 2 },
         { "tribe":1, "type": 0, "x": 0, "y": 3 },
         { "tribe":1, "type": 0, "x": 4, "y": 2 }
       ],
@@ -336,6 +340,12 @@
       "items":[
         { "type":10},
         { "type":12}
+      ],
+      "fixed_items":[
+        { "type":45, "wall":0, "loc":2 },
+        { "type":45, "wall":1, "loc":2 },
+        { "type":45, "wall":2, "loc":2 },
+        { "type":45, "wall":3, "loc":2 }
       ]
     },
     {
@@ -353,14 +363,18 @@
       ],
       "player": { "x": 2, "y": 3 },
       "enemies": [
-        { "tribe": 2, "type": 0, "x": 2, "y": 0},
-        { "tribe": 2, "type": 0, "x": 2, "y": 5},
-        { "tribe": 3, "type": 0, "x": 1, "y": 1},
-        { "tribe": 3, "type": 0, "x": 3, "y": 4}
+        { "tribe": 2, "type": 0, "x": 2, "y": 0, "dir": 2},
+        { "tribe": 2, "type": 0, "x": 2, "y": 5, "dir": 0},
+        { "tribe": 3, "type": 0, "x": 1, "y": 1, "dir": 2},
+        { "tribe": 3, "type": 0, "x": 3, "y": 4, "dir": 2}
       ],
       "items":[
         { "type":10},
         { "type":12}
+      ],
+      "fixed_items":[
+        { "type":47, "wall":2, "loc":2 },
+        { "type":47, "wall":3, "loc":1 }
       ]
     },
     {
@@ -378,10 +392,10 @@
       ],
       "player": { "x": 2, "y": 3 },
       "enemies": [
-        { "tribe": 3, "type": 0, "x": 0, "y": 0 },
-        { "tribe": 3, "type": 2, "x": 4, "y": 0 },
-        { "tribe": 3, "type": 1, "x": 0, "y": 5 },
-        { "tribe": 3, "type": 3, "x": 4, "y": 5 }
+        { "tribe": 3, "type": 0, "x": 0, "y": 0, "dir": 2 },
+        { "tribe": 3, "type": 2, "x": 4, "y": 0, "dir": 2 },
+        { "tribe": 3, "type": 1, "x": 0, "y": 5, "dir": 0 },
+        { "tribe": 3, "type": 3, "x": 4, "y": 5, "dir": 0 }
       ],
       "items":[
         { "type":10},
@@ -450,10 +464,10 @@
       ],
       "player": { "x": 2, "y": 3 },
       "enemies": [
-        { "tribe": 4, "type": 0, "x": 0, "y": 1 },
-        { "tribe": 4, "type": 0, "x": 4, "y": 1 },
-        { "tribe": 4, "type": 0, "x": 0, "y": 4 },
-        { "tribe": 4, "type": 3, "x": 4, "y": 4 }
+        { "tribe": 4, "type": 0, "x": 0, "y": 1, "dir": 1 },
+        { "tribe": 4, "type": 0, "x": 4, "y": 1, "dir": 3 },
+        { "tribe": 4, "type": 0, "x": 0, "y": 4, "dir": 1 },
+        { "tribe": 4, "type": 3, "x": 4, "y": 4, "dir": 3 }
       ],
       "items":[
         { "type":10},
@@ -607,10 +621,10 @@
       ],
       "player": { "x": 2, "y": 3 },
       "enemies": [
-        { "tribe": 3, "type": 0, "x": 4, "y": 0 },
-        { "tribe": 3, "type": 0, "x": 0, "y": 5 },
-        { "tribe": 4, "type": 0, "x": 0, "y": 0 },
-        { "tribe": 4, "type": 0, "x": 4, "y": 5 },
+        { "tribe": 3, "type": 0, "x": 4, "y": 0, "dir": 2 },
+        { "tribe": 3, "type": 0, "x": 0, "y": 5, "dir": 0 },
+        { "tribe": 4, "type": 0, "x": 0, "y": 0, "dir": 2 },
+        { "tribe": 4, "type": 0, "x": 4, "y": 5, "dir": 0 },
         { "tribe": 2, "type": 0, "x": 2, "y": 0 },
         { "tribe": 2, "type": 0, "x": 2, "y": 4 }
       ]
@@ -676,8 +690,8 @@
       "enemies": [
         { "tribe": 3, "type": 0, "x": 0, "y": 2 },
         { "tribe": 3, "type": 0, "x": 4, "y": 1 },
-        { "tribe": 4, "type": 0, "x": 2, "y": 3 },
-        { "tribe": 4, "type": 0, "x": 2, "y": 4 },
+        { "tribe": 4, "type": 0, "x": 2, "y": 3, "dir": 1 },
+        { "tribe": 4, "type": 0, "x": 2, "y": 4, "dir": 3 },
         { "tribe": 1, "type": 0, "x": 1, "y": 5 },
         { "tribe": 2, "type": 0, "x": 3, "y": 0 }
       ]
@@ -966,6 +980,477 @@
         { "tribe":5, "type": 0, "x": 4, "y": 0, "dir": 2 },
         { "tribe":5, "type": 0, "x": 4, "y": 1, "dir": 2 },
         { "tribe":5, "type": 0, "x": 4, "y": 2, "dir": 2 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 43,
+      "col": 4,
+      "row": 5,
+      "time": 8000,
+      "field": [
+        [ 7, 3, 3, 9],
+        [ 0, 3, 3, 0],
+        [ 0, 3, 3, 0],
+        [ 0, 3, 3, 0],
+        [ 6, 3, 3,11]
+      ],
+      "player": { "x": 3, "y": 2 },
+      "enemies": [
+        { "tribe":4, "type": 0, "x": 0, "y": 0, "dir": 1 },
+        { "tribe":4, "type": 0, "x": 3, "y": 4, "dir": 3 },
+        { "tribe":1, "type": 0, "x": 3, "y": 1, "dir": 3 },
+        { "tribe":1, "type": 0, "x": 0, "y": 3, "dir": 1 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":47, "wall":0, "loc":1 },
+        { "type":47, "wall":1, "loc":2 }
+      ]
+    },
+    {
+      "floor": 44,
+      "col": 4,
+      "row": 4,
+      "time": 6000,
+      "field": [
+        [ 2, 2, 2, 2],
+        [ 0, 0,12, 3],
+        [12, 0,12, 3],
+        [ 4, 3, 0, 1]
+      ],
+      "player": { "x": 1, "y": 2 },
+      "enemies": [
+        { "tribe":5, "type": 0, "x": 0, "y": 0, "dir": 1 },
+        { "tribe":3, "type": 0, "x": 1, "y": 0, "dir": 1 },
+        { "tribe":3, "type": 0, "x": 2, "y": 0, "dir": 1 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":47, "wall":0, "loc":3 }
+      ]
+    },
+    {
+      "floor": 45,
+      "col": 5,
+      "row": 3,
+      "time": 8000,
+      "field": [
+        [ 0, 2, 2, 2, 2],
+        [ 9, 0, 8, 4, 0],
+        [ 0,10, 6,10,10]
+      ],
+      "player": { "x": 0, "y": 0 },
+      "enemies": [
+        { "tribe":3, "type": 0, "x": 0, "y": 1, "dir": 2 },
+        { "tribe":3, "type": 0, "x": 0, "y": 2, "dir": 1 },
+        { "tribe":3, "type": 0, "x": 1, "y": 2, "dir": 0 },
+        { "tribe":3, "type": 0, "x": 1, "y": 1, "dir": 1 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":46, "wall":0, "loc":1 },
+        { "type":46, "wall":0, "loc":2 },
+        { "type":46, "wall":0, "loc":3 },
+        { "type":46, "wall":0, "loc":4 }
+      ]
+    },
+    {
+      "floor": 46,
+      "col": 5,
+      "row": 5,
+      "time": 8000,
+      "field": [
+        [ 0, 0, 0, 0, 0],
+        [ 3, 3, 3, 3, 3],
+        [ 5,11, 5, 5, 9],
+        [ 8, 5, 2, 0, 9],
+        [ 8, 5, 2, 0, 9],
+        [ 8, 6, 9,10,11]
+      ],
+      "player": { "x": 2, "y": 0 },
+      "enemies": [
+        { "tribe":4, "type": 3, "x": 0, "y": 4, "dir": 0 },
+        { "tribe":4, "type": 2, "x": 4, "y": 4, "dir": 0 },
+        { "tribe":1, "type": 0, "x": 0, "y": 1, "dir": 1 },
+        { "tribe":1, "type": 0, "x": 4, "y": 1, "dir": 3 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 47,
+      "col": 3,
+      "row": 3,
+      "time": 6000,
+      "field": [
+        [ 1, 1, 9],
+        [ 8, 0, 4],
+        [ 6, 2, 2]
+      ],
+      "player": { "x": 1, "y": 1 },
+      "enemies": [
+        { "tribe":3, "type": 0, "x": 0, "y": 0, "dir": 1 },
+        { "tribe":3, "type": 0, "x": 2, "y": 0, "dir": 2 },
+        { "tribe":3, "type": 0, "x": 2, "y": 2, "dir": 3 },
+        { "tribe":3, "type": 0, "x": 0, "y": 2, "dir": 0 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":45, "wall":2, "loc":2 },
+        { "type":45, "wall":3, "loc":0 }
+      ]
+    },
+    {
+      "floor": 48,
+      "col": 5,
+      "row": 3,
+      "time": 7000,
+      "field": [
+        [ 6,12,12, 5,11],
+        [ 0,12,12, 4,11],
+        [ 5,12,12, 6,11]
+      ],
+      "player": { "x": 0, "y": 1 },
+      "enemies": [
+        { "tribe":2, "type": 0, "x": 1, "y": 2, "dir": 0 },
+        { "tribe":2, "type": 0, "x": 2, "y": 0, "dir": 2 },
+        { "tribe":5, "type": 3, "x": 4, "y": 0, "dir": 3 },
+        { "tribe":5, "type": 3, "x": 4, "y": 2, "dir": 3 },
+        { "tribe":1, "type": 0, "x": 4, "y": 1, "dir": 3 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 49,
+      "col": 2,
+      "row": 6,
+      "time": 6000,
+      "field": [
+        [ 0,11],
+        [ 2, 9],
+        [ 5, 2],
+        [ 2, 9],
+        [ 5, 2],
+        [ 4, 1]
+      ],
+      "player": { "x": 1, "y": 0 },
+      "enemies": [
+        { "tribe":2, "type": 0, "x": 1, "y": 2, "dir": 0 },
+        { "tribe":2, "type": 0, "x": 0, "y": 3, "dir": 0 },
+        { "tribe":2, "type": 0, "x": 1, "y": 4, "dir": 0 },
+        { "tribe":2, "type": 0, "x": 0, "y": 5, "dir": 0 },
+        { "tribe":3, "type": 0, "x": 1, "y": 5, "dir": 3 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":46, "wall":3, "loc":1 },
+        { "type":46, "wall":3, "loc":3 },
+        { "type":46, "wall":3, "loc":5 },
+        { "type":46, "wall":2, "loc":2 },
+        { "type":46, "wall":2, "loc":4 }
+      ]
+    },
+    {
+      "floor": 50,
+      "col": 4,
+      "row": 4,
+      "time": 7000,
+      "field": [
+        [ 5,11, 5, 9],
+        [ 6, 9,12,12],
+        [ 7,10, 6,10],
+        [ 0, 0, 0, 0]
+      ],
+      "player": { "x": 0, "y": 2 },
+      "enemies": [
+        { "tribe":2, "type": 0, "x": 0, "y": 0, "dir": 2 },
+        { "tribe":2, "type": 0, "x": 1, "y": 1, "dir": 2 },
+        { "tribe":5, "type": 0, "x": 1, "y": 0, "dir": 3 },
+        { "tribe":1, "type": 0, "x": 0, "y": 3, "dir": 1 },
+        { "tribe":3, "type": 0, "x": 3, "y": 0, "dir": 2 },
+        { "tribe":3, "type": 0, "x": 2, "y": 1, "dir": 0 },
+        { "tribe":3, "type": 0, "x": 3, "y": 2, "dir": 3 },
+        { "tribe":4, "type": 0, "x": 2, "y": 0, "dir": 1 },
+        { "tribe":4, "type": 0, "x": 3, "y": 1, "dir": 2 },
+        { "tribe":4, "type": 0, "x": 2, "y": 2, "dir": 0 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":46, "wall":2, "loc":3 }
+      ]
+    },
+    {
+      "floor": 51,
+      "col": 5,
+      "row": 5,
+      "time": 8000,
+      "field": [
+        [ 2, 5, 2, 2, 0],
+        [ 6, 0, 4, 2, 4],
+        [ 2, 4,12, 2, 0],
+        [ 6, 0, 6, 8, 0],
+        [ 0, 6,10, 0, 1]
+      ],
+      "player": { "x": 0, "y": 4 },
+      "enemies": [
+        { "tribe":4, "type": 0, "x": 0, "y": 0, "dir": 0 },
+        { "tribe":4, "type": 0, "x": 0, "y": 2, "dir": 0 },
+        { "tribe":5, "type": 0, "x": 4, "y": 3, "dir": 0 },
+        { "tribe":5, "type": 0, "x": 4, "y": 4, "dir": 3 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 52,
+      "col": 5,
+      "row": 5,
+      "time": 8000,
+      "field": [
+        [15, 6, 0,10,15],
+        [ 2,15,14,15, 2],
+        [15, 4,15, 8,15],
+        [ 1,15, 0,15, 1],
+        [15, 0, 0, 0,15]
+      ],
+      "player": { "x": 2, "y": 4 },
+      "enemies": [
+        { "tribe":3, "type": 3, "x": 2, "y": 0, "dir": 2 },
+        { "tribe":5, "type": 0, "x": 0, "y": 1, "dir": 1 },
+        { "tribe":5, "type": 0, "x": 0, "y": 3, "dir": 1 },
+        { "tribe":5, "type": 0, "x": 4, "y": 1, "dir": 3 },
+        { "tribe":5, "type": 0, "x": 4, "y": 3, "dir": 3 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 53,
+      "col": 5,
+      "row": 3,
+      "time": 5000,
+      "field": [
+        [11, 2, 2, 2, 7],
+        [ 8, 0, 0, 0, 4],
+        [11, 1, 1, 1, 7]
+      ],
+      "player": { "x": 2, "y": 1 },
+      "enemies": [
+        { "tribe":3, "type": 1, "x": 0, "y": 0, "dir": 3 },
+        { "tribe":4, "type": 2, "x": 4, "y": 0, "dir": 1 },
+        { "tribe":4, "type": 2, "x": 0, "y": 2, "dir": 3 },
+        { "tribe":3, "type": 1, "x": 4, "y": 2, "dir": 1 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 54,
+      "col": 5,
+      "row": 6,
+      "time": 8000,
+      "field": [
+        [ 6, 8, 1, 4,10],
+        [ 3, 0,12, 0, 3],
+        [ 2, 9, 0, 5, 2],
+        [ 1,10, 0, 6, 1],
+        [ 3, 0,12, 0, 3],
+        [ 5, 8, 2, 4, 9]
+      ],
+      "player": { "x": 2, "y": 4 },
+      "enemies": [
+        { "tribe":4, "type": 0, "x": 0, "y": 0, "dir": 1 },
+        { "tribe":4, "type": 0, "x": 4, "y": 0, "dir": 3 },
+        { "tribe":4, "type": 0, "x": 0, "y": 5, "dir": 1 },
+        { "tribe":4, "type": 0, "x": 4, "y": 5, "dir": 3 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 55,
+      "col": 5,
+      "row": 6,
+      "time": 8000,
+      "field": [
+        [ 7,11, 0, 7,11],
+        [ 1, 1,12, 1, 1],
+        [13, 2,13, 2,13],
+        [14, 1,14, 1,14],
+        [ 2, 2,12, 2, 2],
+        [ 7,11, 0, 7,11]
+      ],
+      "player": { "x": 2, "y": 4 },
+      "enemies": [
+        { "tribe":3, "type": 0, "x": 0, "y": 1, "dir": 1 },
+        { "tribe":3, "type": 0, "x": 0, "y": 4, "dir": 1 },
+        { "tribe":3, "type": 0, "x": 4, "y": 1, "dir": 3 },
+        { "tribe":3, "type": 0, "x": 4, "y": 4, "dir": 3 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 56,
+      "col": 5,
+      "row": 6,
+      "time": 8000,
+      "field": [
+        [12, 6, 0,10,12],
+        [ 6, 3,12, 3,10],
+        [ 1, 2,13, 2, 1],
+        [ 2, 1,14, 1, 2],
+        [ 5, 3,12, 3, 9],
+        [12, 5, 0, 9,12]
+      ],
+      "player": { "x": 2, "y": 3 },
+      "enemies": [
+        { "tribe":5, "type": 0, "x": 0, "y": 0, "dir": 2 },
+        { "tribe":5, "type": 0, "x": 2, "y": 0, "dir": 2 },
+        { "tribe":5, "type": 0, "x": 4, "y": 0, "dir": 2 },
+        { "tribe":5, "type": 0, "x": 0, "y": 5, "dir": 0 },
+        { "tribe":5, "type": 0, "x": 2, "y": 5, "dir": 0 },
+        { "tribe":5, "type": 0, "x": 4, "y": 5, "dir": 0 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 57,
+      "col": 5,
+      "row": 6,
+      "time": 8000,
+      "field": [
+        [ 0,11, 0, 2, 4],
+        [ 9, 2,11, 0, 6],
+        [10, 0, 2,12, 0],
+        [ 2, 1, 4, 5,14],
+        [ 2, 9, 0,12,12],
+        [ 2, 9, 3, 9, 8]
+      ],
+      "player": { "x": 2, "y": 4 },
+      "enemies": [
+        { "tribe":4, "type": 2, "x": 0, "y": 0, "dir": 1 },
+        { "tribe":4, "type": 2, "x": 4, "y": 0, "dir": 2 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 58,
+      "col": 5,
+      "row": 6,
+      "time": 8000,
+      "field": [
+        [ 4, 3, 0, 3, 8],
+        [ 8, 5, 2, 9, 4],
+        [ 4,12,13,12, 8],
+        [ 8,12,12,12, 4],
+        [ 4, 6, 2,10, 8],
+        [ 2, 1, 2, 1, 2]
+      ],
+      "player": { "x": 2, "y": 5 },
+      "enemies": [
+        { "tribe":2, "type": 0, "x": 1, "y": 1, "dir": 2 },
+        { "tribe":2, "type": 0, "x": 3, "y": 1, "dir": 2 },
+        { "tribe":5, "type": 0, "x": 2, "y": 2, "dir": 2 },
+        { "tribe":5, "type": 0, "x": 2, "y": 3, "dir": 2 },
+        { "tribe":3, "type": 0, "x": 0, "y": 5, "dir": 0 },
+        { "tribe":3, "type": 0, "x": 4, "y": 5, "dir": 0 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ]
+    },
+    {
+      "floor": 59,
+      "col": 5,
+      "row": 6,
+      "time": 8000,
+      "field": [
+        [ 0, 0, 0, 0, 0],
+        [ 0, 0, 0, 0, 0],
+        [ 0, 0, 0, 0, 0],
+        [ 0, 0, 0, 0, 0],
+        [ 0, 0, 0, 0, 0],
+        [ 0, 0, 1, 0, 0]
+      ],
+      "player": { "x": 2, "y": 5 },
+      "enemies": [
+        { "tribe":5, "type": 1, "x": 1, "y": 1, "dir": 2 },
+        { "tribe":5, "type": 1, "x": 3, "y": 1, "dir": 2 }
+      ],
+      "items":[
+        { "type":10},
+        { "type":12}
+      ],
+      "fixed_items":[
+        { "type":44, "wall":0, "loc":0 },
+        { "type":44, "wall":0, "loc":1 },
+        { "type":44, "wall":0, "loc":2 },
+        { "type":44, "wall":0, "loc":3 },
+        { "type":44, "wall":0, "loc":4 }
+      ]
+    },
+    {
+      "floor": 60,
+      "col": 5,
+      "row": 6,
+      "time": 8000,
+      "field": [
+        [13,13,12,13,13],
+        [12,12,12,12,12],
+        [ 8,12,12,12, 4],
+        [12,12,12,12,12],
+        [12,12,12,12,12],
+        [ 2, 2, 0, 2, 2]
+      ],
+      "player": { "x": 2, "y": 3 },
+      "enemies": [
+        { "tribe":2, "type": 0, "x": 1, "y": 0, "dir": 2 },
+        { "tribe":2, "type": 0, "x": 3, "y": 0, "dir": 2 }
       ],
       "items":[
         { "type":10},

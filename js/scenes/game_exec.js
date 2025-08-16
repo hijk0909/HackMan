@@ -99,6 +99,17 @@ export class Exec {
             }
         }
 
+        // アイテムの管理
+        for (let i = GameState.items.length - 1; i >= 0; i--) {
+            const item = GameState.items[i];
+            item.update();
+            if (!item.isAlive()) {
+                item.destroy();
+                GameState.items.splice(i, 1);
+                continue;
+            }
+        }
+
         // 外壁の色の変更
         let c;
         if (GameState.flip_state === GLOBALS.FLIP_STATE.NONE){

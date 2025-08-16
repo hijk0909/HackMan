@@ -8,12 +8,12 @@ import { B2 } from './b2.js';
 import { B3 } from './b3.js';
 
 const COOLDOWN_INTERVAL = 45;
+const BASE_SCORE = 300;
 
 export class E4 extends Enemy {
 
     constructor(scene){
         super(scene);
-        this.score = 0;
         this.size = 24;
         this.dir = GLOBALS.DIR.RIGHT;
         this.flip_state = GLOBALS.FLIP_STATE.NONE;
@@ -25,14 +25,15 @@ export class E4 extends Enemy {
     init(type, pos){
 
         const type_defs = [
-            {type:0, anims: 'e4_anims_0', anims_start: 0, anims_end: 3,  bullet:null},
-            {type:1, anims: 'e4_anims_1', anims_start: 4, anims_end: 7,  bullet:B1},
-            {type:2, anims: 'e4_anims_2', anims_start: 8, anims_end:11,  bullet:B2},
-            {type:3, anims: 'e4_anims_3', anims_start:12, anims_end:15,  bullet:B3}
+            {type:0, anims: 'e4_anims_0', anims_start: 0, anims_end: 3,  bullet:null, score:300},
+            {type:1, anims: 'e4_anims_1', anims_start: 4, anims_end: 7,  bullet:B1, score:400},
+            {type:2, anims: 'e4_anims_2', anims_start: 8, anims_end:11,  bullet:B2, score:600},
+            {type:3, anims: 'e4_anims_3', anims_start:12, anims_end:15,  bullet:B3, score:500}
         ];
 
         super.init(type, pos);
         const typeInfo = type_defs.find(s => s.type === type);
+        this.score = typeInfo.score;
         this.bullet = typeInfo.bullet;
 
         this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, 'ss_e4').setOrigin(0.5, 0.5)

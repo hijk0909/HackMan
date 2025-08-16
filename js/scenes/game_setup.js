@@ -105,7 +105,26 @@ export class Setup {
         GameState.walls[2 + GameState.field_col * 2 + GameState.field_row * 2] = wc2;
         const wc3 = new Wall(this.scene);
         wc3.init(GLOBALS.WALL.TYPE.CORNER,new Phaser.Math.Vector2(1, 1));
-        GameState.walls[3 + GameState.field_col * 2 + GameState.field_row * 2] = wc3;    
+        GameState.walls[3 + GameState.field_col * 2 + GameState.field_row * 2] = wc3;
+
+        // 固定アイテム（砲台など）（があれば配置
+        if (floorInfo.fixed_items){
+            for (const itemData of floorInfo.fixed_items){
+                const { type, wall, loc } = itemData;
+                let index = 0;
+                if (wall === GLOBALS.WALL.TYPE.NORTH){
+                    index = loc;
+                } else if (wall === GLOBALS.WALL.TYPE.SOUTH){
+                    index = loc + GameState.field_col;
+                } else if (wall === GLOBALS.WALL.TYPE.EAST){
+                    index = loc + GameState.field_col * 2;
+                } else if (wall === GLOBALS.WALL.TYPE.WEST){
+                    index = loc + GameState.field_col * 2 + GameState.field_row;
+                }
+                GameState.items[index].set_type(type);
+                GameState.items[index].set_visible(true);
+            }
+        }
 
         // 必須アイテムをランダムな位置に配置
         this.place_item(GLOBALS.ITEM.TYPE.KEY);
@@ -148,7 +167,20 @@ export class Setup {
             const e = new EnemyClass(this.scene);
             const pos = MyMath.get_pos_from_loc(x, y);
             e.init(type, new Phaser.Math.Vector2(pos.pos_x, pos.pos_y));
-            if (dir != null) e.set_dir(dir);
+            // dir が設定されている場合、その方向に１ドット進める
+            // （※交差点にいると方向転換してしまうため）
+            if (dir != null){
+                e.set_dir(dir);
+                if (dir === GLOBALS.DIR.UP){
+                    e.pos.y -= 1;
+                } else if (dir === GLOBALS.DIR.DOWN){
+                    e.pos.y += 1;
+                } else if (dir === GLOBALS.DIR.LEFT){
+                    e.pos.x -= 1;
+                } else if (dir === GLOBALS.DIR.RIGHT){
+                    e.pos.x += 1;
+                }
+            } 
             GameState.enemies.push(e);
         }
     }

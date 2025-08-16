@@ -83,6 +83,7 @@ export class AssetLoader extends Phaser.Scene {
         this.load.audio('se_explosion', './assets/audio/se/se_explosion.mp3');
         this.load.audio('se_bonus', './assets/audio/se/se_bonus.mp3');
         this.load.audio('se_powerup', './assets/audio/se/se_powerup.mp3');
+        this.load.audio('se_pict_change', './assets/audio/se/se_pict_change.mp3');
         // ジングル
         this.load.audio('jingle_round_start', './assets/audio/jingle/jingle_round_start.mp3');
         this.load.audio('jingle_round_clear', './assets/audio/jingle/jingle_round_clear.mp3');
@@ -102,6 +103,7 @@ export class AssetLoader extends Phaser.Scene {
             se_explosion       : this.sound.add('se_explosion', { volume: 1.0 }),
             se_bonus           : this.sound.add('se_bonus', { volume: 1.0 }),
             se_powerup         : this.sound.add('se_powerup', { volume: 1.0 }),
+            se_pict_change     : this.sound.add('se_pict_change', { volume: 1.0 }),
             jingle_round_start : this.sound.add('jingle_round_start', { volume: 0.8 }),
             jingle_round_clear : this.sound.add('jingle_round_clear', { volume: 0.8 }),
             bgm_main           : this.sound.add('bgm_main', { volume: 0.6, loop: true })
