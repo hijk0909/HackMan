@@ -111,6 +111,9 @@ export class AssetLoader extends Phaser.Scene {
         this.load.audio('bgm_zero_mind', './assets/audio/bgm/bgm_zero_mind.mp3');
         // データ
         this.load.json('floor_data', './assets/data/floor.json');
+
+        // シェーダー
+        this.renderer.pipelines.add('Ripple', new RipplePipeline(this.game));
     }
 
     create() {
@@ -138,5 +141,15 @@ export class AssetLoader extends Phaser.Scene {
             bgm_zero_mind      : this.sound.add('bgm_zero_mind', { volume: 0.6, loop: true })
         };
         this.scene.start('TitleScene');
+    }
+}
+
+class RipplePipeline extends Phaser.Renderer.WebGL.Pipelines.SinglePipeline {
+    constructor(game) {
+        super({
+            game,
+            renderer: game.renderer,
+            fragShader: document.getElementById('rippleShader').textContent
+        });
     }
 }

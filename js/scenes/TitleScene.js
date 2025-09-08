@@ -18,7 +18,7 @@ export class TitleScene extends Phaser.Scene {
     }
 
     create() {
-
+        
         if (this.game.canvas.width < this.game.canvas.height){
             // 縦画面
             GameState.isPortrait = true;
@@ -51,7 +51,7 @@ export class TitleScene extends Phaser.Scene {
         this.my_input.registerNextAction(() => this.start_game());
 
         // this.add.text(this.cx, 50, 'HackMan', { fontSize: '64px', fill: '#ffee00' , stroke: COLOR.RED, strokeThickness: 2}).setOrigin(0.5,0.5);
-        this.add.image(this.cx, 0, 'logo').setOrigin(0.5,0).setDepth(0);
+        this.logo = this.add.image(this.cx, 0, 'logo').setOrigin(0.5,0).setDepth(0);
         this.add.text(this.cx, this.hy - 185, 'Copyright Current Color Co. Ltd. All rights reserved.', { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
         this.add.text(this.cx, this.hy - 155, `Version ${GLOBALS.VERSION} ${GLOBALS.DATE}`, { fontSize: '18px', fill: '#888' }).setOrigin(0.5,0.5);
         this.add.text(this.cx, this.hy - 125, 'PUSH SPACE KEY',{ fontSize: '24px', fill: '#fff' }).setOrigin(0.5,0.5);
@@ -91,6 +91,10 @@ export class TitleScene extends Phaser.Scene {
         this.ranking.get_net_ranking();
 
         this.reset_attract_timer();
+
+        this.customPipeline = this.renderer.pipelines.get('Ripple');
+        this.customPipeline.set1f('time', 0);
+        this.logo.setPipeline('Ripple');
     }
 
     reset_attract_timer(){
@@ -110,6 +114,9 @@ export class TitleScene extends Phaser.Scene {
     }
 
     update(time, delta){
+
+        this.customPipeline.set1f('time', time * 0.002);
+
         // 隠しキーボード操作
         if (GameState.debug){
             if (Phaser.Input.Keyboard.JustDown(this.keyA)){
@@ -168,5 +175,4 @@ export class TitleScene extends Phaser.Scene {
         GameState.floor = this.start_floor;
         this.scene.start('GameScene');
     }
-
-};
+}
