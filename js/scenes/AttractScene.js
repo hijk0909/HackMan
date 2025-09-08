@@ -74,7 +74,7 @@ export class AttractScene extends Phaser.Scene {
 
     change_state(){
         if (this.state === STATE.STORY){
-            this.show_caption("STORY1");
+            this.show_caption("STORY");
             this.sentenceMgr = new Sentences(this, 
                 STORY_SENTENCE,
                   { speed: 1,
