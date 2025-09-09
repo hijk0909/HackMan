@@ -201,6 +201,7 @@ export class Player extends Movable {
                 GameState.flip_state = GLOBALS.FLIP_STATE.NONE;
                 this.setParentState(GLOBALS.PANEL.STATE.NORMAL);
                 GameState.cursor.hide();
+                GameState.shockwave.stop();
             }
         } else if (GameState.flip_state === GLOBALS.FLIP_STATE.FLIP){
             // フリップ動作中
@@ -281,6 +282,7 @@ export class Player extends Movable {
                     if (!this.sprite.anims.isPlaying || this.sprite.anims.currentAnim.key !== anims_key) {
                         this.sprite.play(anims_key);
                     }
+                    GameState.shockwave.start();
                 }
                 // センターに達したら移動中止
                 break;

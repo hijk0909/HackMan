@@ -92,8 +92,11 @@ export class TitleScene extends Phaser.Scene {
 
         this.reset_attract_timer();
 
-        this.customPipeline = this.renderer.pipelines.get('Ripple');
-        this.customPipeline.set1f('time', 0);
+        // タイトルロゴを波状に揺らす
+        this.ripple = this.renderer.pipelines.get('Ripple');
+        this.ripple.set1f('time', 0);
+        this.ripple.set1f('frequency', 20.0);
+        this.ripple.set1f('amplitude', 0.004);
         this.logo.setPipeline('Ripple');
     }
 
@@ -115,7 +118,8 @@ export class TitleScene extends Phaser.Scene {
 
     update(time, delta){
 
-        this.customPipeline.set1f('time', time * 0.002);
+        // タイトルを波状に揺らす
+        this.ripple.set1f('time', time * 0.002);
 
         // 隠しキーボード操作
         if (GameState.debug){

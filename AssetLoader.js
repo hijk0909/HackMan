@@ -1,5 +1,6 @@
 // HackMan/AssetLoader.js
 import { GameState } from './js/GameState.js';
+import { RipplePipeline, ShockwavePostFX, Shockwave} from './js/utils/DrawUtils.js';
 
 export class AssetLoader extends Phaser.Scene {
     constructor() {
@@ -114,6 +115,7 @@ export class AssetLoader extends Phaser.Scene {
 
         // シェーダー
         this.renderer.pipelines.add('Ripple', new RipplePipeline(this.game));
+        this.renderer.pipelines.addPostPipeline('Shockwave', ShockwavePostFX);
     }
 
     create() {
@@ -140,16 +142,7 @@ export class AssetLoader extends Phaser.Scene {
             bgm_main           : this.sound.add('bgm_main', { volume: 0.6, loop: true }),
             bgm_zero_mind      : this.sound.add('bgm_zero_mind', { volume: 0.6, loop: true })
         };
-        this.scene.start('TitleScene');
-    }
-}
 
-class RipplePipeline extends Phaser.Renderer.WebGL.Pipelines.SinglePipeline {
-    constructor(game) {
-        super({
-            game,
-            renderer: game.renderer,
-            fragShader: document.getElementById('rippleShader').textContent
-        });
+        this.scene.start('TitleScene');
     }
 }

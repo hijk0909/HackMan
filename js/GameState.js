@@ -41,6 +41,7 @@ export const  GameState = {
     flip_state : GLOBALS.FLIP_STATE.NONE,
     item_boxes : [],
     bgm : null,
+    shockwave : null,
 
     // フィールド
     field_origin_x : 0,

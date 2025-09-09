@@ -35,7 +35,7 @@ export class Effect extends Drawable {
                 }
             });
             this.sprite.play('expl_anims');
-            //(仮)パーティクル
+            //パーティクル
             this.set_particle();
         } else if (type === GLOBALS.EFFECT.TYPE.EXTINCTION){
             // 消滅エフェクト（弾が壁に当たった時など）
@@ -93,7 +93,7 @@ export class Effect extends Drawable {
             graphics.destroy();
         }
         this.emitter = this.scene.add.particles(0, 0, 'img_expl',{
-            speed: { min: 160, max: 200 },
+            speed: { min: 255, max: 300 },
             scale: { start: 1, end: 0.5 },
             alpha: { start: 1, end: 0 },
             lifespan: 500,

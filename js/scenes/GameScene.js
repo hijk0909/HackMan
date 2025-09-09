@@ -4,6 +4,7 @@ import { GameState } from '../GameState.js';
 import { MyInput } from '../utils/InputUtils.js';
 import { Exec } from './game_exec.js';
 import { Setup } from './game_setup.js';
+import { Shockwave } from '../utils/DrawUtils.js';
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -24,6 +25,7 @@ export class GameScene extends Phaser.Scene {
         this.keyU = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U);
         this.keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
         // 入力ユーティリティ
         this.my_input = new MyInput(this);
@@ -39,6 +41,9 @@ export class GameScene extends Phaser.Scene {
         // ゲーム状態の初期化
         GameState.state = GLOBALS.GAME.STATE.FLOOR_START;
         GameState.count = GLOBALS.GAME.PERIDO.FLOOR_START;
+
+        // 衝撃波エフェクトの設定
+        GameState.shockwave = new Shockwave(this);
 
     } // End of create
 
@@ -128,6 +133,9 @@ export class GameScene extends Phaser.Scene {
             }
         }
 
+        // 衝撃波エフェクト
+        GameState.shockwave.update();
+
         // 隠しキーボード操作
         if (GameState.debug){
             if (Phaser.Input.Keyboard.JustDown(this.keyQ)){
@@ -167,6 +175,9 @@ export class GameScene extends Phaser.Scene {
             }
             if (Phaser.Input.Keyboard.JustDown(this.keyE)){
                 GameState.add_energy(1000);
+            }
+            if (Phaser.Input.Keyboard.JustDown(this.keyP)){
+                GameState.shockwave.start();
             }
         }
     } // End of update

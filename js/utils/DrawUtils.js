@@ -1,8 +1,11 @@
 // DrawUtils.js
+import { GameState } from '../GameState.js';
 
 const FONT_SIZE = 16;
 const ROW_HEIGHT = 24;
+const SHOCKWAVE_DURATION = 60;
 
+// ◆ビットマップフォントで文章を表示する
 export class Sentences {
     constructor(scene, sentences, options = {}) {
         this.scene = scene;
@@ -112,5 +115,84 @@ export class Sentences {
         this.scene.children.getAll().forEach(child => {
             if (child.name === "sentenceText") child.destroy();
         });
+    }
+}
+
+// ◆オブジェクトを波状に歪ませるシェーダー
+export class RipplePipeline extends Phaser.Renderer.WebGL.Pipelines.SinglePipeline {
+    constructor(game) {
+        super({
+            game,
+            renderer: game.renderer,
+            fragShader: document.getElementById('rippleShader').textContent
+        });
+    }
+}
+
+// ◆カメラに衝撃波の広がりを与えるポストエフェクトシェーダー
+export class ShockwavePostFX extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
+  constructor(game) {
+    super({
+      game: game,
+      renderer: game.renderer,
+      fragShader: document.getElementById('shockwaveShader').textContent,
+      uniforms: ['time', 'center', 'radius'],
+      renderTarget: true   // PostFX は通常レンダーターゲットを使う
+    });
+
+    // 状態を保持
+    this._time = 0;
+    this._center = { x: 0.5, y: 0.5 };
+    this._radius = 0.0;
+    this._resolution = { width: game.canvas.width, height: game.canvas.height};
+  }
+
+  // 描画直前に uniform をまとめて渡す（安全策）
+  onPreRender() {
+    this.set1f('time', this._time);
+    this.set2f('center', this._center.x, this._center.y);
+    this.set1f('radius', this._radius);
+    this.set2f('resolution', this._resolution.width, this._resolution.height);
+  }
+}
+
+// ◆衝撃波の管理クラス
+export class Shockwave {
+    constructor(scene){
+        this.scene = scene;
+        this.scene.cameras.main.setPostPipeline(ShockwavePostFX);
+        this.shader = this.scene.cameras.main.getPostPipeline(ShockwavePostFX);
+        this.shader._time = 0;
+        this.shader._center = {x:0.5, y:0.5};
+        this.shader._radius = 0.0; 
+        this.count = 0;
+    }
+
+    start(){
+        // console.log("shockwave.start");
+        this.count = SHOCKWAVE_DURATION;
+        this.shader._time = 0;
+        this.shader._radius = 0.3;
+        this.shader._center.x = GameState.player.pos.x / this.scene.game.canvas.width;
+        this.shader._center.y = 1 - GameState.player.pos.y / this.scene.game.canvas.height;
+    }
+
+    update(){
+        if (this.count > 0){
+            // console.log("update", this.count);
+            this.count -= 1;
+            const t = (SHOCKWAVE_DURATION - this.count);
+            if (this.shader) {
+                if (this.count === 0){
+                    this.stop();
+                } else {
+                    this.shader._time = t * 0.01;
+                }
+            }
+        }
+    }
+    stop(){
+        this.shader._time = 0;
+        this.shader._radius = 0;
     }
 }
