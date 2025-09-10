@@ -41,9 +41,9 @@ const HOW_TO_PLAY_SENTENCE= ["${0xff8080}Operate panels, obtain keys, ",
     "${0xff8080}and reach the exit.",
     "${0x80ff80}Switch panels by pressing the button",
     "${0x80ff80}and directional keys.",
-    "${0x80a0d0}Panels can be used as weapons",
-    "${0x80a0d0}to defeat enemies or",
-    "${0x80a0d0}as shields to protect yourself.",
+    "${0x80a0ff}Panels can be used as weapons",
+    "${0x80a0ff}to defeat enemies or",
+    "${0x80a0ff}as shields to protect yourself.",
     "${0xd000ff}Meet conditions to unlock boxes, ",
     "${0xd000ff}obtain items, and power up!"];
 

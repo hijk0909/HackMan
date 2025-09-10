@@ -145,6 +145,8 @@ export class GameScene extends Phaser.Scene {
             }
             if (Phaser.Input.Keyboard.JustDown(this.keyO)){
                 GameState.bgm_stop();
+                GameState.sound.jingle_round_start.stop();
+                GameState.sound.jingle_round_clear.stop();
                 this.scene.stop('UIScene');
                 this.scene.start('GameOverScene');
             }

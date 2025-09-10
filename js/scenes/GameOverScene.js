@@ -14,12 +14,14 @@ export class GameOverScene extends Phaser.Scene {
         this.add.text(this.cx, this.cy, 'GAME OVER', { fontSize: '64px', fill: '#ff0000' , stroke: GLOBALS.COLOR.RED, strokeThickness: 2}).setOrigin(0.5,0.5);
 
         this.time.addEvent({
-            delay: 2000,
+            delay: 10000,
             callback: () => {
                 this.goto_next();
             },
             callbackScope: this
         });
+
+        GameState.sound.jingle_game_over.play();
     }
 
     goto_next(){
@@ -31,6 +33,9 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     update(){
+        if (!GameState.sound.jingle_game_over.isPlaying){
+            this.goto_next();
+        }
     }
 
     destroy(){

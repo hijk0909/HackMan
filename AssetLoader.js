@@ -107,9 +107,12 @@ export class AssetLoader extends Phaser.Scene {
         // ジングル
         this.load.audio('jingle_round_start', './assets/audio/jingle/jingle_round_start.mp3');
         this.load.audio('jingle_round_clear', './assets/audio/jingle/jingle_round_clear.mp3');
+        this.load.audio('jingle_game_over', './assets/audio/jingle/jingle_game_over.mp3');
         // BGM
         this.load.audio('bgm_main', './assets/audio/bgm/bgm_main.mp3');
         this.load.audio('bgm_zero_mind', './assets/audio/bgm/bgm_zero_mind.mp3');
+        this.load.audio('bgm_name_entry', './assets/audio/bgm/bgm_name_entry.mp3');
+        this.load.audio('bgm_game_clear', './assets/audio/bgm/bgm_game_clear.mp3');
         // データ
         this.load.json('floor_data', './assets/data/floor.json');
 
@@ -139,8 +142,11 @@ export class AssetLoader extends Phaser.Scene {
             se_name_enter      : this.sound.add('se_name_enter', { volume: 1.0 }),
             jingle_round_start : this.sound.add('jingle_round_start', { volume: 0.8 }),
             jingle_round_clear : this.sound.add('jingle_round_clear', { volume: 0.8 }),
+            jingle_game_over   : this.sound.add('jingle_game_over', { volume: 0.7 }),
             bgm_main           : this.sound.add('bgm_main', { volume: 0.6, loop: true }),
-            bgm_zero_mind      : this.sound.add('bgm_zero_mind', { volume: 0.6, loop: true })
+            bgm_zero_mind      : this.sound.add('bgm_zero_mind', { volume: 0.6, loop: true }),
+            bgm_name_entry     : this.sound.add('bgm_name_entry', { volume: 0.6, loop: true }),
+            bgm_game_clear     : this.sound.add('bgm_game_clear', { volume: 0.6, loop: true })
         };
 
         this.scene.start('TitleScene');

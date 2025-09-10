@@ -82,10 +82,12 @@ export class GameClearScene extends Phaser.Scene {
                     }); // End of AddEvent
                 } // End of onFinished
         }); // End of new Sentences
+
+        GameState.sound.bgm_game_clear.play();
     }
 
     goto_next(){
-        // GameState.sound.bgm_clear.stop();
+        GameState.sound.bgm_game_clear.stop();
         if (Ranking.get_new_rank(GameState.ranking.session, GameState.score) === -1){
             this.scene.start('TitleScene');
         } else {

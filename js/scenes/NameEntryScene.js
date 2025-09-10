@@ -33,6 +33,7 @@ export class NameEntryScene extends Phaser.Scene {
         this.i_right_before = false;
         this.i_button_before = false;
 
+        GameState.sound.bgm_name_entry.play();
       }
 
     set_ranking(name){
@@ -42,15 +43,14 @@ export class NameEntryScene extends Phaser.Scene {
         this.time.addEvent({
             delay: 3000,
             callback: () => {
-                this.scene.start('TitleScene');
+                this.goto_title();
             },
             callbackScope: this
         });
     }
 
     goto_title(){
-        // GameState.sound.jingle_game_over.stop();
-        GameState.sound.se_tap.play();
+        GameState.sound.bgm_name_entry.stop();
         this.scene.start('TitleScene');
     }
 

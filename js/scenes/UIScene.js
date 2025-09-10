@@ -8,13 +8,13 @@ const font_family = '"Source Han Code JP", monospace';
 const style2 = { fontSize: '24px', fontFamily: font_family, fill: '#ffffff',
                 shadow: {offsetX : 2, offsetY: 2, color : '#000', blur:0, fill: true, stroke: false }};
 const style3 = { fontSize: '48px', fontFamily: font_family, fill: '#00ff00',
-                stroke: '#006000', strokeThickness: 4,
+                stroke: '#003000', strokeThickness: 4,
                 shadow: {offsetX : 3, offsetY: 3, color : '#040', blur:0, fill: true, stroke: false }};
 const style4 = { fontSize: '48px', fontFamily: font_family, fill: '#ff0000',
-                stroke: '#800000', strokeThickness: 3,
+                stroke: '#300000', strokeThickness: 3,
                 shadow: {offsetX : 3, offsetY: 3, color : '#400', blur:0, fill: true, stroke: false }};
 const style5 = { fontSize: '24px', fontFamily: font_family, fill: '#ffd0d0', 
-                stroke: '#402020', strokeThickness: 4,
+                stroke: '#301010', strokeThickness: 4,
                 align : 'center',};
 
 const ROW = 24;
