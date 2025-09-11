@@ -79,6 +79,8 @@ export class NameEntryScene extends Phaser.Scene {
 
 // ネームエントリー画面描画
 const KEY_SIZE = 48;
+const KEY_COL = 10;
+const KEY_ROW = 4;
 const CURSOR_ALPHA = 0.9;
 const FOCUS_COLOR = 0xff0000;
 const FOCUS_COUNT_MAX = 60;
@@ -100,7 +102,7 @@ class name_entry{
         this.focus_pos = new Phaser.Math.Vector2(0.0);
         this.keyboard = this.scene.add.image(this.org_x,this.org_y,'keyboard').setOrigin(0,0)
                 .setInteractive()
-                .on('pointerdown', () => {this.touch_keyboard();})
+                .on('pointerdown', (pointer, localX, localY) => {this.cursor_move(localX, localY); this.touch_keyboard();})
                 .on('pointermove', (pointer, localX, localY) => {this.cursor_move(localX, localY);});
         this.cursor_loc = new Phaser.Math.Vector2(0,1);
         this.cursor_sprite = this.scene.add.sprite(this.org_x, this.org_y, "cursor3")
@@ -143,17 +145,19 @@ class name_entry{
       }
     }
 
+    cursor_move(localX, localY){
+      // console.log("cursor", localX, localY);
+      if (localX > KEY_SIZE * KEY_COL){return;}
+      if (localY > KEY_SIZE * KEY_ROW){return;}
+      this.cursor_loc.x = Math.floor(localX / KEY_SIZE);
+      this.cursor_loc.y = Math.floor(localY / KEY_SIZE); 
+      this.draw_cursor();
+    }
+
     close_keyboard(){
       this.keyboard.setVisible(false);
       this.cursor_sprite.setVisible(false);
       this.visible = false;
-    }
-
-    cursor_move(localX, localY){
-      // console.log("cursor", localX, localY);
-      this.cursor_loc.x = Math.floor(localX / KEY_SIZE);
-      this.cursor_loc.y = Math.floor(localY / KEY_SIZE); 
-      this.draw_cursor();
     }
 
     cursor_up(){
