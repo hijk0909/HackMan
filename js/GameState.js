@@ -20,7 +20,7 @@ export const  GameState = {
         monthly : null,
         alltime :null
     },
-    debug : true,
+    debug : false,
 
     // ゲーム情報
     lives : GLOBALS.INIT_LIVES,
