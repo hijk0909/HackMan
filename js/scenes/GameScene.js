@@ -29,6 +29,7 @@ export class GameScene extends Phaser.Scene {
 
         // 入力ユーティリティ
         this.my_input = new MyInput(this);
+        this.my_input.registerNextAction(() => this.toggle_pause());
 
         // 実行クラス、セットアップクラス
         this.exec = new Exec(this);
@@ -131,6 +132,8 @@ export class GameScene extends Phaser.Scene {
                     this.time_bonus();
                 }
             }
+        } else if (GameState.state == GLOBALS.GAME.STATE.PAUSE){
+            // ◆一時停止            
         }
 
         // 衝撃波エフェクト
@@ -249,5 +252,24 @@ export class GameScene extends Phaser.Scene {
                 }
             }
         });
+    }
+
+    // ポーズ処理
+    toggle_pause(){
+        if (GameState.state === GLOBALS.GAME.STATE.PLAYING){
+            GameState.state = GLOBALS.GAME.STATE.PAUSE;
+            GameState.bgm_pause();
+            this.children.each(child => {
+                if (child.anims && child.anims.isPlaying) child.anims.pause();
+            });
+            GameState.ui.show_pause(true);
+        } else if ( GameState.state === GLOBALS.GAME.STATE.PAUSE){
+            GameState.state = GLOBALS.GAME.STATE.PLAYING;
+            GameState.bgm_resume();
+            this.children.each(child => {
+                if (child.anims && child.anims.isPaused) child.anims.resume();
+            });
+            GameState.ui.show_pause(false);
+        }
     }
 }

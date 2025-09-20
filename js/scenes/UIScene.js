@@ -68,6 +68,8 @@ export class UIScene extends Phaser.Scene {
             this.ui_floor_clear_y = 300;
             this.ui_timeover_x = 300;
             this.ui_timeover_y = 300;
+            this.ui_pause_x = 300;
+            this.ui_pause_y = 300;
         } else {
             this.ui_highscore_x = 642;
             this.ui_highscore_y = 72;
@@ -93,6 +95,8 @@ export class UIScene extends Phaser.Scene {
             this.ui_floor_clear_y = 300;
             this.ui_timeover_x = 300;
             this.ui_timeover_y = 300;
+            this.ui_pause_x = 300;
+            this.ui_pause_y = 300;
         }
         this.ui_score_txt = this.add.text(this.ui_score_x, this.ui_score_y, '1UP', style2);
         this.ui_score_val = this.add.text(this.ui_score_x, this.ui_score_y + ROW, '0', style2);
@@ -108,6 +112,7 @@ export class UIScene extends Phaser.Scene {
         this.ui_floor_item = this.add.text(this.ui_floor_item_x, this.ui_floor_item_y, 'ITEM', style5).setVisible(false).setOrigin(0.5,0);
         this.ui_floor_clear_txt = this.add.text(this.ui_floor_clear_x, this.ui_floor_clear_y, 'FLOOR : 1', style3).setVisible(false).setOrigin(0.5,0.5);
         this.ui_timeover_txt = this.add.text(this.ui_timeover_x, this.ui_timeover_y, 'TIME OVER', style4).setVisible(false).setOrigin(0.5,0.5);
+        this.ui_pause_txt = this.add.text(this.ui_pause_x, this.ui_pause_y, 'PAUSE', style4).setVisible(false).setOrigin(0.5,0.5);
 
         // 残機表示
         this.lives = [];
@@ -168,6 +173,11 @@ export class UIScene extends Phaser.Scene {
     // タイムオーバー文字表示
     show_timeover(visible){
         this.ui_timeover_txt.setText(`TIME OVER`).setVisible(visible);
+    }
+
+    // 一時停止文字表示
+    show_pause(visible){
+        this.ui_pause_txt.setText('PAUSE').setVisible(visible);
     }
 
     // 残機表示

@@ -115,16 +115,12 @@ export const  GameState = {
         this.bgm = bgm;
     },
 
-    bgm_stop(){
-        if (this.bgm){
-            this.bgm.stop();
-        }
-    },
+    bgm_stop(){ if (this.bgm){ this.bgm.stop(); } },
 
-    bgm_play(){
-        if (this.bgm){
-            this.bgm.play();
-        }
-    }
+    bgm_play(){ if (this.bgm){ this.bgm.play(); } },
+
+    bgm_pause(){ if (this.bgm){ this.bgm.pause(); } },
+
+    bgm_resume(){ if (this.bgm){ this.bgm.resume(); } }
 
 };

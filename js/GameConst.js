@@ -55,7 +55,8 @@ export const GLOBALS = {
             FLOOR_START : 0,
             PLAYING : 1,
             FAILED : 2,
-            FLOOR_CLEAR : 3
+            FLOOR_CLEAR : 3,
+            PAUSE : 4
         },
         PERIDO:{
             FLOOR_START : 100,
