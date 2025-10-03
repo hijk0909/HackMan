@@ -166,10 +166,10 @@ export class TitleScene extends Phaser.Scene {
         this.sound.unlock();
 
         // 念のため、各シーンを止める
-        this.scene.stop('GameScene');
-        this.scene.stop('GameOverScene');
-        this.scene.stop('GameClearScene');
-        this.scene.stop('UI');
+        // this.scene.stop('GameScene');
+        // this.scene.stop('GameOverScene');
+        // this.scene.stop('GameClearScene');
+        // this.scene.stop('UI');
 
         // console.log(this.scene.manager.getScenes(true).map(s => s.scene.key));
         GameState.sound.se_tap.play();
