@@ -163,7 +163,7 @@ export class TitleScene extends Phaser.Scene {
     start_game(){
 
         // サウンドのアンロック
-        this.sound.unlock();
+        // this.sound.unlock();
 
         // 念のため、各シーンを止める
         // this.scene.stop('GameScene');
