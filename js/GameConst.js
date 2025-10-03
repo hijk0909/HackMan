@@ -2,8 +2,8 @@
 
 export const GLOBALS = {
 
-    VERSION : "1.2",
-    DATE : "2025.9.20",
+    VERSION : "1.3",
+    DATE : "2025.10.3",
     FLOOR_MAX : 60,
     TIME_MAX : 9999,
     ENERGY_MAX : 9999,
