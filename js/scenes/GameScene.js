@@ -13,7 +13,7 @@ export class GameScene extends Phaser.Scene {
 
     create() {
         // タイトルの停止（念のため)
-        this.scene.stop('TitleScene');
+        // this.scene.stop('TitleScene');
 
         // 隠しキー
         this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
