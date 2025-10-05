@@ -2,7 +2,7 @@
 
 export const GLOBALS = {
 
-    VERSION : "1.3b",
+    VERSION : "1.3c",
     DATE : "2025.10.5",
     FLOOR_MAX : 60,
     TIME_MAX : 9999,

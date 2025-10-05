@@ -2,7 +2,6 @@
 import { GameState } from '../GameState.js';
 import { GLOBALS } from '../GameConst.js';
 import { MyInput } from '../utils/InputUtils.js';
-import { Ranking } from './ranking.js';
 
 const { COLOR } = GLOBALS;
 const KEY_AUTO_REPEAT = 60;
@@ -13,7 +12,6 @@ export class TitleScene extends Phaser.Scene {
         this.start_floor = 1;
         this.keyF_cnt = 0;
         this.keyG_cnt = 0;
-        this.ranking = null;
         this.attract_timer = null;
     }
 
@@ -83,12 +81,6 @@ export class TitleScene extends Phaser.Scene {
         this.add.image(this.op1_x,this.op1_y,'op_1').setOrigin(0,0);
         this.add.image(this.op2_x,this.op2_y,'op_2').setOrigin(0,0);
         this.add.image(this.op3_x,this.op3_y,'op_3').setOrigin(0,0);
-
-        //ランキング取得（インターネット経由）
-        if (this.ranking === null){
-            this.ranking = new Ranking(this);
-        }
-        this.ranking.get_net_ranking();
 
         this.reset_attract_timer();
 

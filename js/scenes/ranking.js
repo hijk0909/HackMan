@@ -13,7 +13,7 @@ export class Ranking {
     }
 
     // ランキングのサーバへの登録
-    set_net_ranking(name, score, floor){
+    static set_net_ranking(name, score, floor){
         fetch(GLOBALS.RANKING_URL, {
             method: "POST",
             body: JSON.stringify({ name, score, floor })
@@ -27,7 +27,7 @@ export class Ranking {
     }
 
     // ランキングのサーバからの取得
-    get_net_ranking(){
+    static get_net_ranking(){
       fetch(GLOBALS.RANKING_URL)
         .then(res => res.json())
         .then(data => {
@@ -111,7 +111,7 @@ export class Ranking {
         return newRanking;
     }
 
-    // ◆3名前入力後にランキングを更新
+    // ◆名前入力後にランキングを更新
     static update_name(ranking, rank, name) {
         ranking[rank].name = name;
         return ranking;
